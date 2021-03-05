@@ -2,7 +2,6 @@
 
 # Build react client
 FROM node:15.10-alpine
-#FROM node:10.16-alpine  
 
 # Create App Directory
 RUN mkdir -p /usr/src/app

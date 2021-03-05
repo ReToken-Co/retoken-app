@@ -1,0 +1,22 @@
+POST http://localhost:5000/app/addproperty
+Content-Type: /application/json
+
+{
+    "owner": "testPOST",
+    "street": "999 Dover Road",
+    "city": "Singapore",
+    "state": "Singapore",
+    "country": "Singapore",
+    "zipCode": "123456",
+    "description": "sent from test.http",
+    "propertyType": "Townhouse",
+    "askingPrice": 3000000,
+    "builtSize": 20000,
+    "landSize": 5000,
+    "yearBuilt": 1997,
+    "occupancy": 90.5,
+    "annualGrossRent": 300000,
+    "annualExpense": 200000,
+    "noi": 100000,
+    "expectedYield": 11.8
+}

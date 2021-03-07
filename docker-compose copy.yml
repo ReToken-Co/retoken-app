@@ -22,23 +22,34 @@ services:
       - NODE_ENV=development
     networks:
       - app-network
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    image: retokenapp-client
-    container_name: retokenapp-react-client
-    restart: unless-stopped
-    command: npm start
-    volumes:
-      - ./client/:/usr/app
-      - /usr/app/node_modules
-    depends_on:
-      - server
-    ports:
-      - "3000:3000"
-    networks:
-      - app-network
+#  mongo:
+#    image: mongo
+#    container_name: mongodb
+#    restart: unless-stopped
+#    volumes:
+#      - mongo-data:/data/db
+#      - mongo-config:/data/configdb
+#    ports:
+#      - "27017:27017"
+#    networks:
+#      - app-network
+client:
+  build:
+    context: ./client
+    dockerfile: Dockerfile
+  image: retokenapp-client
+  container_name: retokenapp-react-client
+  restart: unless-stopped
+  command: npm start
+  volumes:
+    - ./client/:/usr/app
+    - /usr/app/node_modules
+  depends_on:
+    - server
+  ports:
+    - "3000:3000"
+  networks:
+    - app-network
 
 networks:
   app-network:

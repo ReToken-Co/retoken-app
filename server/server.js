@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const bodyParser = require("body-parser")
+const path = require("path")
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const propertiesUrl = require('./routes/properties')
@@ -13,13 +13,22 @@ dotenv.config()
 // Middleware
 app.use(cors())
 app.use(express.json())
-//app.use(bodyParser.urlencoded({ extended: true }))
-//app.use(bodyParser.json())
-app.use('/app', propertiesUrl)
+
+// Serve MongoDB API call
+app.use('/api', propertiesUrl)
+
+// Serve static assets if in production
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname + '../client/build/index.html'))
+    })
+} else {
+    app.use('/api', propertiesUrl)
+}
 
 // connect to Mondo DB
 const uri = process.env.ATLAS_URI
-
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
 const connection = mongoose.connection
 connection.once('open', () => {

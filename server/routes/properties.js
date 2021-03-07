@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const bodyParser = require("body-parser")
-const Property = require("../models/property.model");
+const express = require('express')
+const Property = require("../models/properties.model");
 
-const jsonParser = bodyParser.json()
-const rawParser = bodyParser.raw()
+const app = express()
+app.use(express.json())
+//const jsonParser = bodyParser.json()
 
 router.get("/getproperty", (req, res) => {
   Property.find()
@@ -11,8 +12,8 @@ router.get("/getproperty", (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//router.route('/addproperty').post((req,res) => {
-router.post("/addproperty", jsonParser, (req, res) => {
+router.route('/addproperty').post((req,res) => {
+//router.post("/addproperty", jsonParser, (req, res) => {
 //  req.rawBody = buf;
   const newProperty = new Property({
     owner: req.body.owner,

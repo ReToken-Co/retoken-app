@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
 const propertySchema = new Schema({
     owner: { type: String, trim: true },
     askingPrice: { type: Number, required: true, default: 0 },
+    unitofToken: { type: Number, required: true, default: 0 },
+    pricePerToekn: { type: Number, default: 0 },
     street: { type: String, trim: true },
     city: { type: String },
     state: { type: String },

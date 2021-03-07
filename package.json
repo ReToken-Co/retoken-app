@@ -9,7 +9,9 @@
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
+    "heroku-postbuild": "echo This runs after Heroku installs dependencies, but before Heroku prunes and caches dependencies.",
+    "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies."  
   },
   "repository": {
     "type": "git",

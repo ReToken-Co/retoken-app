@@ -3,7 +3,4 @@ build:
     web: server/Dockerfile
 run:
   web: npm start
-release:
-  image: web
-  command:
-    - npm run migrate up
+  

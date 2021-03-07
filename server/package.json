@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "retoken-server",
   "version": "1.0.0",
   "description": "REToken backend",
   "main": "server.js",

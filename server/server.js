@@ -15,7 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 // Serve MongoDB API call
-app.use('/api', propertiesUrl)
+app.use('/properties', propertiesUrl)
 
 // Serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
@@ -24,7 +24,7 @@ if(process.env.NODE_ENV === 'production') {
         res.sendFile('../client/build/index.html')
     })
 } else {
-    app.use('/api', propertiesUrl)
+    app.use('/properties', propertiesUrl)
 }
 
 // connect to Mondo DB

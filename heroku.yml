@@ -3,4 +3,5 @@ build:
     web: /Dockerfile
 run:
   web: npm start
-  
+release:
+  image: web

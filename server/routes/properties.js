@@ -6,13 +6,13 @@ const app = express()
 app.use(express.json())
 //const jsonParser = bodyParser.json()
 
-router.get("/getproperty", (req, res) => {
+router.route("/").get((req, res) => {
   Property.find()
     .then((properties) => res.json(properties))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/addproperty').post((req,res) => {
+router.route('/add').post((req,res) => {
 //router.post("/addproperty", jsonParser, (req, res) => {
 //  req.rawBody = buf;
   const newProperty = new Property({
@@ -40,13 +40,13 @@ router.route('/addproperty').post((req,res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/property/:id").get((req, res) => {
+router.route("/:id").get((req, res) => {
   Property.findById(req.params.id)
     .then((property) => res.json(property))
     .catch((err) => res.status(400).json("FindById Error: " + err));
 });
 
-router.route("/updateproperty/:id").post((req, res) => {
+router.route("/update/:id").post((req, res) => {
   Property.findById(req.params.id)
     .then((property) => {
       property.owner = req.body.owner;

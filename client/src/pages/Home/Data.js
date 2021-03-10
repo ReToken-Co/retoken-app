@@ -1,6 +1,6 @@
 export const bannerObj = {
   primary: false,
-  linkTo: '/assets',
+  linkTo: '/marketplace',
   buttonLabel: 'Explore Opportunities',
 };
 

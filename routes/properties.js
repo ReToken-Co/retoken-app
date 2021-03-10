@@ -1,5 +1,5 @@
-const router = require("express").Router();
 const express = require('express')
+const router = express.Router();
 const Property = require("../models/properties.model");
 
 const app = express()
@@ -18,6 +18,8 @@ router.route('/add').post((req,res) => {
   const newProperty = new Property({
     owner: req.body.owner,
     askingPrice: req.body.askingPrice,
+    noOfToken: req.body.noOfToken,
+    pricePerToken: req.body.pricePerToken,
     street: req.body.street,
     city: req.body.city,
     state: req.body.state,
@@ -33,6 +35,11 @@ router.route('/add').post((req,res) => {
     annualExpense: req.body.annualExpense,
     noi: req.body.noi,
     expectedYield: req.body.expectedYield,
+    image: req.body.image,
+    scId: req.body.scId,
+    transactionHash: req.body.transactionHash,
+    subscription: req.body.subscription,
+    status: req.body.status
   });
   newProperty
     .save()
@@ -51,6 +58,8 @@ router.route("/update/:id").post((req, res) => {
     .then((property) => {
       property.owner = req.body.owner;
       property.askingprice = Number(req.body.askingprice);
+      property.noOfToken = Number(req.body.noOfToken);
+      property.pricePerToken = Number(req.body.pricePerToken);
       property.street = req.body.street;
       property.city = req.body.city;
       property.state = req.body.state;
@@ -66,7 +75,12 @@ router.route("/update/:id").post((req, res) => {
       property.annualexpenses = Number(req.body.annualexpenses);
       property.noi = Number(req.body.noi);
       property.expectedyield = Number(req.body.expectedyield);
-
+      property.image = req.body.image;
+      property.scId = req.body.scId;
+      property.transactionHash = req.body.transactionHash;
+      property.subscription = Number(req.body.subscription);
+      property.status = Number(req.body.status)
+  
       property
         .save()
         .then((property) => res.json("Property updated! " + property))

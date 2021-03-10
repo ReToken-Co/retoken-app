@@ -55,13 +55,13 @@ export default function Navbar() {
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/add-asset" onClick={closeMobileMenu}>
-                  Add Asset
+              <NavLinks to="/marketplace" onClick={closeMobileMenu}>
+                  Marketplace
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/marketplace" onClick={closeMobileMenu}>
-                  Marketplace
+              <NavLinks to="/addasset" onClick={closeMobileMenu}>
+                  Add Asset
                 </NavLinks>
               </NavItem>
               <NavItemBtn>

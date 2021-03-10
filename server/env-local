@@ -1,2 +1,0 @@
-ATLAS_URI=mongodb://db:27017/node-app
-PORT=5000

@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 const propertySchema = new Schema({
     owner: { type: String, trim: true },
     askingPrice: { type: Number, required: true, default: 0 },
-    unitofToken: { type: Number, required: true, default: 0 },
-    pricePerToekn: { type: Number, default: 0 },
+    noOfToken: { type: Number, default: 0 },
+    pricePerToken: { type: Number, default: 0 },
     street: { type: String, trim: true },
     city: { type: String },
     state: { type: String },
@@ -20,7 +20,12 @@ const propertySchema = new Schema({
     annualGrossRent: { type: Number, default: 0 },
     annualExpense: { type: Number, default: 0 },
     noi: { type: Number, default: 0 },
-    expectedYield: { type: Number, default: 0 }
+    expectedYield: { type: Number, default: 0 },
+    image: { type: String },
+    scId: { type: String },
+    transactionHash: { type: String },
+    subscription: { type: Number, default: 0 },
+    status: { type: Number, default: 0 }
 }, {
     timestamps: true,
 })

@@ -1,24 +1,32 @@
 {
   "name": "retoken-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js --prefix server",
+  "description": "REToken App",
+  "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "npm run start --prefix server",
-    "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\" ",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently -n 'server,client' -c 'blue,green' \"nodemon server.js\" \"npm run client\" ",
     "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies."  
+    "heroku-postbuild": "npm install && cd client && npm install && npm run build",
+    "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies.",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ReToken-Co/retoken-app.git"
   },
-  "author": "",
+  "author": "REToken Co",
   "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.18",
+    "nodemon": "^2.0.7"
+  },
   "bugs": {
     "url": "https://github.com/ReToken-Co/retoken-app/issues"
   },

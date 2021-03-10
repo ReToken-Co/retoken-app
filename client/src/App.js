@@ -4,7 +4,9 @@ import { Navbar, Footer } from "./components";
 import AssetContextProvider from "./context/AssetContext";
 
 import Home from "./pages/Home/Home";
-import AddAsset from './pages/AddAsset';
+import AddAsset from "./pages/AddAsset";
+import Marketplace from "./pages/Marketplace";
+import Asset from "./pages/Asset";
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
           <Navbar />
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path='/add-asset' component={AddAsset} />
+            <Route path="/addasset" component={AddAsset} />
+            <Route path="/marketplace" exact component={Marketplace} />
+            <Route path="/asset" exact component={Asset} />
+            <Route path="/asset/:id" component={Asset} />
           </Switch>
           <Footer />
         </Router>

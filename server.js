@@ -5,31 +5,34 @@ const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const propertiesUrl = require('./routes/properties')
 
-const app = express()
-const port = process.env.PORT || 5000
-
 dotenv.config()
 
+const app = express()
+const port = process.env.PORT || 5000
+const mongoDBUri = process.env.ATLAS_URI || 'mongodb://localhost/retoken'
+
+
 // Middleware
-app.use(cors())
+// app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use('/properties', propertiesUrl)  // service MongoDB API
 
-// Serve MongoDB API call
-app.use('/properties', propertiesUrl)
-
-// Serve static assets if in production
+// Serve static assets (client) if in production
 if(process.env.NODE_ENV === 'production') {
-    app.use(express.static('../client/build'))
+    app.use(express.static(path.join(__dirname, 'client/build')))
     app.get('*', (req, res) => {
-        res.sendFile('../client/build/index.html')
+        res.sendFile(path.join(__dirname, 'client/build/index.html'))
     })
 } else {
-    app.use('/properties', propertiesUrl)
+    app.use(express.static(path.join(__dirname, 'client')))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client/public/index.html'))
+    })
 }
 
 // connect to Mondo DB
-const uri = process.env.ATLAS_URI
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(mongoDBUri, { useNewUrlParser: true, useCreateIndex: true })
 const connection = mongoose.connection
 connection.once('open', () => {
     console.log("MongoDB connected successfully")

@@ -9,9 +9,6 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "dev": "concurrently -n 'server,client' -c 'blue,green' \"nodemon server.js\" \"npm run client\" ",
-    "heroku-prebuild": "echo This runs before Heroku installs dependencies.",
-    "heroku-postbuild": "npm install && cd client && npm install && npm run build",
-    "heroku-cleanup": "echo This runs after Heroku prunes and caches dependencies.",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

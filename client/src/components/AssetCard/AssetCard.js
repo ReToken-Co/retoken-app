@@ -119,7 +119,7 @@ export default function AssetCard(props) {
                 window.location.href = `asset/${e.target.id}`;
               }}
             >
-              <img className={classes.img} alt="no image" src={props.image} />
+              <img className={classes.img} alt={props.image} src={props.image} />
             </ButtonBase>
           </Grid>
           <Grid item xs={5} >

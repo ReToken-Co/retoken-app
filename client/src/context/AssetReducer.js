@@ -1,7 +1,6 @@
-//import firebase from "../firebase";
 import axios from "axios";
 
-export default (state, action) => {
+const AssetReducer = (state, action) => {
   switch (action.type) {
     case "SET_ASSETS":
       console.log(`set auc ${JSON.stringify(action.payload)}`);
@@ -21,6 +20,18 @@ export default (state, action) => {
           console.log(`Error retrieving data ${err}`);
         });
       return assets;
+
+    case "GET_ASSET":
+      console.log (`get assetid ${action.payload}`)
+      axios
+        .get(`/properties/${action.payload}`)
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(`Error retrieving data ${err}`);
+        });
+        return {}
 
     case "ADD_ASSET":
       //            const test = [...state, addAsset(action.payload)]
@@ -109,10 +120,12 @@ function updateAsset(state, payload) {
     : newAssets[payload.id].winningAmount;
 
   // Update DB
-/*  const db = firebase.firestore();
+  /*  const db = firebase.firestore();
   db.collection("Asset")
     .doc(payload.id.toString())
     .update(newAssets[payload.id]);
 */
   return newAssets;
 }
+
+export default AssetReducer

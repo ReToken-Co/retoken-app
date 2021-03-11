@@ -7,7 +7,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import { Button } from "../../globalStyles";
-import { InputContainer, useStyles, Form } from "./InputForm.style";
+import { InputContainer, useStyles } from "./InputForm.style";
 
 export default function InputForm(props) {
   const { control, handleSubmit } = useForm();

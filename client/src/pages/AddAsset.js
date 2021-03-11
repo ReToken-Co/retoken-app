@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { InputForm } from '../components'
 import { AssetContext } from '../context/AssetContext'
-import { Web3Context } from '../context/Web3Context'
+//import { Web3Context } from '../context/Web3Context'
 
 export default function AddAsset() {
 

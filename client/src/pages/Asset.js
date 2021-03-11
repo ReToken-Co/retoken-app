@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { AssetDetail } from "../components";
+import { AssetContext } from "../context/AssetContext";
 
 export default function Asset(props) {
   /*
   const { account, contract, web3 } = useContext(Web3Context)
-  const { assets, assetDispatch } = useContext(AssetContext)
 //  const { bids, bidDispatch } = useContext(BidContext)
   const [balance, setBalance] = useState()
 */
+  const { assets, assetDispatch } = useContext(AssetContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
@@ -17,40 +18,51 @@ export default function Asset(props) {
 
   // every render or change in location
   useEffect(() => {
-    // setAsset from location data
-    const selectedAsset = {
-      id: location.state.id,
-      scId: location.state.scId,
-      image: location.state.image,
-      transactionHash: location.state.transactionHash,
-      subscription: location.state.subscription,
-      status: location.state.status,
-      owner: location.state.owner,
-      askingPrice: location.state.askingPrice,
-      noOfToken: location.state.noOfToken,
-      pricePerToken: location.state.pricePerToken,
-      street: location.state.street,
-      city: location.state.city,
-      state: location.state.state,
-      country: location.state.country,
-      zipCode: location.state.zipCode,
-      description: location.state.description,
-      propertyType: location.state.propertyType,
-      builtSize: location.state.builtSize,
-      landSize: location.state.landSize,
-      yearBuilt: location.state.yearBuilt,
-      occupancy: location.state.occupancy,
-      annualGrossRent: location.state.annualGrossRent,
-      annualExpense: location.state.annualExpense,
-      noi: location.state.noi,
-      expectedYield: location.state.expectedYield,
-      account: location.state.account,
-    };
+    let selectedAsset = {}
+
+    if (location !== undefined) {
+      // setAsset from location data
+      selectedAsset = {
+        id: location.state.id,
+        scId: location.state.scId,
+        image: location.state.image,
+        transactionHash: location.state.transactionHash,
+        subscription: location.state.subscription,
+        status: location.state.status,
+        owner: location.state.owner,
+        askingPrice: location.state.askingPrice,
+        noOfToken: location.state.noOfToken,
+        pricePerToken: location.state.pricePerToken,
+        street: location.state.street,
+        city: location.state.city,
+        state: location.state.state,
+        country: location.state.country,
+        zipCode: location.state.zipCode,
+        description: location.state.description,
+        propertyType: location.state.propertyType,
+        builtSize: location.state.builtSize,
+        landSize: location.state.landSize,
+        yearBuilt: location.state.yearBuilt,
+        occupancy: location.state.occupancy,
+        annualGrossRent: location.state.annualGrossRent,
+        annualExpense: location.state.annualExpense,
+        noi: location.state.noi,
+        expectedYield: location.state.expectedYield,
+        account: location.state.account,
+      };
+      localStorage.setItem("AssetId", location.state.id);
+    } else {
+      // dispatch to get the asset record from DB
+      const _id = localStorage.getItem("AssetId");
+      selectedAsset = assetDispatch({
+        type: "GET_ASSET",
+        payload: _id,
+      });
+    }
 
     // set asset State
     console.log(`selected assets ${JSON.stringify(selectedAsset)}`);
     setAsset(selectedAsset);
-
   }, [location]);
 
   /*
@@ -68,9 +80,8 @@ export default function Asset(props) {
   }, [balance]);
 */
   const purchaseToken = async () => {
-
-      // Place a order into smart contract
-/*      const result = await contract.purchaseToken()
+    // Place a order into smart contract
+    /*      const result = await contract.purchaseToken()
 
       await contract.contractBalance().then(function (_return) {
         console.log(`Contract balance aft place bid = ${_return}`)
@@ -105,13 +116,15 @@ export default function Asset(props) {
         }
       })
 */
-  }
+  };
 
   // set tokenInput state from user input field
   const updateTokenInput = (_tokenInput) => {
     setTokenInput(_tokenInput);
-    setInvestmentInput(_tokenInput * asset.pricePerToken)
-    setIncomeInput(_tokenInput * asset.pricePerToken * asset.expectedYield / 100)
+    setInvestmentInput(_tokenInput * asset.pricePerToken);
+    setIncomeInput(
+      (_tokenInput * asset.pricePerToken * asset.expectedYield) / 100
+    );
   };
 
   return (

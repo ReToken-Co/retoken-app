@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Paper,
-  FormControl,
   TextField,
   Typography,
   Grid,
@@ -10,247 +10,147 @@ import { Button } from "../../globalStyles";
 import { InputContainer, useStyles } from "./InputForm.style";
 
 export default function InputForm(props) {
-  const { control, handleSubmit } = useForm();
-  const classes = useStyles();
-  console.log(`in form seller ${props.seller}`);
 
+  const defaultValues = {
+    owner: "",
+    image: "images/",
+    street: "",
+    city: "",
+    state: "",
+    country: "",
+    zipCode: "",
+    askingPrice: 0,
+    noOfToken: 0,
+    pricePerToken: 0,
+    description: "",
+    propertyType: "",
+    builtSize: 0,
+    landSize: 0,
+    yearBuilt: "",
+    occupancy: 0,
+    annualGrossRent: 0,
+    annualExpense: 0,
+    noi: 0, 
+    expectedYield: 0
+  }
+  const { control, handleSubmit, setValue } = useForm({ defaultValues });
+  const classes = useStyles();
+
+  console.log(`input ${props.admin} ${props.owner}`);
+
+  useEffect(() => {
+    if (props) {
+      setValue("owner", props.owner);
+      setValue("image", props.image ? props.image : "images/");
+      setValue("street", props.street);
+      setValue("city", props.city);
+      setValue("state", props.state);
+      setValue("country", props.country);
+      setValue("zipCode", props.zipCode);
+      setValue("askingPrice", props.askingPrice);
+      setValue("noOfToken", props.noOfToken);
+      setValue("pricePerToken", props.pricePerToken);
+      setValue("description", props.description);
+      setValue("propertyType", props.propertyType);
+      setValue("builtSize", props.builtSize);
+      setValue("landSize", props.landSize);
+      setValue("yearBuilt", props.yearBuilt);
+      setValue("occupancy", props.occupancy);
+      setValue("annualGrossRent", props.annualGrossRent);
+      setValue("annualExpense", props.annualExpense);
+      setValue("noi", props.noi);
+      setValue("expectedYield", props.expectedYield);
+    }
+  }, [props]);
+  /*
+  const updateNOIYield = (e) => {
+    if (e.target.id === "annualExpense")
+      setAnnualGrossRentTemp(e.target.value)
+    else
+      setAnnualExpenseTemp(e.target.value)
+
+    setNoiCalc(annualGrossRentTemp - annualExpenseTemp)
+    setYieldCalc(noiCalc / props.askingPrice)
+  };
+*/
   return (
     <div className={classes.root}>
       <InputContainer>
-        <form onSubmit={handleSubmit(props.addAuction)}>
+        <form onSubmit={
+            props.admin
+              ? handleSubmit(props.editAsset)
+              : handleSubmit(props.addAsset)
+          }
+        >
           <Paper className={classes.paper}>
-            <FormControl
-              fullWidth
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Controller
-                name="owner"
-                as={
-                  <TextField
-                    id="owner"
-                    label="Owner"
-                    disabled
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue={props.owner}
-              />
-            </FormControl>
-            <FormControl
-              fullWidth
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Controller
-                name="addressStreet"
-                as={
-                  <TextField
-                    id="addressStreet"
-                    label="Street"
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="city"
-                as={<TextField id="city" label="City" variant="outlined" />}
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="state"
-                as={
-                  <TextField
-                    id="state"
-                    label="State/Province"
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="country"
-                as={
-                  <TextField id="country" label="Country" variant="outlined" />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="zipcode"
-                as={
-                  <TextField id="zipcode" label="Zipcode" variant="outlined" />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl
-              fullWidth
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Controller
-                name="image"
-                as={
-                  <TextField id="image" label="Image File" variant="outlined" />
-                }
-                control={control}
-                defaultValue="images/"
-              />
-            </FormControl>
-            <FormControl
-              fullWidth
-              className={classes.margin}
-              variant="outlined"
-            >
-              <Controller
-                name="description"
-                as={
-                  <TextField
-                    id="description"
-                    multiline
-                    rows={4}
-                    label="Description"
-                    helperText=""
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="askingprice"
-                as={
-                  <TextField
-                    id="askingprice"
-                    label="Asking Price"
-                    helperText="in (USD)"
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue=""
-              />
-            </FormControl>
-            <FormControl className={classes.margin} variant="outlined">
-              <Controller
-                name="duration"
-                as={
-                  <TextField
-                    id="duration"
-                    label="Duration"
-                    helperText="Duration (min)"
-                    variant="outlined"
-                  />
-                }
-                control={control}
-                defaultValue="60"
-              />
-            </FormControl>
+            <Controller name="owner" control={control} as={
+              <TextField id="owner" label="Owner" variant="outlined" InputLabelProps={{ shrink: true }} disabled fullWidth className={classes.margin} />
+            } />
+            <Controller name="street" control={control} as={
+              <TextField id="street" label="Street" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+            } />
+            <Controller name="city" control={control} as={
+              <TextField id="city" label="City" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+            } />
+            <Controller name="state" control={control} as={
+              <TextField id="state" label="State/Province" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+            } />
+            <Controller name="country" control={control} as={
+              <TextField id="country" label="Country" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+            } />
+            <Controller name="zipCode" control={control} as={
+              <TextField id="zipCode" label="Zip Code" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+            } />
+            <Controller name="image" control={control} as={
+              <TextField id="image" label="Image File" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+            } />
+            <Controller name="description" control={control} as={
+              <TextField id="description" label="Description" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth multiline rows={8} className={classes.margin} />
+            } />
+            <Controller name="askingPrice" control={control} as={
+              <TextField id="askingPrice" label="Asking Price" variant="outlined" InputLabelProps={{ shrink: true }} helperText="in (USD)" className={classes.margin} />
+            } />
+            {props.admin && (
+              <Controller name="noOfToken" control={control} as={
+                <TextField id="noOfToken" label="# of Token to be Issued" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+              } />
+            )}
+            {props.admin && (
+              <Controller name="pricePerToken" control={control} as={
+                <TextField id="pricePerToken" label="Price/Token" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+              } />
+            )}
           </Paper>
 
           <Paper className={classes.paper}>
             <Grid container spacing={0}>
               <Grid item xs={12}>
-                <Typography className={classes.margin} variant="h6">
-                  Property Highlights
-                </Typography>
+                <Typography className={classes.margin} variant="h6">Property Highlights</Typography>
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="propertyType"
-                    as={
-                      <TextField
-                        id="propertyType"
-                        label="Property Type"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="propertyType" control={control} as={
+                  <TextField id="propertyType" label="Property Type" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="builtSize"
-                    as={
-                      <TextField
-                        id="builtSize"
-                        label="Building Size"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="builtSize" control={control} as={
+                  <TextField id="builtSize" label="Building Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="landSize"
-                    as={
-                      <TextField
-                        id="landSize"
-                        label="Land Size"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="landSize" control={control} as={
+                  <TextField id="landSize" label="Land Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="yearBuilt"
-                    as={
-                      <TextField
-                        id="yearBuilt"
-                        label="Year Built"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="yearBuilt" control={control} as={
+                  <TextField id="yearBuilt" label="Year Built" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="occupancy"
-                    as={
-                      <TextField
-                        id="occupancy"
-                        label="Occupancy (%)"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="occupancy" control={control} as={
+                  <TextField id="occupancy" label="Occupancy (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs={12}></Grid>
             </Grid>
@@ -259,74 +159,27 @@ export default function InputForm(props) {
           <Paper className={classes.paper}>
             <Grid container spacing={0}>
               <Grid item xs={12}>
-                <Typography className={classes.margin} variant="h6">
-                  Financials (USD)
-                </Typography>
+                <Typography className={classes.margin} variant="h6">Financials (USD)</Typography>
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="annualGrossRent"
-                    as={
-                      <TextField
-                        id="annualGrossRent"
-                        label="Gross Rent/year"
-                        helperText="rolling 12 months"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="annualGrossRent" control={control} as={
+                  <TextField id="annualGrossRent" label="Gross Rent/year" variant="outlined" InputLabelProps={{ shrink: true }} helperText="rolling 12 months" className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="annualExpenses"
-                    as={
-                      <TextField
-                        id="annualExpenses"
-                        label="Annual Expenses"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="annualExpense" control={control} as={
+                  <TextField id="annualExpense" label="Annual Expenses" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="NOI"
-                    as={
-                      <TextField
-                        id="NOI"
-                        label="NOI"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="noi" control={control} as={
+                  <TextField id="noi" label="NOI" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs>
-                <FormControl className={classes.margin} variant="outlined">
-                  <Controller
-                    name="expectedYield"
-                    as={
-                      <TextField
-                        id="expectedYield"
-                        label="Expected Yield (%)"
-                        variant="outlined"
-                      />
-                    }
-                    control={control}
-                    defaultValue=""
-                  />
-                </FormControl>
+                <Controller name="expectedYield" control={control} as={
+                  <TextField id="expectedYield" label="Expected Yield (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                } />
               </Grid>
               <Grid item xs={12}></Grid>
             </Grid>
@@ -338,7 +191,7 @@ export default function InputForm(props) {
             id="submitButton"
             type="submit"
           >
-            Add Asset
+            {props.admin ? "Update Asset" : "Add Asset"}
           </Button>
         </form>
       </InputContainer>

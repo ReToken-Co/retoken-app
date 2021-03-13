@@ -8,35 +8,37 @@ export default function AddAsset() {
 
 //  const { account } = useContext(Web3Context)
 const account = ''
-const { assets, dispatch } = useContext(AssetContext)
+const { assets, assetDispatch } = useContext(AssetContext)
   const history = useHistory()
 
   const addAssetDB = async (data) => {
 
     console.log(`addasset ${JSON.stringify(data)}`)
-    dispatch({
+    await assetDispatch({
       type: 'ADD_ASSET', 
       payload: {
-        id: assets ? assets.length : 0,
-        title: data.title,
-        owner: account,
         image: data.image,
-        startbid: Number(data.startbid),
-        reservebid: Number(data.startbid),
-        duration: Number(data.duration),
+        owner: data.owner,
+        askingPrice: data.askingPrice,
+        street: data.street,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        zipCode: data.zipCode,
         description: data.description,
-        currentbid: 0,
-        numbid: 0,
-        bcid: 0,
-        starttime: '',
-        dstarttime: '',
-        status: 0,
-        transactionhash: ''
+        propertyType: data.propertyType,
+        builtSize: data.builtSize,
+        landSize: data.landSize,
+        yearBuilt: data.yearBuilt,
+        occupancy: data.occupancy,
+        annualGrossRent: data.annualGrossRent,
+        annualExpense: data.annualExpense,
+        noi: data.noi,
+        expectedYield: data.expectedYield,
       }
     })
-
-    history.push('/assets')
-
+    await assetDispatch({ type: 'GET_ASSETS' })
+    history.push('/marketplace')
   }
 
   return (

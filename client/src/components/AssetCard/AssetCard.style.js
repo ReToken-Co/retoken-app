@@ -8,10 +8,10 @@ export const useStyles = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(5),
       margin: 'auto',
-      maxWidth: 1200,
+      maxWidth: 900,
     },
     image: {
-      width: 550,
+      width: 450,
       height: 400,
     },
     img: {

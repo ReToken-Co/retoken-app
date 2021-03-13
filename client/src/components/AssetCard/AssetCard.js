@@ -1,7 +1,5 @@
 import { useHistory } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import { Grid, Paper, ButtonBase } from "@material-ui/core";
 import { Button } from "../../globalStyles";
 
 //import 'fontsource-roboto'
@@ -20,7 +18,7 @@ export default function AssetCard(props) {
 
   const getAsset = (id) => {
     history.push({
-      pathname: "/asset",
+      pathname: props.admin && props.status === 0 ? "/editasset" : "/asset",
       search: `?id=${id}`,
       state: {
         id: props.id,
@@ -83,7 +81,21 @@ export default function AssetCard(props) {
             getAsset(e.target.id);
           }}
         >
-          SOLD OUT
+          FULLY SUBSCRIBE
+        </Button>
+      );
+    } else if (props.status === 0 && props.admin) {
+      return (
+        <Button
+          Big
+          fontBig
+          id={props.id}
+          disabled={false}
+          onClick={(e) => {
+            getAsset(e.target.id);
+          }}
+        >
+          Edit
         </Button>
       );
     } else {

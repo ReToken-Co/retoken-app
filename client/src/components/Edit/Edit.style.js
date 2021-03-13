@@ -9,21 +9,13 @@ export const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(5),
     margin: 'auto',
-    maxWidth: 1000,
+    maxWidth: '760px',
   },
-  innerpaper: {
-    padding: theme.spacing(5),
-    margin: 0,
+  margin: {
+    margin: theme.spacing(1),
   },
-  image: {
-    width: 900,
-    height: 500,
-  },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+  textField: {
+    width: ({ big }) => (big ? '60ch' : '40ch'),
   },
 }));
 

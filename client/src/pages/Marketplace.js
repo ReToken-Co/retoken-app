@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { AssetContext } from "../context/AssetContext";
 import { AssetCard } from "../components";
 
-export default function Assets() {
+export default function Marketplace() {
   //  const { account, contract, web3 } = useContext(Web3Context)
   const account = ''
   const contract = {}

@@ -11,9 +11,8 @@ const app = express()
 const port = process.env.PORT || 5000
 const mongoDBUri = process.env.ATLAS_URI || 'mongodb://localhost/retoken'
 
-
 // Middleware
-// app.use(cors())
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use('/properties', propertiesUrl)  // service MongoDB API

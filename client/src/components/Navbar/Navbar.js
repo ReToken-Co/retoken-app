@@ -55,13 +55,18 @@ export default function Navbar() {
                 </NavLinks>
               </NavItem>
               <NavItem>
-              <NavLinks to="/marketplace" onClick={closeMobileMenu}>
+                <NavLinks to="/marketplace" onClick={closeMobileMenu}>
                   Marketplace
                 </NavLinks>
               </NavItem>
               <NavItem>
-              <NavLinks to="/addasset" onClick={closeMobileMenu}>
+                <NavLinks to="/addasset" onClick={closeMobileMenu}>
                   Add Asset
+                </NavLinks>
+              </NavItem>
+              <NavItem>
+                <NavLinks to="/admin" onClick={closeMobileMenu}>
+                  Admin
                 </NavLinks>
               </NavItem>
               <NavItemBtn>

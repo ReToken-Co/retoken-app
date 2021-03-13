@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-// import ReactDropzone from "react-dropzone";
+  // import ReactDropzone from "react-dropzone";
 
 export const InputContainer = styled.div`
     background-color: #fff;
@@ -34,12 +34,12 @@ export const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignitems: 'center',
         margin: '-10px 20px 0px 20px',
-        maxWidth: '760px',
     },
     paper: {
         display: 'flex',
         flexWrap: 'wrap',
         marginBottom: '20px',
+        maxWidth: '760px',
     },
     margin: {
         margin: theme.spacing(1),
@@ -48,9 +48,7 @@ export const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
     },
     textField: {
-        width: '40ch',
-    },
-    unsignedIntField: {
-        width: '40ch',
+        margin: theme.spacing(1), 
+        InputLabelProps: '{{ shrink: true, }}'
     },
 }))

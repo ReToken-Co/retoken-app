@@ -7,6 +7,8 @@ import Home from "./pages/Home/Home";
 import AddAsset from "./pages/AddAsset";
 import Marketplace from "./pages/Marketplace";
 import Asset from "./pages/Asset";
+import Admin from "./pages/Admin";
+import EditAsset from "./pages/EditAsset";
 
 function App() {
   return (
@@ -17,9 +19,11 @@ function App() {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/addasset" component={AddAsset} />
+            <Route path="/admin" component={Admin} />
             <Route path="/marketplace" exact component={Marketplace} />
             <Route path="/asset" exact component={Asset} />
             <Route path="/asset/:id" component={Asset} />
+            <Route path="/editasset" component={EditAsset} />
           </Switch>
           <Footer />
         </Router>

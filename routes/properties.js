@@ -1,10 +1,9 @@
-const express = require('express')
+const express = require("express");
 const router = express.Router();
 const Property = require("../models/properties.model");
 
-const app = express()
-app.use(express.json())
-//const jsonParser = bodyParser.json()
+const app = express();
+app.use(express.json());
 
 router.route("/").get((req, res) => {
   Property.find()
@@ -12,9 +11,8 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route('/add').post((req,res) => {
-//router.post("/addproperty", jsonParser, (req, res) => {
-//  req.rawBody = buf;
+router.route("/add").post((req, res) => {
+
   const newProperty = new Property({
     owner: req.body.owner,
     askingPrice: req.body.askingPrice,
@@ -39,10 +37,9 @@ router.route('/add').post((req,res) => {
     scId: req.body.scId,
     transactionHash: req.body.transactionHash,
     subscription: req.body.subscription,
-    status: req.body.status
+    status: req.body.status,
   });
-  newProperty
-    .save()
+  newProperty.save()
     .then((property) => res.json("Property added! " + property))
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -53,40 +50,17 @@ router.route("/:id").get((req, res) => {
     .catch((err) => res.status(400).json("FindById Error: " + err));
 });
 
-router.route("/update/:id").post((req, res) => {
-  Property.findById(req.params.id)
+router.route("/update/:id").put((req, res) => {
+  console.log(`update  ${JSON.stringify(req.body)} ${req.params.id}`);
+  Property.findOneAndUpdate(
+    { _id: req.body.id }, 
+    req.body ,
+    { new: true })
     .then((property) => {
-      property.owner = req.body.owner;
-      property.askingprice = Number(req.body.askingprice);
-      property.noOfToken = Number(req.body.noOfToken);
-      property.pricePerToken = Number(req.body.pricePerToken);
-      property.street = req.body.street;
-      property.city = req.body.city;
-      property.state = req.body.state;
-      property.country = req.body.country;
-      property.zipcode = req.body.zipcode;
-      property.description = req.body.description;
-      property.propertytype = req.body.propertytype;
-      property.builtsize = Number(req.body.builtsize);
-      property.landsize = Number(req.body.landsize);
-      property.yearbuilt = req.body.yearbuilt;
-      property.occupancy = Number(req.body.occupancy);
-      property.annualgrossrent = Number(req.body.annualgrossrent);
-      property.annualexpenses = Number(req.body.annualexpenses);
-      property.noi = Number(req.body.noi);
-      property.expectedyield = Number(req.body.expectedyield);
-      property.image = req.body.image;
-      property.scId = req.body.scId;
-      property.transactionHash = req.body.transactionHash;
-      property.subscription = Number(req.body.subscription);
-      property.status = Number(req.body.status)
-  
-      property
-        .save()
-        .then((property) => res.json("Property updated! " + property))
-        .catch((err) => res.status(400).json("Update Error: " + err));
+      console.log(`Property updated! ${JSON.stringify(property)}`)
+      res.json(property)
     })
-    .catch((err) => res.status(400).json("FindById Error: " + err));
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;

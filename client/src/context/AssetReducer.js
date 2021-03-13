@@ -33,7 +33,7 @@ const AssetReducer = (state, action) => {
     case "ADD_ASSET":
       console.log(`b4 add ${JSON.stringify(action.payload)}`);
             axios
-        .post(`/properties/add}`, action.payload)
+        .post(`/properties/add`, action.payload)
         .then((res) => {
           console.log(`add ${JSON.stringify(res.data)}`);
           return res.data;

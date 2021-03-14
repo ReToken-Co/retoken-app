@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +70,7 @@ export const Heading1 = styled.h1`
 margin-top: -10px;
 margin-bottom: 0 px;
   max-width: 100%;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 500;
   color: ${({ lightText }) => (lightText ? '#f7f8fa' : '#1c2237')};
 `;
@@ -77,26 +78,39 @@ margin-bottom: 0 px;
 export const Heading2 = styled.h2`
 margin-top: -20px;
 margin-bottom: ${({ bigMargin }) => (bigMargin ? '60px' : '40px')};
-font-size: 30px;
+font-size: 25px;
   line-height: 1.1;
-  font-weight: 500;
-  color: ${({ lightText }) => (lightText ? '#f7f8fa' : '#1c2237')};
-`;
-
-export const Heading3 = styled.h3`
-margin-bottom: ${({ bigMargin }) => (bigMargin ? '36px' : '8px')};
-  font-size: 24px;
-  line-height: 1;
   font-weight: 400;
   color: ${({ lightText }) => (lightText ? '#f7f8fa' : '#1c2237')};
 `;
 
+export const Heading3 = styled.h3`
+margin-bottom: ${({ bigMargin }) => (bigMargin ? '36px' : '-5px')};
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: 350;
+  color: ${({ lightText }) => (lightText ? '#f7f8fa' : '#1c2237')};
+`;
+
 export const Subtitle = styled.p`
-  max-width: 440px;
-  margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '5px')};
-  font-size: 18px;
-  line-height: 24px;
+max-width: 200px;
+margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '30px')};
+  font-size: 20px;
+  line-height: 0px;
   color: ${({ lightTextDesc }) => (lightTextDesc ? '#a9b3c1' : '#1c2237')};
+`;
+
+export const EthLink = styled.a`
+max-width: 200px;
+margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '5px')};
+  font-size: 20px;
+  line-height: 40px;
+  color: ${({ lightTextDesc }) => (lightTextDesc ? '#a9b3c1' : '#1c2237')};
+
+  &:hover {
+    color: #0467fb;
+    transition: 0.3s ease-out;
+  }
 `;
 
 export const BidInputRow = styled.div`

@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
-import { InputForm, Sidebar } from "../components";
+import { InputForm, Sidebar, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
 
-export default function EditAsset(props) {
+export default function EditAsset() {
   const { assets, assetDispatch } = useContext(AssetContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const location = useLocation();
@@ -57,7 +57,7 @@ export default function EditAsset(props) {
   }, [location]);
 
   const updateAsset = async (data) => {
-    console.log(`editasset ${JSON.stringify(data)}`);
+//    console.log(`editasset ${JSON.stringify(data)}`);
     await assetDispatch({
       type: "UPDATE_ASSET",
       payload: {
@@ -84,16 +84,17 @@ export default function EditAsset(props) {
         expectedYield: data.expectedYield,
       },
     });
-    await assetDispatch({ type: 'GET_ASSETS' })
-    history.push('/admin')
+    await assetDispatch({ type: "GET_ASSETS" });
+    history.push("/admin");
   };
 
   return (
     <>
+      <Navbar admin={"true"} />
       <Sidebar />
       <br />
       <InputForm
-        admin={true}
+        admin={"true"}
         editAsset={updateAsset}
         id={asset.id}
         image={asset.image}

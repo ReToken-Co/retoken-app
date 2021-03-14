@@ -2,7 +2,6 @@ import axios from "axios";
 
 const AssetReducer = (state, action) => {
   switch (action.type) {
-
     case "GET_ASSETS":
       const assets = [];
       axios
@@ -11,7 +10,7 @@ const AssetReducer = (state, action) => {
           res.data.forEach((data) => {
             assets.push(data);
           });
-//          console.log(`data ${JSON.stringify(assets)}`);
+          //          console.log(`data ${JSON.stringify(assets)}`);
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
@@ -32,7 +31,7 @@ const AssetReducer = (state, action) => {
 
     case "ADD_ASSET":
       console.log(`b4 add ${JSON.stringify(action.payload)}`);
-            axios
+      axios
         .post(`/properties/add`, action.payload)
         .then((res) => {
           console.log(`add ${JSON.stringify(res.data)}`);
@@ -41,13 +40,13 @@ const AssetReducer = (state, action) => {
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-        return {};
+      return {};
 
     case "UPDATE_ASSET":
       axios
         .put(`/properties/update/${action.payload.id}`, action.payload)
         .then((res) => {
-          console.log(`update ${JSON.stringify(res.data)}`);
+          console.log(`Updated ${JSON.stringify(res.data)}`);
           return res.data;
         })
         .catch((err) => {
@@ -60,4 +59,4 @@ const AssetReducer = (state, action) => {
   }
 };
 
-export default AssetReducer
+export default AssetReducer;

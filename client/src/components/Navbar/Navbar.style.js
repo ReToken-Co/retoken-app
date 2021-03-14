@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container } from '../../globalStyles';
 
 export const Nav = styled.nav`
-  background-color: #fafafa;
+  background-color: ${({ admin }) => (admin ? '#393d49' : '#fafafa')};
   height: 80px;
   display: flex;
   justify-content: center;
@@ -23,7 +23,7 @@ export const NavbarContainer = styled(Container)`
 `;
 
 export const NavLogo = styled(Link)`
-  color: #4b4d63;
+  color: ${({ admin }) => (admin ? '#fafafa' : '#4b4d63')};
   justify-self: flex-start;
   cursor: pointer;
   text-decoration: none;
@@ -41,7 +41,7 @@ export const NavIcon = styled(GiCrownCoin)`
 export const MobileIcon = styled.div`
   display: none;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     display: block;
     position: absolute;
     top: 0;
@@ -58,7 +58,7 @@ export const NavMenu = styled.ul`
   list-style: none;
   text-align: center;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -80,7 +80,7 @@ export const NavItem = styled.li`
     border-bottom: 2px solid #4b4d63;
   }
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     width: 100%;
 
     &:hover {
@@ -90,7 +90,7 @@ export const NavItem = styled.li`
 `;
 
 export const NavItemBtn = styled.li`
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,15 +99,25 @@ export const NavItemBtn = styled.li`
   }
 `;
 
+export const NavText = styled.p`
+  color: ${({ admin }) => (admin ? '#fafafa' : '#0246f7')};
+  display: flex;
+  text-decoration: none;
+  padding: 1.0rem 1rem;
+  height: 100%;
+  font-style: italic;
+  font-weight: bold;
+`;
+
 export const NavLinks = styled(Link)`
-  color: #101522;
+  color: ${({ admin }) => (admin ? '#fafafa' : '#101522')};
   display: flex;
   align-items: center;
   text-decoration: none;
   padding: 0.5rem 1rem;
   height: 100%;
 
-  @media screen and (max-width: 960px) {
+  @media screen and (max-width: 1200px) {
     text-align: center;
     padding: 2rem;
     width: 100%;

@@ -26,7 +26,7 @@ export const Container = styled.div`
 
 export const Button = styled.button`
   border-radius: 4px;
-  background: ${({ primary, live, closed }) => (primary ? '#0f4c96' : (live ? '#f76611' : (closed ? '#c91414' : '#17d2eb')))};
+  background: ${({ primary, live, closed }) => (primary ? '#0f4c96' : (live ? '#36bf56' : (closed ? '#c91414' : '#17d2eb')))};
   white-space: nowrap;
   padding: ${({ big }) => (big ? '10px 20px' : '10px 20px')};
   margin: ${({ big }) => (big ? '0px 0px' : '0px 5px')};

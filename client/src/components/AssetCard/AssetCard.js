@@ -16,10 +16,11 @@ export default function AssetCard(props) {
   const classes = useStyles();
   const history = useHistory();
 
-  const getAsset = (id) => {
+  const getAsset = (e) => {
+    e.preventDefault()
     history.push({
       pathname: props.admin && props.status === 0 ? "/editasset" : "/asset",
-      search: `?id=${id}`,
+      search: `?id=${e.target.id}`,
       state: {
         id: props.id,
         scId: props.scId,
@@ -49,7 +50,40 @@ export default function AssetCard(props) {
         account: props.account,
       },
     });
-//    console.log(`push history ${JSON.stringify(history)}`);
+    //    console.log(`push history ${JSON.stringify(history)}`);
+  };
+
+  const RenderPublishButton = () => {
+
+    //only render in admin page
+    if (props.admin) {
+      if (props.status !== 0) {
+        return (
+          <Button
+            Big
+            fontBig
+            live
+            id={props.id}
+            disabled={true}
+          > Listed
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            Big
+            fontBig
+            live
+            id={props.id}
+            disabled={false}
+            onClick={(e) => {
+              props.publishAsset(e.target.id);
+            }}
+          > List
+          </Button>
+        );
+      }
+    }
   };
 
   const RenderAssetDetailButton = () => {
@@ -63,7 +97,7 @@ export default function AssetCard(props) {
           id={props.id}
           disabled={false}
           onClick={(e) => {
-            getAsset(e.target.id);
+            getAsset(e);
           }}
         >
           View Detail
@@ -78,7 +112,7 @@ export default function AssetCard(props) {
           id={props.id}
           disabled={false}
           onClick={(e) => {
-            getAsset(e.target.id);
+            getAsset(e);
           }}
         >
           FULLY SUBSCRIBE
@@ -92,7 +126,7 @@ export default function AssetCard(props) {
           id={props.id}
           disabled={false}
           onClick={(e) => {
-            getAsset(e.target.id);
+            getAsset(e);
           }}
         >
           Edit
@@ -106,7 +140,7 @@ export default function AssetCard(props) {
           id={props.id}
           disabled={false}
           onClick={(e) => {
-            getAsset(e.target.id);
+            getAsset(e);
           }}
         >
           View Detail
@@ -123,18 +157,23 @@ export default function AssetCard(props) {
             <Heading>
               {props.street}, {props.city} {props.zipCode}
             </Heading>
-            <Subtitle>Owner {props.owner} </Subtitle>
+            <BodyText>Owner {props.owner} </BodyText>
             <ButtonBase
-              id={props._id}
+              id={props.id}
               className={classes.image}
               onClick={(e) => {
-                window.location.href = `asset/${e.target.id}`;
+                getAsset(e.target.id);
               }}
             >
-              <img className={classes.img} alt={props.image} src={props.image} />
+              <img
+                className={classes.img}
+                alt={props.image}
+                src={props.image}
+              />
             </ButtonBase>
           </Grid>
-          <Grid item xs={5} >
+
+          <Grid item xs={5}>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Heading>
@@ -143,26 +182,26 @@ export default function AssetCard(props) {
                 <Heading>
                   Token Price US${props.pricePerToken.toLocaleString("en")}
                 </Heading>
-                <Subheading>
+                <Heading>
                   No. of Token: {props.noOfToken.toLocaleString("en")}
-                </Subheading>
+                </Heading>
               </Grid>
               <Grid item xs>
                 <TextWrapper>
                   <Subheading>Property Type: {props.propertyType}</Subheading>
-                  <br />
-                  <br />
                   <BodyText>
                     Building Size: {props.builtSize.toLocaleString("en")}
                   </BodyText>
                   <BodyText>Occupancy: {props.occupancy}%</BodyText>
                   <BodyText>NOI: US${props.noi.toLocaleString("en")}</BodyText>
                   <BodyText>Expected Yield: {props.expectedYield}%</BodyText>
-                  <br />
                   <BodyText>Subscription: {props.subscription}%</BodyText>
                 </TextWrapper>
               </Grid>
-              <Grid item>{RenderAssetDetailButton()}</Grid>
+              <Grid item xs>
+                {RenderAssetDetailButton()}
+                {RenderPublishButton()}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

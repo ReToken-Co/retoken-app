@@ -1,21 +1,19 @@
-import React, { useContext } from 'react'
-import { useHistory } from 'react-router-dom'
-import { InputForm } from '../components'
-import { AssetContext } from '../context/AssetContext'
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { InputForm, Navbar } from "../components";
+import { AssetContext } from "../context/AssetContext";
 //import { Web3Context } from '../context/Web3Context'
 
 export default function AddAsset() {
-
-//  const { account } = useContext(Web3Context)
-const account = ''
-const { assets, assetDispatch } = useContext(AssetContext)
-  const history = useHistory()
+  //  const { account } = useContext(Web3Context)
+  const account = "";
+  const { assets, assetDispatch } = useContext(AssetContext);
+  const history = useHistory();
 
   const addAssetDB = async (data) => {
-
-    console.log(`addasset ${JSON.stringify(data)}`)
+    console.log(`addasset ${JSON.stringify(data)}`);
     await assetDispatch({
-      type: 'ADD_ASSET', 
+      type: "ADD_ASSET",
       payload: {
         image: data.image,
         owner: data.owner,
@@ -35,18 +33,16 @@ const { assets, assetDispatch } = useContext(AssetContext)
         annualExpense: data.annualExpense,
         noi: data.noi,
         expectedYield: data.expectedYield,
-      }
-    })
-    await assetDispatch({ type: 'GET_ASSETS' })
-    history.push('/marketplace')
-  }
+      },
+    });
+    await assetDispatch({ type: "GET_ASSETS" });
+    history.push("/marketplace");
+  };
 
   return (
     <>
-      <InputForm
-        seller={account}
-        addAsset={addAssetDB}
-      />
+      <Navbar />
+      <InputForm seller={account} addAsset={addAssetDB} />
     </>
   );
 }

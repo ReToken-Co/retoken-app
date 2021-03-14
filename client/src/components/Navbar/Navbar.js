@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { Button } from "../../globalStyles";
@@ -13,9 +14,11 @@ import {
   NavItemBtn,
   NavLinks,
   NavBtnLink,
+  NavText,
 } from "./Navbar.style";
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const { user, getUser } = useContext(UserContext);
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -32,40 +35,45 @@ export default function Navbar() {
 
   useEffect(() => {
     showButton();
+    if (user === undefined) 
+      getUser()
   }, []);
 
   window.addEventListener("resize", showButton);
 
   return (
     <>
-      <IconContext.Provider value={{ color: "#4b4d63" }}>
-        <Nav>
+      <IconContext.Provider value={ {color: ({admin}) => (admin ? '#fafafa' : '#4b4d63')} } >
+        <Nav admin={props.admin}>
           <NavbarContainer>
-            <NavLogo to="/" onClick={closeMobileMenu}>
+            <NavLogo to="/" admin={props.admin} onClick={closeMobileMenu}>
               <NavIcon />
               REToken
             </NavLogo>
+            <NavText admin={props.admin} >
+                {user ? `Welcome ${user.name}` : `You are not registered`} 
+            </NavText>
             <MobileIcon onClick={handleClick}>
               {click ? <FaTimes /> : <FaBars />}
             </MobileIcon>
             <NavMenu onClick={handleClick} click={click}>
               <NavItem>
-                <NavLinks to="/" onClick={closeMobileMenu}>
+                <NavLinks to="/" admin={props.admin} onClick={closeMobileMenu}>
                   Home
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/marketplace" onClick={closeMobileMenu}>
+                <NavLinks to="/marketplace" admin={props.admin} onClick={closeMobileMenu}>
                   Marketplace
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/addasset" onClick={closeMobileMenu}>
+                <NavLinks to="/addasset" admin={props.admin} onClick={closeMobileMenu}>
                   Add Asset
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/admin" onClick={closeMobileMenu}>
+                <NavLinks to="/admin" admin={props.admin} onClick={closeMobileMenu}>
                   Admin
                 </NavLinks>
               </NavItem>
@@ -75,7 +83,7 @@ export default function Navbar() {
                     <Button primary>My Portfolio</Button>
                   </NavBtnLink>
                 ) : (
-                  <NavBtnLink to="/myPortfolio">
+                  <NavBtnLink to="/myportfolio">
                     <Button onClick={closeMobileMenu} fontBig primary>
                       My Portfolio
                     </Button>

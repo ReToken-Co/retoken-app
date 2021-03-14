@@ -4,6 +4,7 @@ const path = require("path")
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const propertiesUrl = require('./routes/properties')
+const usersUrl = require('./routes/users')
 
 dotenv.config()
 
@@ -15,7 +16,8 @@ const mongoDBUri = process.env.ATLAS_URI || 'mongodb://localhost/retoken'
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use('/properties', propertiesUrl)  // service MongoDB API
+app.use('/properties', propertiesUrl)  // properties collection API
+app.use('/users', usersUrl)  // users collections API
 
 // Serve static assets (client) if in production
 if(process.env.NODE_ENV === 'production') {

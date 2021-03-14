@@ -10,7 +10,7 @@ const AssetContextProvider = (props) => {
     const [assets, assetDispatch] = useReducer(AssetReducer, [])
 
     useEffect(() => {
-        // get data from db in first render, set Asset
+        // get data from db in first render
         assetDispatch({ type: 'GET_ASSETS' })
     }, [])
 

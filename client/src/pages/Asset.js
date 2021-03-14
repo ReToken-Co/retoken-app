@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router";
-import { AssetDetail } from "../components";
+import { AssetDetail, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
 
 export default function Asset(props) {
@@ -129,6 +129,7 @@ export default function Asset(props) {
 
   return (
     <>
+      <Navbar />
       <AssetDetail
         id={asset.id}
         scId={asset.scId}

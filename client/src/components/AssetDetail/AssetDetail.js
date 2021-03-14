@@ -3,13 +3,13 @@ import { Paper, TextField, Grid } from "@material-ui/core";
 //import { BidTable } from '..'
 import {
   useStyles,
-//  TopLine,
-//  Heading,
+  TopLine,
   Heading1,
   Heading2,
   Heading3,
   Subtitle,
-//  BidInputRow,
+  EthLink,
+  //  BidInputRow,
 //  BidInputColumn,
   ImgWrapper,
   Img,
@@ -102,7 +102,6 @@ export default function AssetDetail(props) {
                 <Subtitle bigMargin={true}>Balance: {props.balance}</Subtitle>
                 <Heading3>Investment: US${props.investmentInput ? props.investmentInput.toLocaleString("en") : 0}</Heading3>
                 <Heading3 bigMargin={true}>Expected Annual Income: US${props.incomeInput ? props.incomeInput.toLocaleString("en") : 0}</Heading3>
-                <Grid item xs={6}>
                   <TextField
                     id="investmentInput"
                     label="Investment Input"
@@ -114,7 +113,6 @@ export default function AssetDetail(props) {
                     }}
                   />
                   {RenderButton()}
-                </Grid>
               </Paper>
             </Grid>
           </Grid>
@@ -147,6 +145,23 @@ export default function AssetDetail(props) {
           </Grid>
         </Paper>
       </div>
+
+      <div className={classes.root}>
+        <Paper className={classes.paper}>
+            <Grid item xs={12}>
+              <Heading1>Contract Information</Heading1>
+            </Grid>
+            <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <Subtitle>Transaction Hash:</Subtitle>
+            </Grid>
+            <Grid item xs={6}>
+              <EthLink target='_blank' href={`https://etherscan.io/tx/${props.transactionHash}`} >{props.transactionHash}</EthLink>
+            </Grid>
+          </Grid>
+        </Paper>
+      </div>
+
     </div>
   );
 }

@@ -33,7 +33,7 @@ export const Heading = styled.h1`
 
 export const Subheading = styled.h2`
   margin-bottom: 24px;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1.1;
   font-weight: 200;
   color:'#1c2237';
@@ -41,7 +41,7 @@ export const Subheading = styled.h2`
 
 export const Subtitle = styled.h4`
   margin-bottom: 24px;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.1;
   font-weight: 200;
   color:'#1c2237';

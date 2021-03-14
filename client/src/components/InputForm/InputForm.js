@@ -73,6 +73,7 @@ export default function InputForm(props) {
     setYieldCalc(noiCalc / props.askingPrice)
   };
 */
+
   return (
     <div className={classes.root}>
       <InputContainer>

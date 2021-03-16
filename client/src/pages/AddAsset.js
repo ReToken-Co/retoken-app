@@ -2,12 +2,14 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { InputForm, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
+import { UserContext } from "../context/UserContext";
 //import { Web3Context } from '../context/Web3Context'
 
 export default function AddAsset() {
   //  const { account } = useContext(Web3Context)
   const account = "";
-  const { assets, assetDispatch } = useContext(AssetContext);
+  const { assetDispatch } = useContext(AssetContext);
+  const { user } = useContext(UserContext);
   const history = useHistory();
 
   const addAssetDB = async (data) => {
@@ -42,7 +44,7 @@ export default function AddAsset() {
   return (
     <>
       <Navbar />
-      <InputForm seller={account} addAsset={addAssetDB} />
+      <InputForm owner={user.address} addAsset={addAssetDB} />
     </>
   );
 }

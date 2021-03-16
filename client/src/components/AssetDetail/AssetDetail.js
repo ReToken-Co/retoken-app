@@ -16,7 +16,6 @@ import {
 } from "./AssetDetail.style";
 
 export default function AssetDetail(props) {
-  //    console.log(`bids in AuctionDetil ${JSON.stringify(props.bids)} `)
 
   const classes = useStyles();
 
@@ -98,7 +97,7 @@ export default function AssetDetail(props) {
               <Paper className={classes.innerpaper} elevation={3}>
                 <Heading2>Investment Calculator</Heading2>
                 <Subtitle>Your Account:</Subtitle>
-                <Subtitle>{props.account}</Subtitle>
+                <Subtitle smallFont bigMargin>{props.account}</Subtitle>
                 <Subtitle bigMargin={true}>Balance: {props.balance}</Subtitle>
                 <Heading3>Investment: US${props.investmentInput ? props.investmentInput.toLocaleString("en") : 0}</Heading3>
                 <Heading3 bigMargin={true}>Expected Annual Income: US${props.incomeInput ? props.incomeInput.toLocaleString("en") : 0}</Heading3>

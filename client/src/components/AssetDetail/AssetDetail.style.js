@@ -94,8 +94,8 @@ margin-bottom: ${({ bigMargin }) => (bigMargin ? '36px' : '-5px')};
 
 export const Subtitle = styled.p`
 max-width: 200px;
-margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '30px')};
-  font-size: 20px;
+margin-bottom: ${({ bigMargin }) => (bigMargin ? '40px' : '30px')};
+  font-size: ${({ smallFont }) => (smallFont ? '18px' : '20px')};
   line-height: 0px;
   color: ${({ lightTextDesc }) => (lightTextDesc ? '#a9b3c1' : '#1c2237')};
 `;

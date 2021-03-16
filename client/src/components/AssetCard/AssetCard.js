@@ -47,7 +47,6 @@ export default function AssetCard(props) {
         annualExpense: props.annualExpense,
         noi: props.noi,
         expectedYield: props.expectedYield,
-        account: props.account,
       },
     });
     //    console.log(`push history ${JSON.stringify(history)}`);

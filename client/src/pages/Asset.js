@@ -2,14 +2,15 @@ import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { AssetDetail, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
+import { UserContext } from "../context/UserContext";
 
 export default function Asset(props) {
   /*
   const { account, contract, web3 } = useContext(Web3Context)
 //  const { bids, bidDispatch } = useContext(BidContext)
-  const [balance, setBalance] = useState()
 */
-  const { assets, assetDispatch } = useContext(AssetContext);
+  const { assetDispatch } = useContext(AssetContext);
+  const { user, getUser, balance } = useContext(UserContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
@@ -48,11 +49,10 @@ export default function Asset(props) {
         annualExpense: location.state.annualExpense,
         noi: location.state.noi,
         expectedYield: location.state.expectedYield,
-        account: location.state.account,
       };
       localStorage.setItem("AssetId", location.state.id);
     } else {
-      // dispatch to get the asset record from DB
+      // dispatch to get asset record from DB
       const _id = localStorage.getItem("AssetId");
       selectedAsset = assetDispatch({
         type: "GET_ASSET",
@@ -61,24 +61,17 @@ export default function Asset(props) {
     }
 
     // set asset State
-    console.log(`selected assets ${JSON.stringify(selectedAsset)}`);
+//    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}`);
     setAsset(selectedAsset);
   }, [location]);
 
-  /*
   useEffect(() => {
     // Get balance of account
-    const getBalance = async () => {
-      return web3.utils.fromWei(
-        (await web3.eth.getBalance(account)).toString(), 'ether')
-    }
-    getBalance().then(_balance => {
-      setBalance(Number(_balance).toFixed(4))
-      //      console.log(`balance ${_balance} ${balance}`)
-    })
-    console.log(`set balance ${balance}`)
-  }, [balance]);
-*/
+    if (user === undefined || !user) 
+      getUser()
+      console.log(`balance ${JSON.stringify(user)} ${balance}`)
+  }, [user]);
+
   const purchaseToken = async () => {
     // Place a order into smart contract
     /*      const result = await contract.purchaseToken()
@@ -131,6 +124,8 @@ export default function Asset(props) {
     <>
       <Navbar />
       <AssetDetail
+        account={user.address}
+        balance={balance}
         id={asset.id}
         scId={asset.scId}
         image={asset.image}
@@ -156,7 +151,6 @@ export default function Asset(props) {
         annualExpense={asset.annualExpense}
         noi={asset.noi}
         expectedYield={asset.expectedYield}
-        account={asset.account}
         investmentInput={investmentInput}
         incomeInput={incomeInput}
         updateTokenInput={updateTokenInput}

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ContractContextProvider from "./context/ContractContext";
 import AssetContextProvider from "./context/AssetContext";
 import UserContextProvider from "./context/UserContext";
+import TransactionContextProvider from "./context/TransactionContext";
 
 import Home from "./pages/Home/Home";
 import AddAsset from "./pages/AddAsset";
@@ -14,23 +15,25 @@ import EditAsset from "./pages/EditAsset";
 function App() {
   return (
     <>
-      <UserContextProvider>
-        <AssetContextProvider>
-          <ContractContextProvider>
-            <Router>
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <Route path="/addasset" component={AddAsset} />
-                <Route path="/admin" component={Admin} />
-                <Route path="/marketplace" exact component={Marketplace} />
-                <Route path="/asset" exact component={Asset} />
-                <Route path="/asset/:id" component={Asset} />
-                <Route path="/editasset" component={EditAsset} />
-              </Switch>
-            </Router>
-          </ContractContextProvider>
-        </AssetContextProvider>
-      </UserContextProvider>
+      <ContractContextProvider>
+        <UserContextProvider>
+          <AssetContextProvider>
+            <TransactionContextProvider>
+              <Router>
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path="/addasset" component={AddAsset} />
+                  <Route path="/admin" component={Admin} />
+                  <Route path="/marketplace" exact component={Marketplace} />
+                  <Route path="/asset" exact component={Asset} />
+                  <Route path="/asset/:id" component={Asset} />
+                  <Route path="/editasset" component={EditAsset} />
+                </Switch>
+              </Router>
+            </TransactionContextProvider>
+          </AssetContextProvider>
+        </UserContextProvider>
+      </ContractContextProvider>
     </>
   );
 }

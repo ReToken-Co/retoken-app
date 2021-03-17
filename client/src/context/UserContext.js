@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import getWeb3 from "../utils/getWeb3"
+import getWeb3 from "../utils/getWeb3";
 
 // Create Context
 export const UserContext = createContext();
@@ -12,22 +12,32 @@ const UserContextProvider = (props) => {
 
   const getUser = async () => {
     try {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3();
       // Get connected wallet address
       const accounts = await web3.eth.getAccounts();
-      const _balance = Number(await web3.utils.fromWei((await web3.eth.getBalance(accounts[0])).toString(), 'ether')).toFixed(4)
-      setBalance(_balance)
 
       // find user record in db
-      axios.get(`/users/findByAddress`, {params: { address: accounts[0].toString() }})
+      axios
+        .get(`/users/findByAddress`, {
+          params: { address: accounts[0].toString() },
+        })
         .then((res) => {
-          console.log(`user ${JSON.stringify(res.data)} ${balance} ${_balance}`);
+          console.log(
+            `user ${JSON.stringify(res.data)}`
+          );
           // Set State
           setUser(res.data);
         })
         .catch((err) => {
           console.log(`Error retrieving user data ${err}`);
         });
+
+      const _balance = Number(
+        await web3.utils.fromWei(
+          (await web3.eth.getBalance(accounts[0])).toString(),
+          "ether"
+        )).toFixed(4);
+      setBalance(_balance);
     } catch (error) {
       console.error(error);
     }
@@ -35,12 +45,19 @@ const UserContextProvider = (props) => {
 
   const getBal = async () => {
     try {
-      const web3 = await getWeb3()
+      const web3 = await getWeb3();
       // Get balance of connected wallet
       const accounts = await web3.eth.getAccounts();
-      setBalance(Number(await web3.utils.fromWei((await web3.eth.getBalance(accounts[0])).toString(), 'ether')).toFixed(4))
-      console.log(`getbal ${balance}`)
-      return (balance)
+      setBalance(
+        Number(
+          await web3.utils.fromWei(
+            (await web3.eth.getBalance(accounts[0])).toString(),
+            "ether"
+          )
+        ).toFixed(4)
+      );
+      console.log(`getbal ${balance}`);
+      return balance;
     } catch (error) {
       console.error(error);
     }

@@ -28,6 +28,8 @@ export default function Asset(props) {
         scId: location.state.scId,
         image: location.state.image,
         transactionHash: location.state.transactionHash,
+        invProspectHash: location.state.invProspectHash,
+        valuationHash: location.state.valuationHash,
         subscription: location.state.subscription,
         status: location.state.status,
         owner: location.state.owner,
@@ -130,6 +132,8 @@ export default function Asset(props) {
         scId={asset.scId}
         image={asset.image}
         transactionHash={asset.transactionHash}
+        invProspectHash={asset.invProspectHash}
+        valuationHash={asset.valuationHash}
         subscription={asset.subscription}
         status={asset.status}
         owner={asset.owner}

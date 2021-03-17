@@ -35,23 +35,28 @@ export default function Navbar(props) {
 
   useEffect(() => {
     showButton();
-    if (user === undefined) 
-      getUser()
+    const fetchUser = async () => {
+      const data = await getUser();
+      console.log(`nav user ${JSON.stringify(user)} ${JSON.stringify(data)}`);
+    };
+    fetchUser();
   }, []);
 
   window.addEventListener("resize", showButton);
 
   return (
     <>
-      <IconContext.Provider value={ {color: ({admin}) => (admin ? '#fafafa' : '#4b4d63')} } >
+      <IconContext.Provider
+        value={{ color: ({ admin }) => (admin ? "#fafafa" : "#4b4d63") }}
+      >
         <Nav admin={props.admin}>
           <NavbarContainer>
             <NavLogo to="/" admin={props.admin} onClick={closeMobileMenu}>
               <NavIcon />
               REToken
             </NavLogo>
-            <NavText admin={props.admin} >
-                {user ? `Welcome ${user.name}` : `You are not registered`} 
+            <NavText admin={props.admin}>
+              {user ? `Welcome ${user.name}` : `You are not registered`}
             </NavText>
             <MobileIcon onClick={handleClick}>
               {click ? <FaTimes /> : <FaBars />}
@@ -63,20 +68,34 @@ export default function Navbar(props) {
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/marketplace" admin={props.admin} onClick={closeMobileMenu}>
+                <NavLinks
+                  to="/marketplace"
+                  admin={props.admin}
+                  onClick={closeMobileMenu}
+                >
                   Marketplace
                 </NavLinks>
               </NavItem>
               <NavItem>
-                <NavLinks to="/addasset" admin={props.admin} onClick={closeMobileMenu}>
+                <NavLinks
+                  to="/addasset"
+                  admin={props.admin}
+                  onClick={closeMobileMenu}
+                >
                   Add Asset
                 </NavLinks>
               </NavItem>
-              <NavItem>
-                <NavLinks to="/admin" admin={props.admin} onClick={closeMobileMenu}>
-                  Admin
-                </NavLinks>
-              </NavItem>
+              {(user ? user.role === "admin" : false) && (
+                <NavItem>
+                  <NavLinks
+                    to="/admin"
+                    admin={props.admin}
+                    onClick={closeMobileMenu}
+                  >
+                    Admin
+                  </NavLinks>
+                </NavItem>
+              )}
               <NavItemBtn>
                 {button ? (
                   <NavBtnLink to="/myPortfolio">

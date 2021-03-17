@@ -1,3 +1,5 @@
+# this is config for deploying 1 server and 1 client container
+
 version: "3.7" # docker-compose version
 
 # Define services/containers to be run

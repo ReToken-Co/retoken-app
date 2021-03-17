@@ -18,6 +18,7 @@ router.route("/add").post((req, res) => {
     askingPrice: req.body.askingPrice,
     noOfToken: req.body.noOfToken,
     pricePerToken: req.body.pricePerToken,
+    ownerSubscription: req.body.ownerSubscription,
     street: req.body.street,
     city: req.body.city,
     state: req.body.state,
@@ -36,6 +37,8 @@ router.route("/add").post((req, res) => {
     image: req.body.image,
     scId: req.body.scId,
     transactionHash: req.body.transactionHash,
+    invProspectHash: req.body.invProspectHash,
+    valuationHash: req.body.valuationHash,
     subscription: req.body.subscription,
     status: req.body.status,
   });

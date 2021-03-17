@@ -20,12 +20,15 @@ export default function EditAsset() {
         scId: location.state.scId,
         image: location.state.image,
         transactionHash: location.state.transactionHash,
+        invProspectHash: location.state.invProspectHash,
+        valuationHash: location.state.valuationHash,
         subscription: location.state.subscription,
         status: location.state.status,
         owner: location.state.owner,
         askingPrice: location.state.askingPrice,
         noOfToken: location.state.noOfToken,
         pricePerToken: location.state.pricePerToken,
+        ownerSubscription: location.state.ownerSubscription,
         street: location.state.street,
         city: location.state.city,
         state: location.state.state,
@@ -67,6 +70,7 @@ export default function EditAsset() {
         askingPrice: data.askingPrice,
         noOfToken: data.noOfToken,
         pricePerToken: data.pricePerToken,
+        ownerSubscription: data.ownerSubscription,
         street: data.street,
         city: data.city,
         state: data.state,
@@ -82,6 +86,8 @@ export default function EditAsset() {
         annualExpense: data.annualExpense,
         noi: data.noi,
         expectedYield: data.expectedYield,
+        invProspectHash: data.invProspectHash,
+        valuationHash: data.valuationHash,
       },
     });
     await assetDispatch({ type: "GET_ASSETS" });
@@ -102,6 +108,7 @@ export default function EditAsset() {
         askingPrice={asset.askingPrice}
         noOfToken={asset.noOfToken}
         pricePerToken={asset.pricePerToken}
+        ownerSubscription={asset.ownerSubscription}
         street={asset.street}
         city={asset.city}
         state={asset.state}
@@ -117,6 +124,8 @@ export default function EditAsset() {
         annualExpense={asset.annualExpense}
         noi={asset.noi}
         expectedYield={asset.expectedYield}
+        invProspectHash={asset.invProspectHash}
+        valuationHash={asset.valuationHash}
       />
     </>
   );

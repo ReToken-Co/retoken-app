@@ -22,6 +22,7 @@ export default function InputForm(props) {
     askingPrice: 0,
     noOfToken: 0,
     pricePerToken: 0,
+    ownerSubscription: 0,
     description: "",
     propertyType: "",
     builtSize: 0,
@@ -31,12 +32,14 @@ export default function InputForm(props) {
     annualGrossRent: 0,
     annualExpense: 0,
     noi: 0, 
-    expectedYield: 0
+    expectedYield: 0,
+    invProspectHash: "",
+    valuationHash: "",
   }
   const { control, handleSubmit, setValue } = useForm({ defaultValues });
   const classes = useStyles();
 
-  console.log(`input ${props.admin} ${props.owner}`);
+//  console.log(`input ${props.admin} ${props.owner}`);
 
   useEffect(() => {
     if (props) {
@@ -50,6 +53,7 @@ export default function InputForm(props) {
       setValue("askingPrice", props.askingPrice);
       setValue("noOfToken", props.noOfToken);
       setValue("pricePerToken", props.pricePerToken);
+      setValue("ownerSubscription", props.ownerSubscription);
       setValue("description", props.description);
       setValue("propertyType", props.propertyType);
       setValue("builtSize", props.builtSize);
@@ -60,7 +64,9 @@ export default function InputForm(props) {
       setValue("annualExpense", props.annualExpense);
       setValue("noi", props.noi);
       setValue("expectedYield", props.expectedYield);
-    }
+      setValue("invProspectHash", props.invProspectHash);
+      setValue("valuationHash", props.valuationHash);
+    } 
   }, [props]);
   /*
   const updateNOIYield = (e) => {
@@ -105,6 +111,16 @@ export default function InputForm(props) {
             <Controller name="image" control={control} as={
               <TextField id="image" label="Image File" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
             } />
+            {props.admin && (
+              <Controller name="invProspectHash" control={control} as={
+                <TextField id="invProspectHash" label="Investment Prospectus Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+              } />
+            )}
+            {props.admin && (
+              <Controller name="valuationHash" control={control} as={
+                <TextField id="valuationHash" label="Valuation Report Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+              } />
+            )}
             <Controller name="description" control={control} as={
               <TextField id="description" label="Description" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth multiline rows={8} className={classes.margin} />
             } />
@@ -113,12 +129,17 @@ export default function InputForm(props) {
             } />
             {props.admin && (
               <Controller name="noOfToken" control={control} as={
-                <TextField id="noOfToken" label="# of Token to be Issued" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                <TextField id="noOfToken" label="# of Tokens to be Issued" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
               } />
             )}
             {props.admin && (
               <Controller name="pricePerToken" control={control} as={
                 <TextField id="pricePerToken" label="Price/Token" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+              } />
+            )}
+            {props.admin && (
+              <Controller name="ownerSubscription" control={control} as={
+                <TextField id="ownerSubscription" label="Tokens Subscribe by Owner" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
               } />
             )}
           </Paper>

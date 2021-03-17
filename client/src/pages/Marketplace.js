@@ -16,12 +16,15 @@ export default function Marketplace() {
             scId={_asset.scId}
             image={_asset.image}
             transactionHash={_asset.transactionHash}
+            invProspectHash={_asset.invProspectHash}
+            valuationHash={_asset.valuationHash}
             subscription={_asset.subscription}
             status={_asset.status}
             owner={_asset.owner}
             askingPrice={_asset.askingPrice}
             noOfToken={_asset.noOfToken}
             pricePerToken={_asset.pricePerToken}
+            ownerSubscription={_asset.ownerSubscription}
             street={_asset.street}
             city={_asset.city}
             state={_asset.state}

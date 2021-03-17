@@ -5,6 +5,7 @@ const propertySchema = new Schema({
     owner: { type: String, trim: true },
     askingPrice: { type: Number, required: true, default: 0 },
     noOfToken: { type: Number, default: 0 },
+    ownerSubscription: { type: Number, default: 0 },
     pricePerToken: { type: Number, default: 0 },
     street: { type: String, trim: true },
     city: { type: String },
@@ -24,6 +25,8 @@ const propertySchema = new Schema({
     image: { type: String },
     scId: { type: String },
     transactionHash: { type: String },
+    invProspectHash: { type: String },
+    valuationHash: { type: String },
     subscription: { type: Number, default: 0 },
     status: { type: Number, default: 0 }
 }, {

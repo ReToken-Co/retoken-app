@@ -101,7 +101,7 @@ margin-bottom: ${({ bigMargin }) => (bigMargin ? '40px' : '30px')};
 `;
 
 export const EthLink = styled.a`
-max-width: 200px;
+max-width: 400px;
 margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '5px')};
   font-size: 20px;
   line-height: 40px;

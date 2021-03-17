@@ -5,10 +5,7 @@ import { AssetContext } from "../context/AssetContext";
 import { UserContext } from "../context/UserContext";
 
 export default function Asset(props) {
-  /*
-  const { account, contract, web3 } = useContext(Web3Context)
-//  const { bids, bidDispatch } = useContext(BidContext)
-*/
+
   const { assetDispatch } = useContext(AssetContext);
   const { user, getUser, balance } = useContext(UserContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
@@ -63,7 +60,7 @@ export default function Asset(props) {
     }
 
     // set asset State
-//    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}`);
+    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}`);
     setAsset(selectedAsset);
   }, [location]);
 

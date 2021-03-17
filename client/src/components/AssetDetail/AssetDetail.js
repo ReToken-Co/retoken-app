@@ -149,15 +149,27 @@ export default function AssetDetail(props) {
           <Grid item xs={12}>
             <Heading1>Contract Information</Heading1>
           </Grid>
-          <Grid container spacing={3}>
+          <Grid container spacing={0}>
             <Grid item xs={4}>
               <Subtitle>Transaction Hash:</Subtitle>
-              <Subtitle>Investment Prospectus Hash:</Subtitle>
-              <Subtitle>Valuation Report Hash:</Subtitle>
             </Grid>
             <Grid item xs={6}>
               <EthLink target='_blank' href={`https://etherscan.io/tx/${props.transactionHash}`} >{props.transactionHash}</EthLink>
-              <EthLink target='_blank' href={`/docs/${props.invProspectHash}.pdf`} >{props.invProspectHash}</EthLink>
+            </Grid>
+          </Grid>
+          <Grid container spacing={0}>
+            <Grid item xs={4}>
+            <Subtitle>Investment Prospectus Hash:</Subtitle>
+            </Grid>
+            <Grid item xs={6}>
+            <EthLink target='_blank' href={`/docs/${props.invProspectHash}.pdf`} >{props.invProspectHash}</EthLink>
+            </Grid>
+          </Grid>
+          <Grid container spacing={0}>
+            <Grid item xs={4}>
+              <Subtitle>Valuation Report Hash:</Subtitle>
+            </Grid>
+            <Grid item xs={6}>
               <EthLink target='_blank' href={`/docs/${props.valuationHash}.pdf`} >{props.valuationHash}</EthLink>
             </Grid>
           </Grid>

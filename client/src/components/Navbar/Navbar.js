@@ -35,12 +35,18 @@ export default function Navbar(props) {
 
   useEffect(() => {
     showButton();
-    const fetchUser = async () => {
-      const data = await getUser();
-      console.log(`nav user ${JSON.stringify(user)} ${JSON.stringify(data)}`);
-    };
-    fetchUser();
   }, []);
+
+  useEffect(() => {
+    // Get balance of account
+    const fetchUser = async () => {
+      await getUser()
+    }
+    if (user === undefined || !user) 
+      fetchUser().then(() => {
+//      console.log(`user ${JSON.stringify(user)} ${balance}`)
+      })
+  }, [user]);
 
   window.addEventListener("resize", showButton);
 

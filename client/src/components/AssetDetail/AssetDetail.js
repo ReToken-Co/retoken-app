@@ -1,4 +1,3 @@
-import { useContext, useEffect } from "react";
 import {  Button } from "../../globalStyles";
 import { Paper, TextField, Grid } from "@material-ui/core";
 import { InvestmentTable } from '..'
@@ -160,7 +159,7 @@ export default function AssetDetail(props) {
               <Subtitle>Transaction Hash:</Subtitle>
             </Grid>
             <Grid item xs={6}>
-              <EthLink target='_blank' href={`https://etherscan.io/tx/${props.transactionHash}`} >{props.transactionHash}</EthLink>
+              <EthLink target='_blank' href={`https://rinkeby.etherscan.io//tx/${props.transactionHash}`} >{props.transactionHash}</EthLink>
             </Grid>
           </Grid>
           <Grid container spacing={0}>

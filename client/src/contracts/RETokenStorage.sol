@@ -59,13 +59,14 @@ contract RETokenStorage is ERC1155Upgradeable, ERC1155HolderUpgradeable {
      /**
      * @dev Declaration of new Event to record created token details for REToken
      *
+     * @param timestamp - Time Stamp of Event
      * @param id - Unique token ID
      * @param totalSupply - Number of tokens for unique token ID
      * @param owner - Asset Owner wallet address
      * @param valuationReport - File Hash of Valuation Report
      * @param legalContract - File Hash of Legal Contract
      */
-    event RETokenID(uint256 indexed id, uint256 indexed totalSupply, address indexed owner, string valuationReport, string legalContract);
+    event RETokenID(uint256 timestamp, uint256 indexed id, uint256 indexed totalSupply, address indexed owner, string valuationReport, string legalContract);
 
     /**
      * @dev Functions for ERC1155 Token

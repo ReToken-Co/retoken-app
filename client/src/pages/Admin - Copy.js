@@ -13,37 +13,23 @@ export default function Admin() {
   );
 
   //  console.log (`admin asset ${JSON.stringify(assets)}`)
-  useEffect(() => {
-    // Get instance of asset
-    const getAssets = async () => {
-      await assetDispatch({ type: 'GET_ASSETS' });
-    };
-    if (assets === undefined || !assets)
-    getAssets().then(() => {
-        console.log(`UE logi1 ${assets}`);
-      });
-  }, [assets]);
 
   useEffect(() => {
     // Get instance of contract
-    const getLogicOneContract = async () => {
-      await initLogicOne();
-    };
-    if (logicOneContract === undefined || !logicOneContract)
-      getLogicOneContract().then(() => {
-        console.log(`UE logi1 ${logicOneContract}`);
-      });
+    const getlogicOneContract = async () => {
+//        if (logicOneContract === undefined || !logicOneContract) 
+          await initLogicOne();
+    }
+    if (logicOneContract === undefined || !logicOneContract) 
+    getlogicOneContract().then(() => {
+      console.log(`logi1 ${JSON.stringify(logicOneContract)}`);
+    })
   }, [logicOneContract]);
 
   useEffect(() => {
     // Get web3 account address
-    const getAccount = async () => {
-      await initAccount();
-    };
-    if (account === undefined || !account)
-      getAccount().then(() => {
-        console.log(`UE acct ${account}`);
-      });
+    if (account === undefined || !account) initAccount();
+    console.log(`${JSON.stringify(account)}`);
   }, [account]);
 
   const updateStatusInput = (_statusInput) => {
@@ -52,51 +38,64 @@ export default function Admin() {
 
   // Publish Asset - Add asset to smart contract
   const publishAsset = async (id) => {
-    const asset = assets.filter((_asset) => _asset._id === id);
-    console.log(`publish ${id} ${account} ${JSON.stringify(asset)} ${JSON.stringify(logicOneContract)}`);
+/*
+    const asset = await assetDispatch({
+      type: "GET_ASSET",
+      payload: id,
+    });
+*/
+    const asset = assets.filter(_asset => _asset._id === id)
 
     if (!logicOneContract) {
-      console.log(`Lost contract, run initLogicOne`);
-      await initLogicOne();
-      console.log(`logi ${JSON.stringify(logicOneContract)}`);
+      await initLogicOne()
     }
-    const result = await logicOneContract.methods
-      .mintToken(
-        asset.owner,
-        asset.noOfToken,
-        asset.ownerSubscription,
-        asset.valuationHash,
-        asset.invProspectHash
-      )
-      .send({ from: account });
-    console.log(
-      `mintToken result  ${result.transactionHash} ${result.events.RETokenID.returnValues.id}`
-    );
+    console.log(`publish ${id} ${JSON.stringify(asset)} ${logicOneContract}`);
 
-    // Update properties State & DB
-    const _subscription = asset.ownerSubscription / asset.noOfToken;
-    assetDispatch({
-      type: "UPDATE_ASSET",
-      payload: {
-        id: asset._id,
-        transactionHash: result.transactionHash,
-        status: 1,
-        subscrption: _subscription,
-        tokenId: Number(result.events.RETokenID.returnValues.id),
-      },
-    });
+    /*    try {
+      logicOneContract
+        ? console.log(
+            `SC ${id} ${logicOneContract._address} ${JSON.stringify(asset)}`
+          )
+        : console.log(`lost contract`);
 
-    // Update transaction State & DB
-    transactionDispatch({
-      type: "ADD_TRANSACTION",
-      payload: {
-        investor: asset.owner,
-        propertyId: asset._id,
-        noOfToken: asset.ownerSubscription,
-        transactionHash: result.transactionHash,
-        transactionDate: result.events.RETokenID.returnValues.timestamp,
-      },
-    });
+      const result = await logicOneContract.methods
+        .mintToken(
+          asset.owner,
+          asset.noOfToken,
+          asset.ownerSubscription,
+          asset.valuationHash,
+          asset.invProspectHash
+        )
+        .send({ from: account });
+      console.log(`SC result  ${result.transactionHash} ${result.events.RETokenID.returnValues[0]}`);
+
+      // Update transaction State & DB
+      assetDispatch({
+        type: "UPDATE_ASSET",
+        payload: {
+          id: asset._id,
+          transactionHash: result.transactionHash,
+          status: 1,
+          subscrption: _subscription,
+          tokenId: Number(result.events.RETokenID.returnValues.id),
+        },
+      });
+
+      // Update properties State & DB
+      const _subscription = asset.ownerSubscription / asset.noOfToken;
+      transactionDispatch({
+        type: "ADD_TRANSACTION",
+        payload: {
+          investor: asset.owner,
+          propertyId: asset._id,
+          noOfToken: asset.ownerSubscription,
+          transactionHash: result.transactionHash,
+          transactionDate: result.events.RETokenID.returnValues.timestamp
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }*/
   };
 
   return (

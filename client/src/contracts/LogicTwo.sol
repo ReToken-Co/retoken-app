@@ -71,8 +71,8 @@ contract LogicTwo is AccessControlUpgradeable, RETokenStorageOne {
         uint256 newTokenId = _tokenID;
         uint256 adminAmt = totalAmt - ownerAmt;
 
-        emit RETokenID(newTokenId, totalAmt, assetOwner, valueRpt, legalContr);
-        
+        emit RETokenID(block.timestamp, newTokenId, totalAmt, assetOwner, valueRpt, legalContr);
+
         // Creates and updates REToken Struct of unique token ID with token details
         REToken storage token = reToken[_tokenID];
         token.totalSupply = totalAmt;
@@ -110,7 +110,7 @@ contract LogicTwo is AccessControlUpgradeable, RETokenStorageOne {
         address investor = msg.sender;
         address owner = token.owner;
 
-        emit RETokenUSDT(id, tokenAmt, investor, owner, usdtAmt);
+        emit RETokenUSDT(block.timestamp, id, tokenAmt, investor, owner, usdtAmt);
 
         usdtContract.transferUSDT(investor, owner, usdtAmt);
 

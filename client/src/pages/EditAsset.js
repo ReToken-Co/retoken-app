@@ -5,7 +5,7 @@ import { InputForm, Sidebar, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
 
 export default function EditAsset() {
-  const { assets, assetDispatch } = useContext(AssetContext);
+  const { assetDispatch } = useContext(AssetContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const location = useLocation();
   const history = useHistory();

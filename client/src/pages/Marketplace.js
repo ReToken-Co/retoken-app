@@ -1,9 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AssetContext } from "../context/AssetContext";
 import { AssetCard, Navbar, Footer } from "../components";
 
 export default function Marketplace() {
-  const { assets } = useContext(AssetContext);
+  const { assets, assetDispatch } = useContext(AssetContext);
+
+  useEffect(() => {
+    // Get instance of asset
+    const getAssets = async () => {
+      await assetDispatch({ type: 'GET_ASSETS' });
+    };
+    if (assets === undefined || !assets)
+    getAssets().then(() => {
+//        console.log(`UE Marketplace ${assets}`);
+      });
+  }, [assets, assetDispatch]);
 
   return (
     <>

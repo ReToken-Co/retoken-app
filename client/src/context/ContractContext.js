@@ -52,11 +52,12 @@ const ContractContextProvider = (props) => {
       const web3 = await getWeb3()
       const networkId = await web3.eth.net.getId()
       const deployedNetwork = RETokenLogicOne.networks[networkId]
-      const logicOneContract = new web3.eth.Contract(
+      const _logicOneContract = new web3.eth.Contract(
         RETokenLogicOne.abi,
         deployedNetwork && deployedNetwork.address
       )
-      setLogicOneContract(logicOneContract)
+      setLogicOneContract(_logicOneContract)
+      console.log(`setlogic1 ${_logicOneContract}`)
     } catch (error) {
       console.error(error);
     }

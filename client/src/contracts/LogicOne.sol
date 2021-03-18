@@ -73,7 +73,7 @@ contract LogicOne is AccessControlUpgradeable, RETokenStorageOne {
         uint256 newTokenId = _tokenID;
         uint256 adminAmt = totalAmt - ownerAmt;
 
-        emit RETokenID(newTokenId, totalAmt, assetOwner, valueRpt, legalContr);
+        emit RETokenID(block.timestamp, newTokenId, totalAmt, assetOwner, valueRpt, legalContr);
 
         // Creates and updates REToken Struct of unique token ID with token details
         REToken storage token = reToken[_tokenID];

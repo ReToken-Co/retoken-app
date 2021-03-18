@@ -1,17 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Button } from '../../globalStyles';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Container, Button } from "../../globalStyles";
+import { Grid } from "@material-ui/core";
 import {
   InfoSec,
   InfoRow,
-  InfoColumn,
   TextWrapper,
   TopLine,
   Heading,
   Subtitle,
   ImgWrapper,
-  Img
-} from './InfoSection.style';
+  Img,
+} from "./InfoSection.style";
 
 export default function InfoSection({
   primary,
@@ -27,14 +27,19 @@ export default function InfoSection({
   img,
   alt,
   imgStart,
-  start
+  start,
 }) {
   return (
     <>
       <InfoSec lightBg={lightBg}>
         <Container>
-          <InfoRow imgStart={imgStart}>
-            <InfoColumn>
+        <InfoRow imgStart={imgStart}>
+            <Grid item xs={9}>
+              <ImgWrapper start={start}>
+                <Img src={img} alt={alt} />
+              </ImgWrapper>
+            </Grid>
+            <Grid item xs={3}>
               <TextWrapper>
                 <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
                 <Heading lightText={lightText}>{headline}</Heading>
@@ -45,16 +50,10 @@ export default function InfoSection({
                   </Button>
                 </Link>
               </TextWrapper>
-            </InfoColumn>
-            <InfoColumn>
-              <ImgWrapper start={start}>
-                <Img src={img} alt={alt}/>
-              </ImgWrapper>
-            </InfoColumn>
+            </Grid>
           </InfoRow>
         </Container>
       </InfoSec>
     </>
   );
 }
-

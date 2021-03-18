@@ -31,7 +31,7 @@ export const InfoColumn = styled.div`
 `;
 
 export const TextWrapper = styled.div`
-  max-width: 540px;
+  max-width: 300px;
   padding-top: 0;
   padding-bottom: 60px;
 
@@ -41,7 +41,7 @@ export const TextWrapper = styled.div`
 `;
 
 export const ImgWrapper = styled.div`
-  max-width: 555px;
+  max-width: 950;
   display: flex;
   justify-content: ${({ start }) => (start ? 'flex-start' : 'flex-end')};
 `;

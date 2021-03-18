@@ -70,9 +70,13 @@ export default function Asset(props) {
 
   useEffect(() => {
     // Get balance of account
+    const fetchUser = async () => {
+      await getUser()
+    }
     if (user === undefined || !user) 
-      getUser()
-      console.log(`balance ${JSON.stringify(user)} ${balance}`)
+      fetchUser().then(() => {
+//      console.log(`user ${JSON.stringify(user)} ${balance}`)
+      })
   }, [user]);
 
   const purchaseToken = async () => {
@@ -128,7 +132,7 @@ export default function Asset(props) {
       <Navbar />
       <AssetDetail
         admin={location.state.admin}
-        account={user.address}
+        account={user ? user.address : ""}
         balance={balance}
         id={asset.id}
         tokenId={asset.tokenId}

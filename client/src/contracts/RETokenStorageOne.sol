@@ -56,13 +56,14 @@ contract RETokenStorageOne is ERC1155Upgradeable, ERC1155HolderUpgradeable {
      /**
      * @dev Declaration of new Event to record created token details for REToken
      *
+     * @param timestamp - Time Stamp of Event
      * @param id - Unique token ID
      * @param totalSupply - Number of tokens for unique token ID
      * @param owner - Asset Owner wallet address
      * @param valuationReport - File Hash of Valuation Report
      * @param legalContract - File Hash of Legal Contract
      */
-    event RETokenID(uint256 indexed id, uint256 indexed totalSupply, address indexed owner, string valuationReport, string legalContract);
+    event RETokenID(uint256 timestamp, uint256 indexed id, uint256 indexed totalSupply, address indexed owner, string valuationReport, string legalContract);
 
     /**
      * @dev Functions for ERC1155 Token
@@ -81,11 +82,12 @@ contract RETokenStorageOne is ERC1155Upgradeable, ERC1155HolderUpgradeable {
     /**
      * @dev Ver.2 Declaration of new Event to record all USDT transactions for REToken
      *
+     * @param timestamp - Time Stamp of Event
      * @param id - Unique token ID purchased
      * @param tokenAmt - Number of tokens for unique token ID purchased
      * @param buyer - Buyer wallet address
      * @param seller - Seller wallet address
      * @param USDT - Total amount of USDT paid by buyer
      */
-    event RETokenUSDT(uint256 indexed id, uint256 tokenAmt, address indexed buyer, address indexed seller, uint256 USDT);
+    event RETokenUSDT(uint256 timestamp, uint256 indexed id, uint256 tokenAmt, address indexed buyer, address indexed seller, uint256 USDT);
 }

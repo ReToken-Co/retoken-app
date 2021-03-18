@@ -10,6 +10,7 @@ import AddAsset from "./pages/AddAsset";
 import Marketplace from "./pages/Marketplace";
 import Asset from "./pages/Asset";
 import Admin from "./pages/Admin";
+import AppAdmin from "./pages/AppAdmin";
 import EditAsset from "./pages/EditAsset";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                   <Route path="/" exact component={Home} />
                   <Route path="/addasset" component={AddAsset} />
                   <Route path="/admin" component={Admin} />
+                  <Route path="/appadmin" component={AppAdmin} />
                   <Route path="/marketplace" exact component={Marketplace} />
                   <Route path="/asset" exact component={Asset} />
                   <Route path="/asset/:id" component={Asset} />

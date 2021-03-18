@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Sidebar,
   SideScroll,
@@ -15,6 +15,9 @@ export default function SideBar(props) {
       <SidebarMenu>
         <SidebarItem>
           <SidebarLinks to="/users">User Admin</SidebarLinks>
+        </SidebarItem>
+        <SidebarItem>
+          <SidebarLinks to="/appadmin">App Maintainance</SidebarLinks>
         </SidebarItem>
         <SidebarItem>
             Properties

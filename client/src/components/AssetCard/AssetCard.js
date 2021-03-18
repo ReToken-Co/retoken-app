@@ -7,7 +7,6 @@ import {
   useStyles,
   Heading,
   Subheading,
-  Subtitle,
   BodyText,
   TextWrapper,
 } from "./AssetCard.style";

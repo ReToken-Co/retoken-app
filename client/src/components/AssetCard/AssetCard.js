@@ -22,6 +22,7 @@ export default function AssetCard(props) {
       pathname: props.admin && props.status === 0 ? "/editasset" : "/asset",
       search: `?id=${e.target.id}`,
       state: {
+        admin: props.admin,
         id: props.id,
         scId: props.scId,
         image: props.image,
@@ -101,7 +102,7 @@ export default function AssetCard(props) {
             getAsset(e);
           }}
         >
-          View Detail
+          { props.admin ? `View Detail` : `Ready for Investment` }
         </Button>
       );
     } else if (props.status === -1 || props.status === 2) {

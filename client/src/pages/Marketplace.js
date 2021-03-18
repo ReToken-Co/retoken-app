@@ -9,7 +9,9 @@ export default function Marketplace() {
     <>
       <Navbar />
       <br />
-      {assets.map((_asset) => (
+      {assets
+        .filter ((_assettemp) => _assettemp.status !== 0)
+        .map((_asset) => (
         <div className="asset" key={_asset._id}>
           <AssetCard
             id={_asset._id}

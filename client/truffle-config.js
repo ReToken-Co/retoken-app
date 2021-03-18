@@ -18,11 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-// const infuraKey = "fj4jll3k.....";
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+ const HDWalletProvider = require("@truffle/hdwallet-provider");
+ const infuraKey = "4f9649c1bb294e51b1c75946b4979740";
+ 
+ const fs = require("fs");
+ const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
   /**
@@ -42,23 +42,11 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-     development: {
+    development: {
       host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-    gas: 3000000,
-     websockets: true        // Enable EventEmitter interface for web3 (default: false)
-  },
-//     rinkeby: {
-//      provider: () => new HDWalletProvider(
-//      mnemonic,
-//      `https://rinkeby.infura.io/v3/${infuraKey}`),
-//      network_id: 4,
-//      gas: 3000000,
-//      confirmations: 2,
-//      timeoutBlocks: 200,
-//      skipDryRun: true
-//      },
+     },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -66,7 +54,7 @@ module.exports = {
     // gas: 8500000,           // Gas sent with each transaction (default: ~6700000)
     // gasPrice: 20000000000,  // 20 gwei (in wei) (default: 100 gwei)
     // from: <address>,        // Account to send txs from (default: accounts[0])
-    // websockets: true        // Enable EventEmitter interface for web3 (default: false)
+    // websocket: true        // Enable EventEmitter interface for web3 (default: false)
     // },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
@@ -78,6 +66,14 @@ module.exports = {
     // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
     // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
+    rinkeby: {
+      provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
+      network_id: 4,
+      gas: 9000000,
+      // confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),
@@ -91,13 +87,13 @@ module.exports = {
     // timeout: 100000
   },
 
-  // Change contracts directory so client JS can access
   contracts_directory: "./src/contracts",
   contracts_build_directory: "./src/abis",
+  // Change contracts directory so client JS can access
   // Configure your compilers
   compilers: {
     solc: {
-       version: "0.7.5",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.7.4",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -107,5 +103,21 @@ module.exports = {
       //  evmVersion: "byzantium"
       // }
     }
+  },
+
+  // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
+  //
+  // Note: if you migrated your contracts prior to enabling this field in your Truffle project and want
+  // those previously migrated contracts available in the .db directory, you will need to run the following:
+  // $ truffle migrate --reset --compile-all
+
+  db: {
+    enabled: false
+  },
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: 'AE8FFZBCAZHWD8FIEWMYB2CCCG5K84F1AV'
   }
 };

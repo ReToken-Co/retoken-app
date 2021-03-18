@@ -4,10 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
-    "@openzeppelin/upgrades": "^2.8.0",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.7.3",
+    "@openzeppelin/contracts-upgradeable": "^3.4.1",
     "@truffle/contract": "^4.3.8",
     "@truffle/hdwallet-provider": "^1.2.3",
     "axios": "^0.21.1",

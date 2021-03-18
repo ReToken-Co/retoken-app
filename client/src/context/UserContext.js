@@ -8,6 +8,7 @@ export const UserContext = createContext();
 // Provider Component
 const UserContextProvider = (props) => {
   const [user, setUser] = useState();
+  const [account, setAccount] = useState();
   const [balance, setBalance] = useState(0);
 
   const getUser = async () => {
@@ -22,9 +23,7 @@ const UserContextProvider = (props) => {
           params: { address: accounts[0].toString() },
         })
         .then((res) => {
-          console.log(
-            `user ${JSON.stringify(res.data)}`
-          );
+          console.log(`user ${JSON.stringify(res.data)}`);
           // Set State
           setUser(res.data);
         })
@@ -36,8 +35,20 @@ const UserContextProvider = (props) => {
         await web3.utils.fromWei(
           (await web3.eth.getBalance(accounts[0])).toString(),
           "ether"
-        )).toFixed(4);
+        )
+      ).toFixed(4);
       setBalance(_balance);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAccount = async () => {
+    try {
+      const web3 = await getWeb3();
+      // Get connected wallet address
+      const accounts = await web3.eth.getAccounts();
+      setAccount(accounts[0]);
     } catch (error) {
       console.error(error);
     }
@@ -64,7 +75,7 @@ const UserContextProvider = (props) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, getUser, balance, getBal }}>
+    <UserContext.Provider value={{ user, getUser, account, getAccount, balance, getBal }}>
       {props.children}
     </UserContext.Provider>
   );

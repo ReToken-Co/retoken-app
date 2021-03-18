@@ -33,7 +33,10 @@ router.route("/findTxByUser").get((req, res) => {
 
 router.route("/findTxByAsset").get((req, res) => {
   Transaction.find( req.query )
-    .then((transactions) => res.json(transactions))
+    .then((transactions) => {
+      console.log(`transactions result ${JSON.stringify(transactions)}`)
+      res.json(transactions)    
+    })
     .catch((err) => res.status(400).json("findTxByAsset Error: " + err));
 });
 

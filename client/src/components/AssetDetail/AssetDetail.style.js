@@ -113,14 +113,14 @@ margin-bottom: ${({ bigMargin }) => (bigMargin ? '24px' : '5px')};
   }
 `;
 
-export const BidInputRow = styled.div`
+export const InvestmentInputRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: top;
   flex-direction: row;
 `;
 
-export const BidInputColumn = styled.div`
+export const InvestmentInputColumn = styled.div`
   margin-bottom: 5px;
   padding-right: 5px;
   padding-left: 5px;

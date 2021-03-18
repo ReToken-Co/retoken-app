@@ -1,6 +1,7 @@
+import { useContext, useEffect } from "react";
 import {  Button } from "../../globalStyles";
 import { Paper, TextField, Grid } from "@material-ui/core";
-//import { BidTable } from '..'
+import { InvestmentTable } from '..'
 import {
   useStyles,
   Heading1,
@@ -8,8 +9,6 @@ import {
   Heading3,
   Subtitle,
   EthLink,
-  //  BidInputRow,
-//  BidInputColumn,
   ImgWrapper,
   Img,
 } from "./AssetDetail.style";
@@ -113,6 +112,13 @@ export default function AssetDetail(props) {
                   {RenderButton()}
               </Paper>
             </Grid>
+            { props.admin && ( 
+              <Grid item xs={12}>
+                <br /><br />
+                <Heading2>Investment Transactions</Heading2>
+                <InvestmentTable id={props.id} />                 
+              </Grid>
+            )}
           </Grid>
         </Paper>
       </div>

@@ -48,7 +48,8 @@ const TransactionReducer = (state, action) => {
         .get(`/transactions/findTxByAsset`,
                   { params: { propertyId: action.payload } })
         .then((res) => {
-          return res.data;
+          console.log(`get TxbyPpty result ${JSON.stringify(res.data)}`)
+          return (res.data);
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);

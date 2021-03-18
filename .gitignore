@@ -11,6 +11,7 @@
 #/client/build
 
 # misc
+/client/.secret
 .DS_Store
 .env
 .env.local

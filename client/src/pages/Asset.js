@@ -3,11 +3,13 @@ import { useLocation } from "react-router";
 import { AssetDetail, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
 import { UserContext } from "../context/UserContext";
+import { ContractContext } from "../context/ContractContext";
 
 export default function Asset(props) {
 
   const { assetDispatch } = useContext(AssetContext);
   const { user, getUser, balance } = useContext(UserContext);
+  const { usdtContract, initContract } = useContext(ContractContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
@@ -60,8 +62,10 @@ export default function Asset(props) {
     }
 
     // set asset State
-    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}`);
+    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}
+    ${location.state.admin}`);
     setAsset(selectedAsset);
+
   }, [location]);
 
   useEffect(() => {
@@ -123,6 +127,7 @@ export default function Asset(props) {
     <>
       <Navbar />
       <AssetDetail
+        admin={location.state.admin}
         account={user.address}
         balance={balance}
         id={asset.id}

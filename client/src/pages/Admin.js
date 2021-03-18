@@ -58,7 +58,7 @@ export default function Admin() {
                 id: id,
                 transactionhash: result.logs[0].transactionHash,
                 status: 1,
-                scId: Number(result.logs[0].args.bcid),
+                tokenId: Number(result.logs[0].args.bcid),
               },
             });
           } catch (error) {
@@ -93,7 +93,7 @@ export default function Admin() {
             <AssetCard
               publishAsset={publishAsset}
               id={_asset._id}
-              scId={_asset.scId}
+              tokenId={_asset.tokenId}
               image={_asset.image}
               transactionHash={_asset.transactionHash}
               invProspectHash={_asset.invProspectHash}

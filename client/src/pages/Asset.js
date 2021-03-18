@@ -24,7 +24,7 @@ export default function Asset(props) {
       // setAsset from location data
       selectedAsset = {
         id: location.state.id,
-        scId: location.state.scId,
+        tokenId: location.state.tokenId,
         image: location.state.image,
         transactionHash: location.state.transactionHash,
         invProspectHash: location.state.invProspectHash,
@@ -131,7 +131,7 @@ export default function Asset(props) {
         account={user.address}
         balance={balance}
         id={asset.id}
-        scId={asset.scId}
+        tokenId={asset.tokenId}
         image={asset.image}
         transactionHash={asset.transactionHash}
         invProspectHash={asset.invProspectHash}

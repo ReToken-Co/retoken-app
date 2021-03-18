@@ -35,7 +35,7 @@ router.route("/add").post((req, res) => {
     noi: req.body.noi,
     expectedYield: req.body.expectedYield,
     image: req.body.image,
-    scId: req.body.scId,
+    tokenId: req.body.tokenId,
     transactionHash: req.body.transactionHash,
     invProspectHash: req.body.invProspectHash,
     valuationHash: req.body.valuationHash,

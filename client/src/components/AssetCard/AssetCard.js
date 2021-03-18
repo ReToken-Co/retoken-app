@@ -24,7 +24,7 @@ export default function AssetCard(props) {
       state: {
         admin: props.admin,
         id: props.id,
-        scId: props.scId,
+        tokenId: props.tokenId,
         image: props.image,
         transactionHash: props.transactionHash,
         invProspectHash: props.invProspectHash,

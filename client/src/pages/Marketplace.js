@@ -15,7 +15,7 @@ export default function Marketplace() {
         <div className="asset" key={_asset._id}>
           <AssetCard
             id={_asset._id}
-            scId={_asset.scId}
+            tokenId={_asset.tokenId}
             image={_asset.image}
             transactionHash={_asset.transactionHash}
             invProspectHash={_asset.invProspectHash}

@@ -17,7 +17,7 @@ export default function EditAsset() {
       // setAsset from location data
       selectedAsset = {
         id: location.state.id,
-        scId: location.state.scId,
+        tokenId: location.state.tokenId,
         image: location.state.image,
         transactionHash: location.state.transactionHash,
         invProspectHash: location.state.invProspectHash,

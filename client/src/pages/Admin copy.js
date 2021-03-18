@@ -1,30 +1,17 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
+//import { Web3Context } from "../context/Web3Context";
 import { AssetCard, Sidebar, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
-import { TransactionContext } from "../context/TransactionContext";
-import { ContractContext } from "../context/ContractContext";
 
 export default function Admin() {
   const { assets, assetDispatch } = useContext(AssetContext);
-  const { transactionDispatch } = useContext(TransactionContext);
   const [propertyStatus, setPropertyStatus] = useState(0);
-  const { account, initAccount, logicOneContract, initLogicOne } = useContext(
-    ContractContext
-  );
+  //  const { account, contract, web3 } = useContext(Web3Context)
+  const account = "";
+  const contract = {};
+  const web3 = {};
 
   //  console.log (`admin asset ${JSON.stringify(assets)}`)
-
-  useEffect(() => {
-    // Get instance of contract
-    if (logicOneContract === undefined || !logicOneContract) initLogicOne();
-    console.log(`${JSON.stringify(logicOneContract)}`);
-  }, [logicOneContract]);
-
-  useEffect(() => {
-    // Get web3 account address
-    if (account === undefined || !account) initAccount();
-    console.log(`${JSON.stringify(account)}`);
-  }, [account]);
 
   const updateStatusInput = (_statusInput) => {
     console.log(`menu status ${_statusInput}`);
@@ -34,48 +21,52 @@ export default function Admin() {
   // Publish Asset - Add asset to smart contract
   const publishAsset = async (id) => {
     const asset = assets[id];
-    console.log(`publish ${id} ${JSON.stringify(asset)}`);
 
     try {
-      logicOneContract
-        ? console.log(
-            `SC ${id} ${logicOneContract._address} ${JSON.stringify(asset)}`
-          )
+      contract
+        ? console.log(`SC ${id} ${contract.address} ${JSON.stringify(asset)}`)
         : console.log(`lost contract`);
 
-      const result = await logicOneContract.methods
-        .mintToken(
-          asset.owner,
-          asset.noOfToken,
-          asset.ownerSubscription,
-          asset.valuationHash,
-          asset.invProspectHash
-        )
-        .send({ from: account });
-      console.log(`SC result  ${result.transactionHash} ${result.events.RETokenID.returnValues[0]}`);
+      // Set start time for asset
+      asset.starttime = Date.now();
 
-      // Update transaction State & DB
+      // Create an asset record in smart contract
+      const result = await contract.createAsset(
+        asset.id,
+        asset.title,
+        asset.image,
+        (asset.starttime = asset.starttime.toString()),
+        asset.duration,
+        web3.utils.toWei(asset.startbid.toString(), "ether"),
+        web3.utils.toWei(asset.reservebid.toString(), "ether"),
+        { from: account }
+      );
+      console.log(`SC result  ${result.transactionHash}`);
+      // ERC1155 Token ID
+      console.log(result.events.RETokenID.returnValues[0]);
+
+      const _subscription = asset.ownerSubscription / asset.noOfToken
+
+      // Update properties State & DB
       assetDispatch({
         type: "UPDATE_ASSET",
         payload: {
           id: asset._id,
           transactionHash: result.transactionHash,
           status: 1,
-          subscrption: _subscription,
+          subscription = _subscription,
           tokenId: Number(result.events.RETokenID.returnValues[0]),
         },
       });
 
       // Update properties State & DB
-      const _subscription = asset.ownerSubscription / asset.noOfToken;
-      transactionDispatch({
-        type: "ADD_TRANSACTION",
+      assetDispatch({
+        type: "UPDATE_ASSET",
         payload: {
-          investor: asset.owner,
-          propertyId: asset._id,
-          noOfToken: asset.ownerSubscription,
+          id: asset._id,
           transactionHash: result.transactionHash,
-//          transactionDate:
+          status: 1,
+          tokenId: Number(result.events.RETokenID.returnValues[0]),
         },
       });
     } catch (error) {
@@ -90,13 +81,12 @@ export default function Admin() {
       <br />
       {assets
         .filter((_assettemp) => _assettemp.status === propertyStatus)
-        .map((_asset, index) => (
-          <div className="asset" key={index}>
+        .map((_asset) => (
+          <div className="asset" key={_asset._id}>
             <AssetCard
               publishAsset={publishAsset}
-              index={index}
               id={_asset._id}
-              scId={_asset.scId}
+              tokenId={_asset.tokenId}
               image={_asset.image}
               transactionHash={_asset.transactionHash}
               invProspectHash={_asset.invProspectHash}

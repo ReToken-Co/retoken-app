@@ -34,6 +34,7 @@ export default function AssetCard(props) {
         askingPrice: props.askingPrice,
         noOfToken: props.noOfToken,
         pricePerToken: props.pricePerToken,
+        ownerSubscription: props.ownerSubscription,
         street: props.street,
         city: props.city,
         state: props.state,

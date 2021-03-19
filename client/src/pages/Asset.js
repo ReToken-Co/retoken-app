@@ -2,14 +2,17 @@ import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { AssetDetail, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
+import { TransactionContext } from "../context/TransactionContext";
 import { UserContext } from "../context/UserContext";
 import { ContractContext } from "../context/ContractContext";
 
 export default function Asset(props) {
-
   const { assetDispatch } = useContext(AssetContext);
+  const { transactionDispatch } = useContext(TransactionContext);
   const { user, getUser, balance } = useContext(UserContext);
-  const { usdtContract, initContract } = useContext(ContractContext);
+  const { account, initAccount, logicTwoContract, initLogicTwo } = useContext(
+    ContractContext
+  );
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
@@ -18,7 +21,7 @@ export default function Asset(props) {
 
   // every render or change in location
   useEffect(() => {
-    let selectedAsset = {}
+    let selectedAsset = {};
 
     if (location !== undefined) {
       // setAsset from location data
@@ -62,60 +65,87 @@ export default function Asset(props) {
     }
 
     // set asset State
-    console.log(`selected assets ${JSON.stringify(selectedAsset)} ${JSON.stringify(user)}
+    console.log(`selected assets ${JSON.stringify(
+      selectedAsset
+    )} ${JSON.stringify(user)}
     ${location.state.admin}`);
     setAsset(selectedAsset);
-
   }, [location]);
 
   useEffect(() => {
     // Get balance of account
     const fetchUser = async () => {
-      await getUser()
-    }
-    if (user === undefined || !user) 
+      await getUser();
+    };
+    if (user === undefined || !user)
       fetchUser().then(() => {
-//      console.log(`user ${JSON.stringify(user)} ${balance}`)
-      })
+        //      console.log(`user ${JSON.stringify(user)} ${balance}`)
+      });
   }, [user]);
 
-  const purchaseToken = async () => {
-    // Place a order into smart contract
-    /*      const result = await contract.purchaseToken()
+  useEffect(() => {
+    // Get instance of contract
+    const getLogicTwoContract = async () => {
+      await initLogicTwo();
+    };
+    if (logicTwoContract === undefined || !logicTwoContract)
+      getLogicTwoContract().then(() => {
+        console.log(`UE logi2 ${logicTwoContract}`);
+      });
+  }, [logicTwoContract]);
 
-      await contract.contractBalance().then(function (_return) {
-        console.log(`Contract balance aft place bid = ${_return}`)
-      })
-      // Update balance of wallet
-      const _balance = web3.utils.fromWei(
-        (await web3.eth.getBalance(account)).toString(),
-        'ether')
-      setBalance(Number(_balance).toFixed(4))
-      console.log(`result ${JSON.stringify(result.logs[0].args.bidder, undefined, 2)}`)
+  useEffect(() => {
+    // Get web3 account address
+    const getAccount = async () => {
+      await initAccount();
+    };
+    if (account === undefined || !account)
+      getAccount().then(() => {
+        console.log(`UE acct ${account}`);
+      });
+  }, [account]);
 
-      // update asset db
-      assetDispatch({
-        type: 'UPDATE_ASSET',
-        payload: {
-          id: asset.id,
-          numbid: asset.numbid + 1
-        }
-      })
+  const purchaseToken = async (e) => {
+    e.preventDefault();
+    console.log(
+      `purchase ${tokenInput} ${investmentInput} ${asset.id} ${asset.tokenId}`
+    );
 
-      // update new bid state & db
-      bidDispatch({
-        type: 'ADD_BID',
-        payload: {
-          assetId: asset.id,
-          bidId: Number(result.logs[0].args.bidId),
-          bidAmount: Number(bidInput),
-          bidder: result.logs[0].args.bidder,
-          dTimestamp: _dTimestamp,
-          timestamp: result.logs[0].args.timstamp,
-          transactionHash: result.logs[0].transactionHash
-        }
-      })
-*/
+    if (!logicTwoContract) {
+      console.log(`Lost contract, run initLogicTwo`);
+      await initLogicTwo();
+      console.log(`logi2 ${JSON.stringify(logicTwoContract)}`);
+    }
+
+    // Buy Property Token
+    const result = await logicTwoContract.methods
+      .buyToken(asset.tokenId, tokenInput, investmentInput)
+      .send({ from: account });
+
+      console.log(`BuyToken result ${result.transactionHash} 
+      ${result.events.RETokenID.returnValues.timestamp}`);
+
+    // Add transaction State & DB
+    transactionDispatch({
+      type: "ADD_TRANSACTION",
+      payload: {
+        investor: account,
+        propertyId: asset._id,
+        noOfToken: tokenInput,
+        transactionHash: result.transactionHash,
+        transactionDate: result.events.RETokenID.returnValues.timestamp,
+      },
+    });
+
+    // Update properties State & DB
+    const _subscription = (((asset.subscription * asset.noOfToken) + tokenInput) / asset.noOfToken).toFixed(2)
+    assetDispatch({
+      type: "UPDATE_ASSET",
+      payload: {
+        id: asset._id,
+        subscrption: _subscription,
+      },
+    });
   };
 
   // set tokenInput state from user input field

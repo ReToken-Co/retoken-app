@@ -10,7 +10,10 @@ const TransactionReducer = (state, action) => {
           res.data.forEach((data) => {
             transactions.push(data);
           });
-          //          console.log(`data ${JSON.stringify(transactions)}`);
+          transactions.sort(function (a, b) {
+            return parseInt(a.transactionDate) - parseInt(b.transactionDate);
+//          console.log(`data ${JSON.stringify(transactions)}`);
+          });
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
@@ -32,8 +35,9 @@ const TransactionReducer = (state, action) => {
     case "GET_TX_BY_USER":
       console.log(`get TxbyUser ${action.payload}`);
       axios
-        .get(`/transactions/findTxByUser`,
-                { params: { investor: action.payload } })
+        .get(`/transactions/findTxByUser`, {
+          params: { investor: action.payload },
+        })
         .then((res) => {
           return res.data;
         })
@@ -45,11 +49,12 @@ const TransactionReducer = (state, action) => {
     case "GET_TX_BY_PROPERTY":
       console.log(`get TxbyPpty ${action.payload}`);
       axios
-        .get(`/transactions/findTxByAsset`,
-                  { params: { propertyId: action.payload } })
+        .get(`/transactions/findTxByAsset`, {
+          params: { propertyId: action.payload },
+        })
         .then((res) => {
-          console.log(`get TxbyPpty result ${JSON.stringify(res.data)}`)
-          return (res.data);
+          console.log(`Get TxbyPpty result ${JSON.stringify(res.data)}`);
+          return res.data;
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
@@ -57,11 +62,10 @@ const TransactionReducer = (state, action) => {
       return {};
 
     case "ADD_TRANSACTION":
-      console.log(`b4 add ${JSON.stringify(action.payload)}`);
       axios
         .post(`/transactions/add`, action.payload)
         .then((res) => {
-          console.log(`added ${JSON.stringify(res.data)}`);
+          console.log(`Transaction added ${JSON.stringify(res.data)}`);
           return res.data;
         })
         .catch((err) => {
@@ -73,7 +77,7 @@ const TransactionReducer = (state, action) => {
       axios
         .put(`/transactions/update/${action.payload.id}`, action.payload)
         .then((res) => {
-          console.log(`Updated ${JSON.stringify(res.data)}`);
+          console.log(`Transaction updated ${JSON.stringify(res.data)}`);
           return res.data;
         })
         .catch((err) => {

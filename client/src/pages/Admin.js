@@ -8,9 +8,21 @@ export default function Admin() {
   const { assets, assetDispatch } = useContext(AssetContext);
   const { transactionDispatch } = useContext(TransactionContext);
   const [propertyStatus, setPropertyStatus] = useState(0);
+  const [pageReload, setPageReload] = useState(true);
   const { account, initAccount, logicOneContract, initLogicOne } = useContext(
     ContractContext
   );
+
+  useEffect(() => {
+    const getAssets = async () => {
+      await assetDispatch({ type: "GET_ASSETS" });
+    };
+      getAssets().then(() => {
+        setPropertyStatus(0)
+        setPageReload(true)
+        console.log(`setpage = true ${JSON.stringify(assets)}`)
+      });
+  }, [pageReload]);
 
   //  console.log (`admin asset ${JSON.stringify(assets)}`)
   useEffect(() => {
@@ -20,7 +32,6 @@ export default function Admin() {
     };
     if (assets === undefined || !assets)
       getAssets().then(() => {
-        console.log(`UE logi1 ${assets}`);
       });
   }, [assets]);
 
@@ -52,9 +63,9 @@ export default function Admin() {
 
   // Publish Asset - Add asset to smart contract
   const publishAsset = async (e) => {
-    
-    e.preventDefault()
-    const id = e.target.id
+    e.preventDefault();
+
+    const id = e.target.id;
     const asset = assets.find((_asset) => _asset._id === id);
 
     console.log(`publish asset\ne assetID=${id}, account=${account}, 
@@ -70,7 +81,6 @@ export default function Admin() {
     }
 
     if (asset && logicOneContract && account) {
-    
       const result = await logicOneContract.methods
         .mintToken(
           asset.owner,
@@ -93,12 +103,18 @@ export default function Admin() {
           propertyId: asset._id,
           noOfToken: asset.ownerSubscription,
           transactionHash: result.transactionHash,
-          transactionDate: result.events.RETokenID.returnValues.timestamp * 1000,
+          transactionDate:
+            result.events.RETokenID.returnValues.timestamp * 1000,
         },
       });
 
+      setPageReload(false); // trigger UseEffect for pageReload
+
       // Update properties State & DB
-      const _subscription = (asset.ownerSubscription / asset.noOfToken * 100).toFixed(1);
+      const _subscription = (
+        (asset.ownerSubscription / asset.noOfToken) *
+        100
+      ).toFixed(1);
       await assetDispatch({
         type: "UPDATE_ASSET",
         payload: {
@@ -109,9 +125,9 @@ export default function Admin() {
           tokenId: Number(result.events.RETokenID.returnValues.id),
         },
       });
-//      console.log(`updated asset ${asset.owner} ${asset._id} ${asset.ownerSubscription}
-//        ${result.transactionHash} `)
 
+      //      console.log(`updated asset ${asset.owner} ${asset._id} ${asset.ownerSubscription}
+      //        ${result.transactionHash} `)
     } else {
       console.log(`missing data for smart contract:\ne assetID=${id}, account=${account}, 
       owner=${asset.owner}, # of Token=${asset.noOfToken}, 
@@ -126,7 +142,7 @@ export default function Admin() {
       <Navbar admin={"true"} />
       <Sidebar updateStatusInput={updateStatusInput} />
       <br />
-      {assets !== undefined || assets.length > 0 ? (
+      {pageReload ? (
         assets
           .filter((_assettemp) => _assettemp.status === propertyStatus)
           .map((_asset, index) => (
@@ -168,7 +184,11 @@ export default function Admin() {
             </div>
           ))
       ) : (
-        <>Loading.....</>
+        <>
+          <div>
+            <p style={{ marginLeft: "500px", marginTop: "200px" }}>Please refresh Page.....</p>
+          </div>
+        </>
       )}
     </>
   );

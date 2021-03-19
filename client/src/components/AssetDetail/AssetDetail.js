@@ -1,6 +1,6 @@
 import {  Button } from "../../globalStyles";
 import { Paper, TextField, Grid } from "@material-ui/core";
-import { InvestmentTable } from '..'
+import { InvestmentTable1 } from '..'
 import {
   useStyles,
   Heading1,
@@ -115,7 +115,7 @@ export default function AssetDetail(props) {
               <Grid item xs={12}>
                 <br /><br />
                 <Heading2>Investment Transactions</Heading2>
-                <InvestmentTable id={props.id} />                 
+                <InvestmentTable1 id={props.id} />                 
               </Grid>
             )}
           </Grid>

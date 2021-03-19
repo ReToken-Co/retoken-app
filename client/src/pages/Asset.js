@@ -143,7 +143,7 @@ export default function Asset(props) {
       });
 
       const _subscription = (
-        (asset.subscription * asset.noOfToken + tokenInput) /
+        (asset.subscription / 100 * asset.noOfToken + tokenInput) /
         asset.noOfToken * 100).toFixed(1);
 
       // Update properties State & DB

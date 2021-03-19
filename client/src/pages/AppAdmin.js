@@ -318,7 +318,7 @@ export default function AppAdmin() {
                 <p><form onSubmit={tradeToken}>
                     <b>Buy Token : {
                         buyToken === 0 ? `Fill up the 5 fields below` : buyToken}</b>
-                    <p><input type="text" name="id" size="8" placeholder="Total ID" /><span> </span>
+                    <p><input type="text" name="id" size="8" placeholder="Token ID" /><span> </span>
                         <input type="text" name="token" size="15" placeholder="Number of Token" /><span> </span>
                         <input type="text" name="usdt" size="15" placeholder="Cost in USDT" /><span> </span></p>
                     <input type="submit" value="submit" />

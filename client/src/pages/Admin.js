@@ -51,8 +51,12 @@ export default function Admin() {
   };
 
   // Publish Asset - Add asset to smart contract
-  const publishAsset = async (id) => {
+  const publishAsset = async (e) => {
+    
+    e.preventDefault()
+    const id = e.target.id
     const asset = assets.find((_asset) => _asset._id === id);
+
     console.log(`publish asset\ne assetID=${id}, account=${account}, 
       owner=${asset.owner}, # of Token=${asset.noOfToken}, 
       owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
@@ -94,7 +98,7 @@ export default function Admin() {
       });
 
       // Update properties State & DB
-      const _subscription = (asset.ownerSubscription / asset.noOfToken).toFixed(2);
+      const _subscription = (asset.ownerSubscription / asset.noOfToken * 100).toFixed(1);
       await assetDispatch({
         type: "UPDATE_ASSET",
         payload: {
@@ -131,7 +135,7 @@ export default function Admin() {
                 publishAsset={publishAsset}
                 index={index}
                 id={_asset._id}
-                scId={_asset.scId}
+                tokenId={_asset.tokenId}
                 image={_asset.image}
                 transactionHash={_asset.transactionHash}
                 invProspectHash={_asset.invProspectHash}

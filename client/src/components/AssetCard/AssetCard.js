@@ -17,6 +17,7 @@ export default function AssetCard(props) {
 
   const getAsset = (e) => {
     e.preventDefault()
+    console.log(`assetcard ${JSON.stringify(props)}`)
     history.push({
       pathname: props.admin && props.status === 0 ? "/editasset" : "/asset",
       search: `?id=${e.target.id}`,
@@ -79,7 +80,7 @@ export default function AssetCard(props) {
             id={props.id}
             disabled={false}
             onClick={(e) => {
-              props.publishAsset(e.target.id);
+              props.publishAsset(e);
             }}
           > List
           </Button>
@@ -164,7 +165,7 @@ export default function AssetCard(props) {
               id={props.id}
               className={classes.image}
               onClick={(e) => {
-                getAsset(e.target.id);
+                getAsset(e);
               }}
             >
               <img

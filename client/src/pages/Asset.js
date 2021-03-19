@@ -26,7 +26,7 @@ export default function Asset(props) {
     if (location !== undefined) {
       // setAsset from location data
       selectedAsset = {
-        id: location.state.id,
+        _id: location.state.id,
         tokenId: location.state.tokenId,
         image: location.state.image,
         transactionHash: location.state.transactionHash,
@@ -107,9 +107,6 @@ export default function Asset(props) {
 
   const purchaseToken = async (e) => {
     e.preventDefault();
-    console.log(
-      `purchase ${tokenInput} ${investmentInput} ${asset.id} ${asset.tokenId}`
-    );
 
     if (!logicTwoContract) {
       console.log(`Lost contract, run initLogicTwo`);
@@ -117,35 +114,53 @@ export default function Asset(props) {
       console.log(`logi2 ${JSON.stringify(logicTwoContract)}`);
     }
 
-    // Buy Property Token
-    const result = await logicTwoContract.methods
-      .buyToken(asset.tokenId, tokenInput, investmentInput)
-      .send({ from: account });
+    console.log(
+      `purchase ${tokenInput} ${investmentInput} ${asset._id} ${asset.tokenId}
+        ${logicTwoContract}`
+    );
+
+    if (asset && logicTwoContract && account) {
+
+      // Buy Property Token
+      const result = await logicTwoContract.methods
+        .buyToken(asset.tokenId, tokenInput, investmentInput)
+        .send({ from: account });
 
       console.log(`BuyToken result ${result.transactionHash} 
-      ${result.events.RETokenID.returnValues.timestamp}`);
+      ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
 
-    // Add transaction State & DB
-    transactionDispatch({
-      type: "ADD_TRANSACTION",
-      payload: {
-        investor: account,
-        propertyId: asset._id,
-        noOfToken: tokenInput,
-        transactionHash: result.transactionHash,
-        transactionDate: result.events.RETokenID.returnValues.timestamp,
-      },
-    });
+      // Add transaction State & DB
+      await transactionDispatch({
+        type: "ADD_TRANSACTION",
+        payload: {
+          investor: account,
+          propertyId: asset._id,
+          noOfToken: tokenInput,
+          transactionHash: result.transactionHash,
+          transactionDate:
+            result.events.RETokenUSDT.returnValues.timestamp * 1000,
+        },
+      });
 
-    // Update properties State & DB
-    const _subscription = (((asset.subscription * asset.noOfToken) + tokenInput) / asset.noOfToken).toFixed(2)
-    assetDispatch({
-      type: "UPDATE_ASSET",
-      payload: {
-        id: asset._id,
-        subscrption: _subscription,
-      },
-    });
+      const _subscription = (
+        (asset.subscription * asset.noOfToken + tokenInput) /
+        asset.noOfToken * 100).toFixed(1);
+
+      // Update properties State & DB
+      assetDispatch({
+        type: "UPDATE_ASSET",
+        payload: {
+          id: asset._id,
+          subscription: _subscription,
+        },
+      });
+
+      console.log(`updated asset ${account} ${asset._id} ${_subscription}
+              ${result.transactionHash} `)
+    } else {
+      console.log(`missing data for smart contract:\ne assetID=${asset._id}, account=${account}, 
+      tokenID=${asset.tokenId} # of token to purchase=${tokenInput} USDT=${investmentInput}`)
+    }
   };
 
   // set tokenInput state from user input field
@@ -164,7 +179,7 @@ export default function Asset(props) {
         admin={location.state.admin}
         account={user ? user.address : ""}
         balance={balance}
-        id={asset.id}
+        id={asset._id}
         tokenId={asset.tokenId}
         image={asset.image}
         transactionHash={asset.transactionHash}

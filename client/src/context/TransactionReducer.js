@@ -61,7 +61,7 @@ const TransactionReducer = (state, action) => {
       axios
         .post(`/transactions/add`, action.payload)
         .then((res) => {
-          console.log(`add ${JSON.stringify(res.data)}`);
+          console.log(`added ${JSON.stringify(res.data)}`);
           return res.data;
         })
         .catch((err) => {

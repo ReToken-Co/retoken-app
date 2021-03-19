@@ -95,7 +95,7 @@ export default function AssetDetail(props) {
                 <Heading2>Investment Calculator</Heading2>
                 <Subtitle>Your Account:</Subtitle>
                 <Subtitle smallFont bigMargin>{props.account}</Subtitle>
-                <Subtitle bigMargin={true}>Balance: {props.balance}</Subtitle>
+                <Subtitle bigMargin={true}>Available USDT: {props.balance ? props.balance.toLocaleString("en")  : 0}</Subtitle>
                 <Heading3>Investment: US${props.investmentInput ? props.investmentInput.toLocaleString("en") : 0}</Heading3>
                 <Heading3 bigMargin={true}>Expected Annual Income: US${props.incomeInput ? props.incomeInput.toLocaleString("en") : 0}</Heading3>
                   <TextField

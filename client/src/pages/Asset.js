@@ -10,10 +10,16 @@ export default function Asset(props) {
   const { assetDispatch } = useContext(AssetContext);
   const { transactionDispatch } = useContext(TransactionContext);
   const { user, getUser, balance } = useContext(UserContext);
-  const { account, initAccount, logicTwoContract, initLogicTwo } = useContext(
-    ContractContext
-  );
+  const {
+    account,
+    initAccount,
+    logicTwoContract,
+    initLogicTwo,
+    usdtContract,
+    initUSDT,
+  } = useContext(ContractContext);
   const [asset, setAsset] = useState([]); // array stores all bids of the asset
+  const [usdtBalance, setUsdtBalance] = useState(0);
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
   const [incomeInput, setIncomeInput] = useState(0);
@@ -105,6 +111,26 @@ export default function Asset(props) {
       });
   }, [account]);
 
+  useEffect(() => {
+    // Get web3 account address
+    const getUsdtBalance = async () => {
+      if (usdtContract === undefined || !usdtContract) await initUSDT();
+      if (account === undefined || !account) await initAccount();
+
+      if (usdtContract && account) { 
+        const result = await usdtContract.methods.balanceOf(account).call();
+        let balance = result / 1000000000000000000;
+        setUsdtBalance(balance);
+      }
+      else {
+        console.log(`missing data for smart contract: account=${account}, 
+        contract=${usdtContract}`);
+      }
+    };
+    getUsdtBalance()
+
+  }, [usdtBalance]);
+
   const purchaseToken = async (e) => {
     e.preventDefault();
 
@@ -120,7 +146,6 @@ export default function Asset(props) {
     );
 
     if (asset && logicTwoContract && account) {
-
       // Buy Property Token
       const result = await logicTwoContract.methods
         .buyToken(asset.tokenId, tokenInput, investmentInput)
@@ -128,6 +153,8 @@ export default function Asset(props) {
 
       console.log(`BuyToken result ${result.transactionHash} 
       ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
+
+      setUsdtBalance(usdtBalance - investmentInput);
 
       // Add transaction State & DB
       await transactionDispatch({
@@ -143,9 +170,8 @@ export default function Asset(props) {
       });
 
       const _subscription = (
-        (asset.subscription / 100 * asset.noOfToken + tokenInput) /
-        asset.noOfToken * 100).toFixed(1);
-
+        (((asset.subscription / 100) * asset.noOfToken + tokenInput) /
+          asset.noOfToken) ).toFixed(1);
       // Update properties State & DB
       assetDispatch({
         type: "UPDATE_ASSET",
@@ -156,10 +182,10 @@ export default function Asset(props) {
       });
 
       console.log(`updated asset ${account} ${asset._id} ${_subscription}
-              ${result.transactionHash} `)
+              ${result.transactionHash} `);
     } else {
       console.log(`missing data for smart contract:\ne assetID=${asset._id}, account=${account}, 
-      tokenID=${asset.tokenId} # of token to purchase=${tokenInput} USDT=${investmentInput}`)
+      tokenID=${asset.tokenId} # of token to purchase=${tokenInput} USDT=${investmentInput}`);
     }
   };
 
@@ -178,7 +204,7 @@ export default function Asset(props) {
       <AssetDetail
         admin={location.state.admin}
         account={user ? user.address : ""}
-        balance={balance}
+        balance={usdtBalance}
         id={asset._id}
         tokenId={asset.tokenId}
         image={asset.image}

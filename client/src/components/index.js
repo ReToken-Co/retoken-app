@@ -7,4 +7,4 @@ export { default as InputForm } from './InputForm/InputForm';
 export { default as AssetCard } from './AssetCard/AssetCard';
 export { default as AssetDetail } from './AssetDetail/AssetDetail';
 export { default as Sidebar } from './Sidebar/Sidebar';
-
+export { default as UserSidebar } from './UserSidebar/UserSidebar';

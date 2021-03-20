@@ -1,65 +1,46 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { AssetCard, Sidebar, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
+import { UserContext } from "../context/UserContext";
 import { TransactionContext } from "../context/TransactionContext";
 import { ContractContext } from "../context/ContractContext";
 
 export default function Admin() {
+  const location = useLocation();
   const { assets, assetDispatch } = useContext(AssetContext);
   const { transactionDispatch } = useContext(TransactionContext);
-  const [propertyStatus, setPropertyStatus] = useState(0);
-  const [pageReload, setPageReload] = useState(true);
-  const { account, initAccount, logicOneContract, initLogicOne } = useContext(
-    ContractContext
-  );
+  const { logicOneContract, initLogicOne } = useContext(ContractContext);
+  const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const [assetType, setAssetType] = useState(0);
 
   useEffect(() => {
     const getAssets = async () => {
       await assetDispatch({ type: "GET_ASSETS" });
     };
-      getAssets().then(() => {
-        setPropertyStatus(0)
-        setPageReload(true)
-        console.log(`setpage = true ${JSON.stringify(assets)}`)
-      });
-  }, [pageReload]);
-
-  //  console.log (`admin asset ${JSON.stringify(assets)}`)
-  useEffect(() => {
-    // Get instance of asset
-    const getAssets = async () => {
-      await assetDispatch({ type: "GET_ASSETS" });
-    };
-    if (assets === undefined || !assets)
-      getAssets().then(() => {
-      });
-  }, [assets]);
+    getAssets().then(() => {
+      setLoading(false);
+      console.log(`setpage = true ${assets}`);
+    });
+  }, [loading]);
 
   useEffect(() => {
-    // Get instance of contract
+    // Set LogicOneContract state
     const getLogicOneContract = async () => {
       await initLogicOne();
     };
     if (logicOneContract === undefined || !logicOneContract)
-      getLogicOneContract().then(() => {
-        console.log(`UE logi1 ${logicOneContract}`);
-      });
-  }, [logicOneContract]);
+      getLogicOneContract();
+  }, []);
 
   useEffect(() => {
-    // Get web3 account address
-    const getAccount = async () => {
-      await initAccount();
-    };
-    if (account === undefined || !account)
-      getAccount().then(() => {
-        console.log(`UE acct ${account}`);
-      });
-  }, [account]);
-
-  const updateStatusInput = (_statusInput) => {
-    setPropertyStatus(_statusInput);
-  };
+    if (location !== undefined && location.state !== undefined) {
+      setAssetType(location.state.assetStatus);
+    } else {
+      setAssetType(0);
+    }
+  }, [location]);
 
   // Publish Asset - Add asset to smart contract
   const publishAsset = async (e) => {
@@ -68,8 +49,8 @@ export default function Admin() {
     const id = e.target.id;
     const asset = assets.find((_asset) => _asset._id === id);
 
-    console.log(`publish asset\ne assetID=${id}, account=${account}, 
-      owner=${asset.owner}, # of Token=${asset.noOfToken}, 
+    console.log(`publish asset assetID=${id}, account=${user.address}, 
+      owner=${asset.owner}, # Token=${asset.noOfToken}, 
       owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
       IPhash=${asset.invProspectHash}, 
       contract=${logicOneContract}`);
@@ -80,7 +61,7 @@ export default function Admin() {
       console.log(`logi ${JSON.stringify(logicOneContract)}`);
     }
 
-    if (asset && logicOneContract && account) {
+    if (asset && logicOneContract && user) {
       const result = await logicOneContract.methods
         .mintToken(
           asset.owner,
@@ -89,7 +70,7 @@ export default function Admin() {
           asset.valuationHash,
           asset.invProspectHash
         )
-        .send({ from: account });
+        .send({ from: user.address });
       console.log(
         `mintToken result ${result.transactionHash} ${result.events.RETokenID.returnValues.id}
         ${result.events.RETokenID.returnValues.timestamp} `
@@ -108,7 +89,7 @@ export default function Admin() {
         },
       });
 
-      setPageReload(false); // trigger UseEffect for pageReload
+      setLoading(true); // trigger UseEffect for pageloading
 
       // Update properties State & DB
       const _subscription = (
@@ -125,11 +106,8 @@ export default function Admin() {
           tokenId: Number(result.events.RETokenID.returnValues.id),
         },
       });
-
-      //      console.log(`updated asset ${asset.owner} ${asset._id} ${asset.ownerSubscription}
-      //        ${result.transactionHash} `)
     } else {
-      console.log(`missing data for smart contract:\ne assetID=${id}, account=${account}, 
+      console.log(`missing data for smart contract:\ne assetID=${id}, account=${user.address}, 
       owner=${asset.owner}, # of Token=${asset.noOfToken}, 
       owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
       IPhash=${asset.invProspectHash}, 
@@ -140,11 +118,19 @@ export default function Admin() {
   return (
     <>
       <Navbar admin={"true"} />
-      <Sidebar updateStatusInput={updateStatusInput} />
+      <Sidebar />
       <br />
-      {pageReload ? (
+      {loading ? (
+        <>
+          <div>
+            <p style={{ marginLeft: "500px", marginTop: "200px" }}>
+              Please refresh Page.....
+            </p>
+          </div>
+        </>
+      ) : (
         assets
-          .filter((_assettemp) => _assettemp.status === propertyStatus)
+          .filter((_assettemp) => _assettemp.status === assetType)
           .map((_asset, index) => (
             <div className="asset" key={index}>
               <AssetCard
@@ -183,12 +169,6 @@ export default function Admin() {
               <br />
             </div>
           ))
-      ) : (
-        <>
-          <div>
-            <p style={{ marginLeft: "500px", marginTop: "200px" }}>Please refresh Page.....</p>
-          </div>
-        </>
       )}
     </>
   );

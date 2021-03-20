@@ -17,27 +17,29 @@ const UserContextProvider = (props) => {
       // Get connected wallet address
       const accounts = await web3.eth.getAccounts();
 
-      // find user record in db
-      axios
-        .get(`/users/findByAddress`, {
-          params: { address: accounts[0].toString() },
-        })
-        .then((res) => {
-          console.log(`user ${JSON.stringify(res.data)}`);
-          // Set State
-          setUser(res.data);
-        })
-        .catch((err) => {
-          console.log(`Error retrieving user data ${err}`);
-        });
+      if (accounts && accounts.length > 0) {
+        // find user record in db
+        axios
+          .get(`/users/findByAddress`, {
+            params: { address: accounts[0].toString() },
+          })
+          .then((res) => {
+            console.log(`getUser ${JSON.stringify(res.data)}`);
+            // Set State
+            setUser(res.data);
+          })
+          .catch((err) => {
+            console.log(`Error retrieving user data ${err}`);
+          });
 
-      const _balance = Number(
-        await web3.utils.fromWei(
-          (await web3.eth.getBalance(accounts[0])).toString(),
-          "ether"
-        )
-      ).toFixed(4);
-      setBalance(_balance);
+        const _balance = Number(
+          await web3.utils.fromWei(
+            (await web3.eth.getBalance(accounts[0])).toString(),
+            "ether"
+          )
+        ).toFixed(4);
+        setBalance(_balance);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -46,9 +48,9 @@ const UserContextProvider = (props) => {
   const getAccount = async () => {
     try {
       const web3 = await getWeb3();
-      // Get connected wallet address
       const accounts = await web3.eth.getAccounts();
-      setAccount(accounts[0]);
+
+      if (accounts && accounts.length > 0) setAccount(accounts[0]);
     } catch (error) {
       console.error(error);
     }
@@ -59,23 +61,26 @@ const UserContextProvider = (props) => {
       const web3 = await getWeb3();
       // Get balance of connected wallet
       const accounts = await web3.eth.getAccounts();
-      setBalance(
-        Number(
-          await web3.utils.fromWei(
-            (await web3.eth.getBalance(accounts[0])).toString(),
-            "ether"
-          )
-        ).toFixed(4)
-      );
-      console.log(`getbal ${balance}`);
-      return balance;
+      if (accounts && accounts.length > 0) {
+        setBalance(
+          Number(
+            await web3.utils.fromWei(
+              (await web3.eth.getBalance(accounts[0])).toString(),
+              "ether"
+            )
+          ).toFixed(4)
+        );
+        console.log(`getbal ${balance}`);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, getUser, account, getAccount, balance, getBal }}>
+    <UserContext.Provider
+      value={{ user, getUser, account, getAccount, balance, getBal }}
+    >
       {props.children}
     </UserContext.Provider>
   );

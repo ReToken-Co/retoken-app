@@ -17,9 +17,6 @@ export default function AssetDetail(props) {
   const classes = useStyles();
 
   const RenderButton = () => {
-    console.log(
-      `btn ${props.id} ${props.status} ${props.account}`
-    );
 
     if (props.status === 1) {
       /* Active listing */

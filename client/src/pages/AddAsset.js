@@ -41,7 +41,7 @@ export default function AddAsset() {
   return (
     <>
       <Navbar />
-      <InputForm owner={user.address} addAsset={addAssetDB} />
+      <InputForm owner={ user ? user.address : "" } addAsset={addAssetDB} />
     </>
   );
 }

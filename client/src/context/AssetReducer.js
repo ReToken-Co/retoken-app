@@ -10,7 +10,7 @@ const AssetReducer = (state, action) => {
           res.data.forEach((data) => {
             assets.push(data);
           });
-          //          console.log(`data ${JSON.stringify(assets)}`);
+          console.log(`getAssets ${assets}`);
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
@@ -27,7 +27,7 @@ const AssetReducer = (state, action) => {
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-      return {};
+      return state;
 
     case "ADD_ASSET":
       console.log(`b4 add ${JSON.stringify(action.payload)}`);

@@ -2,23 +2,18 @@ import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { AssetDetail, Navbar } from "../components";
 import { AssetContext } from "../context/AssetContext";
-import { TransactionContext } from "../context/TransactionContext";
 import { UserContext } from "../context/UserContext";
+import { TransactionContext } from "../context/TransactionContext";
 import { ContractContext } from "../context/ContractContext";
 
-export default function Asset(props) {
+export default function Asset() {
   const { assetDispatch } = useContext(AssetContext);
   const { transactionDispatch } = useContext(TransactionContext);
-  const { user, getUser, balance } = useContext(UserContext);
-  const {
-    account,
-    initAccount,
-    logicTwoContract,
-    initLogicTwo,
-    usdtContract,
-    initUSDT,
-  } = useContext(ContractContext);
-  const [asset, setAsset] = useState([]); // array stores all bids of the asset
+  const { user } = useContext(UserContext);
+  const { logicTwoContract, initLogicTwo, usdtContract, initUSDT } = useContext(
+    ContractContext
+  );
+  const [asset, setAsset] = useState([]); // state of 1 selected asset
   const [usdtBalance, setUsdtBalance] = useState(0);
   const [tokenInput, setTokenInput] = useState(0);
   const [investmentInput, setInvestmentInput] = useState(0);
@@ -27,8 +22,22 @@ export default function Asset(props) {
 
   // every render or change in location
   useEffect(() => {
-    let selectedAsset = {};
+    // Set LogicTwoContract state
+    const getLogicTwoContract = async () => {
+      await initLogicTwo();
+    };
+    if (logicTwoContract === undefined || !logicTwoContract)
+      getLogicTwoContract()
 
+    // Set USDTContract state
+    const getUSDTContract = async () => {
+      await initUSDT();
+    };
+    if (usdtContract === undefined || !usdtContract)
+      getUSDTContract()
+
+    // Set asset state
+    let selectedAsset = {};
     if (location !== undefined) {
       // setAsset from location data
       selectedAsset = {
@@ -71,65 +80,30 @@ export default function Asset(props) {
     }
 
     // set asset State
-    console.log(`selected assets ${JSON.stringify(
-      selectedAsset
-    )} ${JSON.stringify(user)}
-    ${location.state.admin}`);
+    console.log(
+      `selected assets ${selectedAsset} ${JSON.stringify(user)} ${
+        location.state.admin
+      }`
+    );
     setAsset(selectedAsset);
-  }, [location]);
+  }, []);
 
   useEffect(() => {
-    // Get balance of account
-    const fetchUser = async () => {
-      await getUser();
-    };
-    if (user === undefined || !user)
-      fetchUser().then(() => {
-        //      console.log(`user ${JSON.stringify(user)} ${balance}`)
-      });
-  }, [user]);
-
-  useEffect(() => {
-    // Get instance of contract
-    const getLogicTwoContract = async () => {
-      await initLogicTwo();
-    };
-    if (logicTwoContract === undefined || !logicTwoContract)
-      getLogicTwoContract().then(() => {
-        console.log(`UE logi2 ${logicTwoContract}`);
-      });
-  }, [logicTwoContract]);
-
-  useEffect(() => {
-    // Get web3 account address
-    const getAccount = async () => {
-      await initAccount();
-    };
-    if (account === undefined || !account)
-      getAccount().then(() => {
-        console.log(`UE acct ${account}`);
-      });
-  }, [account]);
-
-  useEffect(() => {
-    // Get web3 account address
+    // set USDT balance state
     const getUsdtBalance = async () => {
-      if (usdtContract === undefined || !usdtContract) await initUSDT();
-      if (account === undefined || !account) await initAccount();
-
-      if (usdtContract && account) { 
-        const result = await usdtContract.methods.balanceOf(account).call();
+      if (usdtContract && user) {
+        const result = await usdtContract.methods
+          .balanceOf(user.address)
+          .call();
         let balance = result / 1000000000000000000;
         setUsdtBalance(balance);
-      }
-      else {
-        console.log(`missing data for smart contract: account=${account}, 
-        contract=${usdtContract}`);
+        localStorage.setItem("USDTBalance", balance);
+      } else {
+        console.log(`missing data for smart contract: account=${ user ? user.address : undefined }, contract=${usdtContract}`);
       }
     };
-    getUsdtBalance()
-
-  }, [usdtBalance]);
+    getUsdtBalance();
+  }, [user, usdtContract]);
 
   const purchaseToken = async (e) => {
     e.preventDefault();
@@ -145,22 +119,26 @@ export default function Asset(props) {
         ${logicTwoContract}`
     );
 
-    if (asset && logicTwoContract && account) {
+    if (asset && logicTwoContract && user) {
       // Buy Property Token
       const result = await logicTwoContract.methods
         .buyToken(asset.tokenId, tokenInput, investmentInput)
-        .send({ from: account });
+        .send({ from: user.address });
 
       console.log(`BuyToken result ${result.transactionHash} 
       ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
 
+      localStorage.setItem(
+        "USDTBalance",
+        localStorage.getItem("USDTBalance") - investmentInput
+      );
       setUsdtBalance(usdtBalance - investmentInput);
 
       // Add transaction State & DB
       await transactionDispatch({
         type: "ADD_TRANSACTION",
         payload: {
-          investor: account,
+          investor: user.address,
           propertyId: asset._id,
           noOfToken: tokenInput,
           transactionHash: result.transactionHash,
@@ -169,9 +147,10 @@ export default function Asset(props) {
         },
       });
 
-      const _subscription = (
-        (((asset.subscription / 100) * asset.noOfToken + tokenInput) /
-          asset.noOfToken) ).toFixed(1);
+      const _subscription = (((asset.subscription / 100 * asset.noOfToken) + tokenInput) / asset.noOfToken * 100 ).toFixed(1);
+//      console.log(`subscription  ${asset.subscription}  ${asset.noOfToken} ${tokenInput} ${_subscription}`)
+      setAsset({ ...asset, subscription: _subscription })
+
       // Update properties State & DB
       assetDispatch({
         type: "UPDATE_ASSET",
@@ -181,11 +160,15 @@ export default function Asset(props) {
         },
       });
 
-      console.log(`updated asset ${account} ${asset._id} ${_subscription}
+      console.log(`updated asset ${user.address} ${asset._id} ${_subscription}
               ${result.transactionHash} `);
     } else {
-      console.log(`missing data for smart contract:\ne assetID=${asset._id}, account=${account}, 
-      tokenID=${asset.tokenId} # of token to purchase=${tokenInput} USDT=${investmentInput}`);
+      console.log(`missing data for smart contract:\ne assetID=${
+        asset._id
+      }, account=${user ? user.address : undefined}, 
+      tokenID=${
+        asset ? asset.tokenId : undefined
+      } # of token to purchase=${tokenInput} USDT=${investmentInput}`);
     }
   };
 
@@ -193,10 +176,16 @@ export default function Asset(props) {
   const updateTokenInput = (_tokenInput) => {
     setTokenInput(_tokenInput);
     setInvestmentInput(_tokenInput * asset.pricePerToken);
-    setIncomeInput(
-      (_tokenInput * asset.pricePerToken * asset.expectedYield) / 100
-    );
+    setIncomeInput( (_tokenInput * asset.pricePerToken * asset.expectedYield) / 100 );
   };
+
+  if (!asset) {
+    return (
+      <div>
+        <h1 style={{ marginLeft: "500px" }}>Refresh Page Please....</h1>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -204,7 +193,9 @@ export default function Asset(props) {
       <AssetDetail
         admin={location.state.admin}
         account={user ? user.address : ""}
-        balance={usdtBalance}
+        balance={
+          usdtBalance > 0 ? localStorage.getItem("USDTBalance") : usdtBalance
+        }
         id={asset._id}
         tokenId={asset.tokenId}
         image={asset.image}

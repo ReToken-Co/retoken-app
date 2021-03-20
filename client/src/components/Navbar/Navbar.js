@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { AssetContext } from "../../context/AssetContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { Button } from "../../globalStyles";
@@ -19,6 +20,7 @@ import {
 
 export default function Navbar(props) {
   const { user, getUser } = useContext(UserContext);
+  const { assets, assetDispatch } = useContext(AssetContext);
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -38,15 +40,15 @@ export default function Navbar(props) {
   }, []);
 
   useEffect(() => {
-    // Get balance of account
-    const fetchUser = async () => {
-      await getUser()
-    }
-    if (user === undefined || !user) 
-      fetchUser().then(() => {
-//      console.log(`user ${JSON.stringify(user)} ${balance}`)
-      })
-  }, [user]);
+
+    // Set user state if state is undefined
+    const fetchUser = async () => await getUser();
+    const getAssets = async () => await assetDispatch({ type: "GET_ASSETS" });
+
+    console.log(user ? `navbar ${user.name} ${assets.length}` : `navbar user undefined  ${assets.length}`);
+    if (!user) fetchUser();
+    if (!assets) getAssets();
+  }, []);
 
   window.addEventListener("resize", showButton);
 
@@ -62,7 +64,9 @@ export default function Navbar(props) {
               REToken
             </NavLogo>
             <NavText admin={props.admin}>
-              {user ? `Welcome ${user.name}` : `You are not registered`}
+              {user
+                ? `Welcome ${user.name}`
+                : `You are not registered or login to wallet`}
             </NavText>
             <MobileIcon onClick={handleClick}>
               {click ? <FaTimes /> : <FaBars />}

@@ -6,13 +6,14 @@ import { AssetContext } from "../context/AssetContext";
 
 export default function EditAsset() {
   const { assetDispatch } = useContext(AssetContext);
-  const [asset, setAsset] = useState([]); // array stores all bids of the asset
+  const [asset, setAsset] = useState([]); // state of 1 selected asset
   const location = useLocation();
   const history = useHistory();
 
   useEffect(() => {
-    let selectedAsset = {};
 
+    // Set asset state
+    let selectedAsset = {};
     if (location !== undefined) {
       // setAsset from location data
       selectedAsset = {
@@ -44,7 +45,6 @@ export default function EditAsset() {
         annualExpense: location.state.annualExpense,
         noi: location.state.noi,
         expectedYield: location.state.expectedYield,
-        account: location.state.account,
       };
       localStorage.setItem("AssetId", location.state.id);
     } else {

@@ -39,8 +39,6 @@ export default function InputForm(props) {
   const { control, handleSubmit, setValue } = useForm({ defaultValues });
   const classes = useStyles();
 
-//  console.log(`input ${props.admin} ${props.owner}`);
-
   useEffect(() => {
     if (props) {
       setValue("owner", props.owner);

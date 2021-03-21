@@ -17,7 +17,6 @@ export default function AppAdmin() {
     const [tokenBalance, setTokenBalance] = useState(0);
     const [newToken, setNewToken] = useState(0);
     const [buyToken, setBuyToken] = useState(0);
-    const [propertyStatus, setPropertyStatus] = useState(0);
 
     useEffect(() => {
         // Get instance of usdt contract
@@ -242,14 +241,10 @@ export default function AppAdmin() {
         setBuyToken(`${result.events.RETokenUSDT.returnValues[2]} of Token ID ${result.events.RETokenUSDT.returnValues[1]} bought.`);
     }
 
-    const updateStatusInput = (_statusInput) => {
-        setPropertyStatus(_statusInput);
-      };
-        
     return (
         <>
             <Navbar admin={"true"} />
-            <Sidebar updateStatusInput={updateStatusInput} />
+            <Sidebar />
             <br />
             <div><p style={{ marginLeft: '500px' }}>
                 <p><button onClick={displayUSDTBalance}>USDT Balance</button> : <b>{

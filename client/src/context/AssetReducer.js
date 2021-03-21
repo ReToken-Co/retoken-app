@@ -35,7 +35,7 @@ const AssetReducer = (state, action) => {
         .post(`/properties/add`, action.payload)
         .then((res) => {
           console.log(`add ${JSON.stringify(res.data)}`);
-          return res.data;
+          return ( res.data )
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);

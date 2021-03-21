@@ -12,6 +12,10 @@ import Asset from "./pages/Asset";
 import Admin from "./pages/Admin";
 import AppAdmin from "./pages/AppAdmin";
 import EditAsset from "./pages/EditAsset";
+import MyPortfolio from "./pages/MyPortfolio/MyPortfolio";
+import Investments from "./pages/Investments/Investments";
+import Account from "./pages/Account/Account";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -30,6 +34,10 @@ function App() {
                   <Route path="/asset" exact component={Asset} />
                   <Route path="/asset/:id" component={Asset} />
                   <Route path="/editasset" component={EditAsset} />
+                  <Route path="/myPortfolio" component={MyPortfolio} />
+                  <Route path="/investments" component={Investments} />
+                  <Route path="/account" component={Account} />
+                  <Route path="/settings" component={Settings} />
                 </Switch>
               </Router>
             </TransactionContextProvider>

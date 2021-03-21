@@ -8,4 +8,5 @@ export { default as InvestmentTable1 } from './InvestmentTable1/InvestmentTable1
 export { default as AssetCard } from './AssetCard/AssetCard';
 export { default as AssetDetail } from './AssetDetail/AssetDetail';
 export { default as Sidebar } from './Sidebar/Sidebar';
+export { default as UserSidebar } from './UserSidebar/UserSidebar';
 

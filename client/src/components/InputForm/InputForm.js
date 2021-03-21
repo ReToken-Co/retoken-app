@@ -5,6 +5,8 @@ import {
   TextField,
   Typography,
   Grid,
+  MenuItem,
+  InputAdornment,
 } from "@material-ui/core";
 import { Button } from "../../globalStyles";
 import { InputContainer, useStyles } from "./InputForm.style";
@@ -38,6 +40,15 @@ export default function InputForm(props) {
   }
   const { control, handleSubmit, setValue } = useForm({ defaultValues });
   const classes = useStyles();
+  const propType = [
+    { value: "F&B", label: "F&B", },
+    { value: "Hospitality", label: "Hospitality", },
+    { value: "Industrial", label: "Industrial", },
+    { value: "Office", label: "Office", },
+    { value: "Retail", label: "Retail", },
+    { value: "Shophouse", label: "Shophouse", },
+  ]
+
 
   useEffect(() => {
     if (props) {
@@ -92,7 +103,7 @@ export default function InputForm(props) {
               <TextField id="owner" label="Owner" variant="outlined" InputLabelProps={{ shrink: true }} disabled fullWidth className={classes.margin} />
             } />
             <Controller name="street" control={control} as={
-              <TextField id="street" label="Street" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+              <TextField id="street" label="Street" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} required />
             } />
             <Controller name="city" control={control} as={
               <TextField id="city" label="City" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
@@ -101,10 +112,10 @@ export default function InputForm(props) {
               <TextField id="state" label="State/Province" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
             } />
             <Controller name="country" control={control} as={
-              <TextField id="country" label="Country" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+              <TextField id="country" label="Country" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} required />
             } />
             <Controller name="zipCode" control={control} as={
-              <TextField id="zipCode" label="Zip Code" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+              <TextField id="zipCode" label="Zip Code" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} required />
             } />
             <Controller name="image" control={control} as={
               <TextField id="image" label="Image File" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
@@ -123,7 +134,7 @@ export default function InputForm(props) {
               <TextField id="description" label="Description" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth multiline rows={8} className={classes.margin} />
             } />
             <Controller name="askingPrice" control={control} as={
-              <TextField id="askingPrice" label="Asking Price" variant="outlined" InputLabelProps={{ shrink: true }} helperText="in (USD)" className={classes.margin} />
+              <TextField id="askingPrice" label="Asking Price" variant="outlined" InputLabelProps={{ shrink: true }} helperText="in (USD)" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
             } />
             {props.admin && (
               <Controller name="noOfToken" control={control} as={
@@ -148,18 +159,23 @@ export default function InputForm(props) {
                 <Typography className={classes.margin} variant="h6">Property Highlights</Typography>
               </Grid>
               <Grid item xs>
-                <Controller name="propertyType" control={control} as={
-                  <TextField id="propertyType" label="Property Type" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
-                } />
+              <Controller name="propertyType" control={control} as={
+                  <TextField id="propertyType" label="Property Type" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} select value={propType} style={{width: "140px"}} >
+                  {propType.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField> } />
               </Grid>
               <Grid item xs>
                 <Controller name="builtSize" control={control} as={
-                  <TextField id="builtSize" label="Building Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="builtSize" label="Building Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ endAdornment: <InputAdornment position="end">sq ft</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="landSize" control={control} as={
-                  <TextField id="landSize" label="Land Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="landSize" label="Land Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ endAdornment: <InputAdornment position="end">sq ft</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs>
@@ -169,7 +185,7 @@ export default function InputForm(props) {
               </Grid>
               <Grid item xs>
                 <Controller name="occupancy" control={control} as={
-                  <TextField id="occupancy" label="Occupancy (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="occupancy" label="Occupancy (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs={12}></Grid>
@@ -183,22 +199,22 @@ export default function InputForm(props) {
               </Grid>
               <Grid item xs>
                 <Controller name="annualGrossRent" control={control} as={
-                  <TextField id="annualGrossRent" label="Gross Rent/year" variant="outlined" InputLabelProps={{ shrink: true }} helperText="rolling 12 months" className={classes.margin} />
+                  <TextField id="annualGrossRent" label="Gross Rent/year" variant="outlined" InputLabelProps={{ shrink: true }} helperText="rolling 12 months" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="annualExpense" control={control} as={
-                  <TextField id="annualExpense" label="Annual Expenses" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="annualExpense" label="Annual Expenses" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="noi" control={control} as={
-                  <TextField id="noi" label="NOI" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="noi" label="NOI" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="expectedYield" control={control} as={
-                  <TextField id="expectedYield" label="Expected Yield (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
+                  <TextField id="expectedYield" label="Expected Yield (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ startAdornment: <InputAdornment position="start">%</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs={12}></Grid>

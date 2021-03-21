@@ -17,7 +17,7 @@ export default function AssetCard(props) {
 
   const getAsset = (e) => {
     e.preventDefault()
-    console.log(`assetcard ${JSON.stringify(props)}`)
+//    console.log(`assetcard ${JSON.stringify(props)}`)
     history.push({
       pathname: props.admin && props.status === 0 ? "/editasset" : "/asset",
       search: `?id=${e.target.id}`,

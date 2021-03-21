@@ -134,7 +134,7 @@ export default function InputForm(props) {
               <TextField id="description" label="Description" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth multiline rows={8} className={classes.margin} />
             } />
             <Controller name="askingPrice" control={control} as={
-              <TextField id="askingPrice" label="Asking Price" variant="outlined" InputLabelProps={{ shrink: true }} helperText="in (USD)" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
+              <TextField id="askingPrice" label="Asking Price" variant="outlined" InputLabelProps={{ shrink: true }} helperText="in (USD)" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
             } />
             {props.admin && (
               <Controller name="noOfToken" control={control} as={
@@ -199,22 +199,22 @@ export default function InputForm(props) {
               </Grid>
               <Grid item xs>
                 <Controller name="annualGrossRent" control={control} as={
-                  <TextField id="annualGrossRent" label="Gross Rent/year" variant="outlined" InputLabelProps={{ shrink: true }} helperText="rolling 12 months" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
+                  <TextField id="annualGrossRent" label="Gross Rent/year" variant="outlined" InputLabelProps={{ shrink: true }} helperText="rolling 12 months" className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="annualExpense" control={control} as={
-                  <TextField id="annualExpense" label="Annual Expenses" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
+                  <TextField id="annualExpense" label="Annual Expenses" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="noi" control={control} as={
-                  <TextField id="noi" label="NOI" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">US$</InputAdornment> }} />
+                  <TextField id="noi" label="NOI" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
                 } />
               </Grid>
               <Grid item xs>
                 <Controller name="expectedYield" control={control} as={
-                  <TextField id="expectedYield" label="Expected Yield (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ startAdornment: <InputAdornment position="start">%</InputAdornment> }}/>
+                  <TextField id="expectedYield" label="Expected Yield (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ endAdornment: <InputAdornment position="start">%</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs={12}></Grid>

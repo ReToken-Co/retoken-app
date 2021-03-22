@@ -1,15 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Sidebar,
   SidebarMenu,
   SidebarItem,
   SidebarLinks,
-  SidebarChild,
-  SidebarRef,
   useStyles,
 } from "./Sidebar.style";
-
 import {
   TextField,
   MenuItem,
@@ -18,7 +15,6 @@ import {
 export default function SideBar() {
   const history = useHistory();
   const classes = useStyles();
-
   const [visibleValue, setVisibleValue] = useState(0);
   const propSelect = [
     { value: "pending", label: "Pending", },
@@ -27,9 +23,8 @@ export default function SideBar() {
   ]
 
   const handleClick = (e) => {
-    setVisibleValue(e.target.value);
     e.preventDefault();
-    switch (e.target.value) {
+    switch (e.target.id) {
       case "pending":
         history.push({
           pathname: "/admin",

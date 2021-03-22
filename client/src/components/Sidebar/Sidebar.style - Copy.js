@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
-import { makeStyles, createMuiTheme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 export const Sidebar = styled.div`
     background-color: #393d49;
@@ -21,7 +20,7 @@ export const SideScroll = styled.div`
     width: 220px;
     height: 100%;
     overflow-x: hidden;
-`;
+`;  
 
 export const SidebarMenu = styled.ul`
     position: absolute;
@@ -74,7 +73,6 @@ export const SidebarRef = styled.a`
         color: #4b4d63;
         transition: all 0.3s ease;
       }
-  
 `;
 
 export const SidebarLinks = styled(Link)`
@@ -87,25 +85,24 @@ export const SidebarLinks = styled(Link)`
         color: #4b4d63;
         transition: all 0.3s ease;
       }
-  
 `;
 
 export const useStyles = makeStyles({
-  root: {
-    width: 200,
-
-    "& .MuiInputLabel-root": {
-      color: "#fff"
+    root: {
+      width: 200,
+  
+      "& .MuiInputLabel-root": {
+        color: "#fff"
+      },
+      "&:hover .MuiInputLabel-root": {
+        color: "#4e5465"
+      },
+  
+      "& .MuiFormLabel-root": {
+        color: "#fff"
+      },
     },
-    "&:hover .MuiInputLabel-root": {
-      color: "#4e5465"
-    },
-
-    "& .MuiFormLabel-root": {
-      color: "#fff"
-    },
-  },
-  input: {
-    color: 'white'
-  }
-});
+    input: {
+      color: 'white'
+    }
+  });

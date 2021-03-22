@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 
 export default function Marketplace() {
   const { assets } = useContext(AssetContext);
-  const { user } = useContext(UserContext);
+//  const { user } = useContext(UserContext);
 
   useEffect(() => {}, [assets]);
 

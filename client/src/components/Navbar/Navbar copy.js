@@ -152,6 +152,7 @@ export default function Navbar(props) {
                   </NavBtnLink>
                 )}
               </NavItemBtn>
+              <NavItemBtn>{RenderRegisterButton()}</NavItemBtn>
             </NavMenu>
           </NavbarContainer>
         </Nav>

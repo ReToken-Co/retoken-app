@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 const user = {
-  avatar: '/images/avatars/avatar_1.png',
+  avatar: 'avatars/avatar_1.png',
   country: 'Singapore',
   name: 'Andrea Lee'
 };

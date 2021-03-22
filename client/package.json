@@ -7,7 +7,6 @@
     "@material-ui/data-grid": "^4.0.0-alpha.22",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@openzeppelin/contracts-upgradeable": "^3.4.1",
     "@truffle/contract": "^4.3.8",
     "@truffle/hdwallet-provider": "^1.2.3",
     "axios": "^0.21.1",

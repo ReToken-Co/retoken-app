@@ -12,16 +12,18 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function UserRegister() {
+export default function UserRegister(props) {
   const { user, addUser } = useContext(UserContext);
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
-    if (!user || !user.name) setOpen(true);
-    else setOpen(false);
-  }, [user]);
+    if (props.signUp)
+      setOpen(true)
+//    else if (!user || !user.name) setOpen(true);
+//    else setOpen(false);
+  }, []);
 
   const handleSubmit = async (e) => {
     const _user = {
@@ -31,6 +33,7 @@ export default function UserRegister() {
       role: "user"
     }
     await addUser(_user)
+
   }
 
   const handleClose = (data) => {

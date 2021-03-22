@@ -8,6 +8,7 @@ import {
   TextWrapper,
   TopLine,
   Heading,
+  Heading2,
   Subtitle,
   ImgWrapper,
   Img,
@@ -21,6 +22,7 @@ export default function InfoSection({
   lightText,
   lightTextDesc,
   headline,
+  headline2,
   description,
   linkTo,
   buttonLabel,
@@ -41,8 +43,9 @@ export default function InfoSection({
             </Grid>
             <Grid item xs={3}>
               <TextWrapper>
-                <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
+              <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
                 <Heading lightText={lightText}>{headline}</Heading>
+                <Heading2 lightText={lightText}>{headline2}</Heading2>
                 <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
                 <Link to={linkTo}>
                   <Button big fontBig primary={primary}>

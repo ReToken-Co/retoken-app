@@ -4,6 +4,7 @@ pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
 import "./libraries/AccessControlUpgradeable.sol";
+import "./libraries/PausableUpgradeable.sol";
 import './RETokenStorageOne.sol';
 
 /**
@@ -16,7 +17,7 @@ import './RETokenStorageOne.sol';
  * 2. Add mintToken() function for Admin to create new token.
  */ 
 
-contract LogicOne is AccessControlUpgradeable, RETokenStorageOne {
+contract LogicOne is AccessControlUpgradeable, PausableUpgradeable, RETokenStorageOne {
     
     /**
      * @dev Ver.1 Throws if called by any account without ADMIN_ROLE access.
@@ -61,13 +62,18 @@ contract LogicOne is AccessControlUpgradeable, RETokenStorageOne {
      * Emits a {RETokenID} event.
      * Emits two {TransferSingle} events via ERC1155 library.
      *
+     * Requirements:
+     * - `legalContr` must not have been used for another token ID.
+     *
      * @param assetOwner - Asset Owner wallet address
      * @param totalAmt - Total number of tokens for unique token ID
      * @param ownerAmt - Total number of tokens for Asset Owner
      * @param valueRpt - File Hash of Valuation Report
      * @param legalContr - File Hash of Legal Contract
      */
-    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr) external onlyAdmin {
+    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr) external onlyAdmin whenNotPaused {
+        require(_legalContracts[legalContr] == 0, "This asset has already been tokenized.");
+
         RETokenStorageOne.incrementTokenId();
         
         uint256 newTokenId = _tokenID;
@@ -81,6 +87,8 @@ contract LogicOne is AccessControlUpgradeable, RETokenStorageOne {
         token.owner = assetOwner;
         token.valuationReport = valueRpt;
         token.legalContract = legalContr;
+
+        _legalContracts[legalContr] = _tokenID;
 
         _mint(proxy_contract, newTokenId, adminAmt, "");
         _mint(assetOwner, newTokenId, ownerAmt, "");

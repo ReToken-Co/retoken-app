@@ -15,7 +15,7 @@ export const homeObjOne = {
     'What is REToken',
   description:
     "REToken is the premier real asset tokenization platform through Blockchain technology to easily divest, invest and own a piece of real assets with complete transparency.",
-  linkTo: '/how-it-work',
+  linkTo: '/howitworks',
   buttonLabel: 'How It Works',
   imgStart: 'start',
   img: require('../../images/visionmission.jpg').default,

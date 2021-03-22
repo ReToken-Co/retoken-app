@@ -6,6 +6,7 @@ import UserContextProvider from "./context/UserContext";
 import TransactionContextProvider from "./context/TransactionContext";
 
 import Home from "./pages/Home/Home";
+import HowItWorks from "./pages/HowItWorks/HowItWorks";
 import AddAsset from "./pages/AddAsset";
 import Marketplace from "./pages/Marketplace";
 import Asset from "./pages/Asset";
@@ -38,6 +39,7 @@ function App() {
                   <Route path="/investments" component={Investments} />
                   <Route path="/account" component={Account} />
                   <Route path="/settings" component={Settings} />
+                  <Route path="/howitworks" component={HowItWorks} />
                 </Switch>
               </Router>
             </TransactionContextProvider>

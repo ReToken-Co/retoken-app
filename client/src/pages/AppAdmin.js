@@ -7,6 +7,7 @@ export default function AppAdmin() {
     const { account, initAccount, usdtContract, initUSDT, proxyContract, initProxy, logicOneContract, initLogicOne, logicTwoContract, initLogicTwo } = useContext(ContractContext);
 
     const [balanceUSDT, setBalanceUSDT] = useState(0);
+    const [pause, setPause] = useState(0);
     const [logicContr, setLogicContr] = useState(0);
     const [adminAccess, setAdminAccess] = useState(0);
     const [tokenID, setTokenID] = useState(0);
@@ -61,6 +62,23 @@ export default function AppAdmin() {
         let balance = result / 1000000000000000000;
         let balanceString = balance.toString();
         setBalanceUSDT(balanceString);
+    }
+
+    // pause the contract (only via Proxy contract)
+    const pauseContract = async () => {
+        await proxyContract.methods.pause().send({ from: account });
+    }
+
+    // unpause the contract (only via Proxy contract)
+    const unPauseContract = async () => {
+        await proxyContract.methods.unpause().send({ from: account });
+    }
+
+    // display if the contract is paused (only via Proxy contract)
+    const displayPauseStatus = async () => {
+        const result = await proxyContract.methods.paused().call();
+        let pauseString = result.toString();
+        setPause(pauseString);
     }
 
     // display the current logic contract set (only via Proxy contract)
@@ -213,8 +231,8 @@ export default function AppAdmin() {
             legCont
         ).send({ from: account });
         console.log(`mintToken result ${JSON.stringify(result)} `)
-        const _time = new Date(result.events.RETokenID.returnValues.timestamp*1000)
-                    .toLocaleDateString("en-US")
+        const _time = new Date(result.events.RETokenID.returnValues.timestamp * 1000)
+            .toLocaleDateString("en-US")
         console.log(`mintToken data 
             ${result.transactionHash}
             ${result.events.RETokenID.returnValues.id}
@@ -246,12 +264,16 @@ export default function AppAdmin() {
             <Navbar admin={"true"} />
             <Sidebar />
             <br />
-            <div><p style={{ marginLeft: '500px' }}>
+            <div style={{ marginLeft: '500px' }}>
                 <p><button onClick={displayUSDTBalance}>USDT Balance</button> : <b>{
                     balanceUSDT === 0 ? `Click on USDT balance button to display USDT balance` : balanceUSDT}</b></p>
                 <br />
 
                 <p><font size="5"><b>Proxy Functions</b></font></p>
+                <p><button onClick={pauseContract}>Pause Contract</button><span> </span>
+                    <button onClick={unPauseContract}>Unpause Contract</button><span> </span>
+                    <button onClick={displayPauseStatus}>Pause Status</button> : <b>{
+                    pause === 0 ? `Click on Pause Status button to see if the contract has been paused` : pause}</b></p>
                 <p><button onClick={displayLogicContr}>Logic Contract</button> : <b>{
                     logicContr === 0 ? `Click on Logic Contract button to see the current Logic Contract set` : logicContr}</b></p>
                 <p><button onClick={checkAdminAccess}>Admin Access</button> : <b>{
@@ -318,7 +340,7 @@ export default function AppAdmin() {
                         <input type="text" name="usdt" size="15" placeholder="Cost in USDT" /><span> </span></p>
                     <input type="submit" value="submit" />
                 </form></p>
-            </p></div>
+            </div>
         </>
     );
 }

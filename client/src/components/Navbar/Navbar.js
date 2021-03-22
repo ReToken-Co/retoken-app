@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../context/UserContext";
-import { AssetContext } from "../../context/AssetContext";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
+import { UserContext } from "../../context/UserContext";
+import { AssetContext } from "../../context/AssetContext";
+import { UserRegister } from "..";
+
 import { Button } from "../../globalStyles";
 import {
   Nav,
@@ -23,6 +25,7 @@ export default function Navbar(props) {
   const { assets, assetDispatch } = useContext(AssetContext);
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [signUp, setSignUp] = useState(false);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -53,19 +56,24 @@ export default function Navbar(props) {
     );
   }, [user]);
 
+  const handleUserRegister = () => {
+    setSignUp(true)
+    if (!button) setClick(false);
+  }
+
   const RenderRegisterButton = () => {
     if (button && user && user.name) {
       return (
-        <NavBtnLink to="/marketplace">
-          <Button primary disabled>
-            Sign Up
+        <NavBtnLink to="/account">
+          <Button primary>
+            Welcome {user.name}
           </Button>
         </NavBtnLink>
       );
     } else if (button && (!user || !user.name)) {
       return (
         <NavBtnLink to="/marketplace">
-          <Button primary>Sign Up</Button>
+          <Button primary  onClick={handleUserRegister}>Sign Up</Button>
         </NavBtnLink>
       );
     } else if (!button && user && user.name) {
@@ -98,7 +106,7 @@ export default function Navbar(props) {
             </NavLogo>
             <NavText admin={props.admin}>
               {user && user.name
-                ? `Welcome ${user.name}`
+                ? ``
                 : `You are not registered or login to wallet`}
             </NavText>
             <MobileIcon onClick={handleClick}>
@@ -156,6 +164,7 @@ export default function Navbar(props) {
           </NavbarContainer>
         </Nav>
       </IconContext.Provider>
+      <UserRegister />
     </>
   );
 }

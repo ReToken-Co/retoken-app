@@ -1,9 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AssetContext } from "../context/AssetContext";
-import { AssetCard, Navbar, Footer } from "../components";
+import { AssetCard, Navbar, Footer, UserRegister } from "../components";
+import { UserContext } from "../context/UserContext";
 
 export default function Marketplace() {
   const { assets } = useContext(AssetContext);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {}, [assets]);
 
   return (
     <>
@@ -47,6 +51,7 @@ export default function Marketplace() {
           </div>
         ))}
       <Footer />
+      <UserRegister />
     </>
   );
 }

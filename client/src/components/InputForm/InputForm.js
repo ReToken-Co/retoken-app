@@ -26,7 +26,7 @@ export default function InputForm(props) {
     pricePerToken: 0,
     ownerSubscription: 0,
     description: "",
-    propertyType: "",
+    propertyType: "Hospitality",
     builtSize: 0,
     landSize: 0,
     yearBuilt: "",
@@ -122,12 +122,12 @@ export default function InputForm(props) {
             } />
             {props.admin && (
               <Controller name="invProspectHash" control={control} as={
-                <TextField id="invProspectHash" label="Investment Prospectus Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+                <TextField id="invProspectHash" label="Investment Prospectus Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} required />
               } />
             )}
             {props.admin && (
               <Controller name="valuationHash" control={control} as={
-                <TextField id="valuationHash" label="Valuation Report Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} />
+                <TextField id="valuationHash" label="Valuation Report Hash" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} required />
               } />
             )}
             <Controller name="description" control={control} as={

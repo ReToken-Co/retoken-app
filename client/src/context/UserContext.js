@@ -11,6 +11,20 @@ const UserContextProvider = (props) => {
   const [account, setAccount] = useState();
   const [balance, setBalance] = useState(0);
 
+  const addUser = async (payload) => {
+    console.log(`add user ${JSON.stringify(payload)}`)
+    axios
+      .post(`/users/add`, payload)
+      .then((res) => {
+        console.log(`New User added: ${JSON.stringify(res.data)}`);
+        // Set State
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(`Error adding new user ${err}`);
+      });
+  };
+
   const getUser = async () => {
     try {
       const web3 = await getWeb3();
@@ -25,8 +39,10 @@ const UserContextProvider = (props) => {
           })
           .then((res) => {
             console.log(`getUser ${JSON.stringify(res.data)}`);
+
             // Set State
-            setUser(res.data);
+            if (res.data) setUser(res.data);
+            else setUser({ address: accounts[0].toString() });
           })
           .catch((err) => {
             console.log(`Error retrieving user data ${err}`);
@@ -79,7 +95,7 @@ const UserContextProvider = (props) => {
 
   return (
     <UserContext.Provider
-      value={{ user, getUser, account, getAccount, balance, getBal }}
+      value={{ user, getUser, addUser, account, getAccount, balance, getBal }}
     >
       {props.children}
     </UserContext.Provider>

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 
 const user = {
-  avatar: '/images/avatars/avatar_1.png',
+  avatar: '/avatars/avatar_1.png',
   name: 'Andrea Lee'
 };
 

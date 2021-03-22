@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { InputForm, Navbar } from "../components";
+import { InputForm, Navbar, AddAssetDialog, UserRegister } from "../components";
 import { AssetContext } from "../context/AssetContext";
 import { UserContext } from "../context/UserContext";
 
@@ -8,6 +8,7 @@ export default function AddAsset() {
   const { assetDispatch } = useContext(AssetContext);
   const { user } = useContext(UserContext);
   const history = useHistory();
+  const [open, setOpen] = useState(false);
 
   const addAssetDB = async (data) => {
     console.log(`addasset ${JSON.stringify(data)}`);
@@ -35,13 +36,20 @@ export default function AddAsset() {
       },
     });
     await assetDispatch({ type: "GET_ASSETS" });
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
     history.push("/marketplace");
   };
 
   return (
     <>
       <Navbar />
-      <InputForm owner={ user ? user.address : "" } addAsset={addAssetDB} />
+      <InputForm owner={user ? user.address : ""} addAsset={addAssetDB} />
+      <AddAssetDialog open={open} handleClose={handleClose} />
+      <UserRegister />
     </>
   );
 }

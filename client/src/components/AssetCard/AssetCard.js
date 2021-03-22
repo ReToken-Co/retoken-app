@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Grid, Paper, ButtonBase } from "@material-ui/core";
 import { Button } from "../../globalStyles";
@@ -14,6 +15,10 @@ import {
 export default function AssetCard(props) {
   const classes = useStyles();
   const history = useHistory();
+
+  useEffect(() => {
+      console.log(`Assetcard = ${props}`);
+  }, []);
 
   const getAsset = (e) => {
     e.preventDefault()

@@ -16,14 +16,20 @@ export default function Admin() {
   const [assetType, setAssetType] = useState(0);
 
   useEffect(() => {
-    const getAssets = async () => {
-      await assetDispatch({ type: "GET_ASSETS" });
-    };
-    getAssets().then(() => {
-      setLoading(false);
-      console.log(`setpage = true ${assets}`);
-    });
-  }, [loading]);
+  }, [assets]);
+
+  useEffect(() => {
+    if (!assets || assets.length === 0) {
+      const getAssets = async () => {
+        await assetDispatch({ type: "GET_ASSETS" });
+      };
+      getAssets().then(() => {
+        setLoading(false);
+        console.log(`setpage = false ${assets}`);
+      });
+    } else setLoading(false);
+    console.log(`loading ${loading} ${assets.length} ${assetType}`);
+  }, [user]);
 
   useEffect(() => {
     // Set LogicOneContract state
@@ -76,6 +82,7 @@ export default function Admin() {
         ${result.events.RETokenID.returnValues.timestamp} `
       );
 
+      setLoading(true); // stop page from rendering, if not get error
       // Add transaction State & DB
       await transactionDispatch({
         type: "ADD_TRANSACTION",
@@ -85,17 +92,15 @@ export default function Admin() {
           noOfToken: asset.ownerSubscription,
           transactionHash: result.transactionHash,
           transactionDate:
-            result.events.RETokenID.returnValues.timestamp * 1000,
+             result.events.RETokenID.returnValues.timestamp * 1000,
         },
       });
-
-      setLoading(true); // trigger UseEffect for pageloading
+//      setLoading(true); // stop page from rendering, if not get error
 
       // Update properties State & DB
-      const _subscription = (
-        (asset.ownerSubscription / asset.noOfToken) *
-        100
-      ).toFixed(1);
+      const _subscription = asset.noOfToken > 0 ? 
+      ((asset.ownerSubscription / asset.noOfToken * 100).toFixed(1)) : 0 
+      console.log(`sub ${_subscription} ${asset._id}`)
       await assetDispatch({
         type: "UPDATE_ASSET",
         payload: {
@@ -106,12 +111,18 @@ export default function Admin() {
           tokenId: Number(result.events.RETokenID.returnValues.id),
         },
       });
+      await assetDispatch({ type: "GET_ASSETS" });
+
+      // set back to false to refresh page
+      setLoading(false); // trigger UseEffect for pageloading
     } else {
-      console.log(`missing data for smart contract:\ne assetID=${id}, account=${user.address}, 
-      owner=${asset.owner}, # of Token=${asset.noOfToken}, 
-      owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
-      IPhash=${asset.invProspectHash}, 
-      contract=${logicOneContract}`);
+      console.log(`missing data`);
+
+      // console.log(`missing data for smart contract:\ne assetID=${id}, account=${user.address}, 
+      // owner=${asset.owner}, # of Token=${asset.noOfToken}, 
+      // owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
+      // IPhash=${asset.invProspectHash}, 
+      // contract=${logicOneContract}`);
     }
   };
 
@@ -121,13 +132,11 @@ export default function Admin() {
       <Sidebar />
       <br />
       {loading ? (
-        <>
-          <div>
-            <p style={{ marginLeft: "500px", marginTop: "200px" }}>
-              Please refresh Page.....
-            </p>
-          </div>
-        </>
+        <div>
+          <p style={{ marginLeft: "500px", marginTop: "200px" }}>
+            Page Loading.....
+          </p>
+        </div>
       ) : (
         assets
           .filter((_assettemp) => _assettemp.status === assetType)

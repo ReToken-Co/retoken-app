@@ -21,13 +21,19 @@ router.route("/add").post((req, res) => {
     transactionDate: req.body.transactionDate
   });
   newTransaction.save()
-    .then((transaction) => res.json("Transaction added! " + transaction))
+    .then((transaction) => {
+      console.log("Transaction added! " + transaction)
+      res.json(transaction)
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/findTxByUser").get((req, res) => {
   Transaction.find( req.query )
-    .then((transactions) => res.json(transactions))
+    .then((transactions) => {
+      console.log(`transactions result ${JSON.stringify(transactions)}`)
+      res.json(transactions)
+    })
     .catch((err) => res.status(400).json("FindTxByUser Error: " + err));
 });
 

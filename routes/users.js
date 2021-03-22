@@ -29,7 +29,10 @@ router.route("/add").post((req, res) => {
     role: req.body.role
   });
   newUser.save()
-    .then((user) => res.json("User added! " + user))
+    .then((user) => {
+      console.log(`User added! ${JSON.stringify(user)}`)
+      res.json(user)
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 

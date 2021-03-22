@@ -45,11 +45,22 @@ export default function Navbar(props) {
     const fetchUser = async () => await getUser();
     const getAssets = async () => await assetDispatch({ type: "GET_ASSETS" });
 
-    console.log(user ? `navbar ${user.name} ${assets.length}` : `navbar user undefined  ${assets.length}`);
     if (!user) fetchUser();
     if (!assets) getAssets();
-  }, []);
+    console.log(user ? `navbar ${user.name} ${assets.length}` : `navbar user undefined  ${assets.length}`);
+  }, [user]);
 
+  /*
+  useEffect(() => {
+    console.log (`get into asset ${assets.length}`)
+    const getAssets = async () => await assetDispatch({ type: "GET_ASSETS" });
+//    if (!assets || assets === 'undefined') {
+      console.log (`assets undefined getassets`)
+      getAssets();
+  //  }
+    console.log(`navbar asset ${assets.length}`);
+  }, [assets]);
+*/
   window.addEventListener("resize", showButton);
 
   return (
@@ -64,7 +75,7 @@ export default function Navbar(props) {
               REToken
             </NavLogo>
             <NavText admin={props.admin}>
-              {user
+              {user && user.name
                 ? `Welcome ${user.name}`
                 : `You are not registered or login to wallet`}
             </NavText>

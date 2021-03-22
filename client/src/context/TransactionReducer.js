@@ -12,14 +12,14 @@ const TransactionReducer = (state, action) => {
           });
           transactions.sort(function (a, b) {
             return parseInt(a.transactionDate) - parseInt(b.transactionDate);
-//          console.log(`data ${JSON.stringify(transactions)}`);
+            //          console.log(`data ${JSON.stringify(transactions)}`);
           });
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
       return transactions;
-
+    /*
     case "GET_TRANSACTION":
       console.log(`get TxbyId ${action.payload}`);
       axios
@@ -31,7 +31,7 @@ const TransactionReducer = (state, action) => {
           console.log(`Error retrieving data ${err}`);
         });
       return {};
-
+*/
     case "GET_TX_BY_USER":
       console.log(`get TxbyUser ${action.payload}`);
       axios
@@ -44,7 +44,7 @@ const TransactionReducer = (state, action) => {
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-      return {};
+      return state;
 
     case "GET_TX_BY_PROPERTY":
       console.log(`get TxbyPpty ${action.payload}`);
@@ -59,31 +59,42 @@ const TransactionReducer = (state, action) => {
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-      return {};
+      return state;
 
     case "ADD_TRANSACTION":
       axios
         .post(`/transactions/add`, action.payload)
         .then((res) => {
           console.log(`Transaction added ${JSON.stringify(res.data)}`);
-          return res.data;
+
+          // update state
+          const newTransactions = [...state, res.data];
+          console.log(`new assets ${newTransactions}`);
+          return newTransactions;
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-      return {};
+      return state;
 
     case "UPDATE_TRANSACTION":
       axios
         .put(`/transactions/update/${action.payload.id}`, action.payload)
         .then((res) => {
           console.log(`Transaction updated ${JSON.stringify(res.data)}`);
-          return res.data;
+
+          // update state
+          const updateTransactions = state.map((transaction) => {
+            if (transaction._id === res.data._id) return res.data;
+            return transaction;
+          });
+          console.log(`UpdatedTxs ${updateTransactions.length}`);
+          return updateTransactions;
         })
         .catch((err) => {
           console.log(`Error retrieving data ${err}`);
         });
-      return {};
+      return state;
 
     default:
       return state;

@@ -43,7 +43,10 @@ router.route("/add").post((req, res) => {
     status: req.body.status,
   });
   newProperty.save()
-    .then((property) => res.json("Property added! " + property))
+    .then((property) => {
+      console.log("Property added! " + property)
+      res.json(property)
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 

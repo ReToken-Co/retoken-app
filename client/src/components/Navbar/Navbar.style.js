@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GiCrownCoin } from 'react-icons/gi';
+import { SiHomeassistant } from 'react-icons/si';
 import { Link } from 'react-router-dom';
 import { Container } from '../../globalStyles';
 
@@ -34,7 +34,7 @@ export const NavLogo = styled(Link)`
   align-items: center;
 `;
 
-export const NavIcon = styled(GiCrownCoin)`
+export const NavIcon = styled(SiHomeassistant)`
   margin-right: 0.5rem;
 `;
 

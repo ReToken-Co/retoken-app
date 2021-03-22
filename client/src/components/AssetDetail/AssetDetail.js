@@ -1,6 +1,6 @@
-import {  Button } from "../../globalStyles";
+import { Button } from "../../globalStyles";
 import { Paper, TextField, Grid } from "@material-ui/core";
-import { InvestmentTable1 } from '..'
+import { InvestmentTable1 } from "..";
 import {
   useStyles,
   Heading1,
@@ -13,11 +13,9 @@ import {
 } from "./AssetDetail.style";
 
 export default function AssetDetail(props) {
-
   const classes = useStyles();
 
   const RenderButton = () => {
-
     if (props.status === 1) {
       /* Active listing */
       return (
@@ -50,9 +48,7 @@ export default function AssetDetail(props) {
               <Heading1>
                 {props.street}, {props.city} {props.zipCode}
               </Heading1>
-              <Heading3>
-                Owner {props.owner}
-              </Heading3>
+              <Heading3>Owner {props.owner}</Heading3>
             </Grid>
             <Grid item xs={12}>
               <ImgWrapper start={"start"}>
@@ -68,22 +64,39 @@ export default function AssetDetail(props) {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Heading1>
-                TOTAL INVESTMENT: US${props.askingPrice ? props.askingPrice.toLocaleString("en") : 0}
+                TOTAL INVESTMENT: US$
+                {props.askingPrice ? props.askingPrice.toLocaleString("en") : 0}
               </Heading1>
             </Grid>
             <Grid item xs={6}>
               <Heading2>
-                Token for subscription: {props.noOfToken ? props.noOfToken.toLocaleString("en") : 0}
+                Token for subscription:{" "}
+                {props.noOfToken ? props.noOfToken.toLocaleString("en") : 0}
               </Heading2>
-              <Heading2>Investment/Token: US${props.pricePerToken ? props.pricePerToken.toLocaleString("en") : 0}</Heading2>
+              <Heading2>
+                Investment/Token: US$
+                {props.pricePerToken
+                  ? props.pricePerToken.toLocaleString("en")
+                  : 0}
+              </Heading2>
               <Heading2 bigMargin={true}>
                 Subscription: {props.subscription}%
               </Heading2>
               <Heading3>
-                Annual Gross Rent: US${props.annualGrossRent ? props.annualGrossRent.toLocaleString("en") : 0}
+                Annual Gross Rent: US$
+                {props.annualGrossRent
+                  ? props.annualGrossRent.toLocaleString("en")
+                  : 0}
               </Heading3>
-              <Heading3>Annual Expense: US${props.annualExpense ? props.annualExpense.toLocaleString("en") : 0}</Heading3>
-              <Heading3>NOI: US${props.noi ? props.noi.toLocaleString("en") : 0}</Heading3>
+              <Heading3>
+                Annual Expense: US$
+                {props.annualExpense
+                  ? props.annualExpense.toLocaleString("en")
+                  : 0}
+              </Heading3>
+              <Heading3>
+                NOI: US${props.noi ? props.noi.toLocaleString("en") : 0}
+              </Heading3>
               <Heading3>Expected Yield: {props.expectedYield}%</Heading3>
               <Heading3>Occupancy Rate: {props.occupancy}%</Heading3>
             </Grid>
@@ -91,30 +104,44 @@ export default function AssetDetail(props) {
               <Paper className={classes.innerpaper} elevation={3}>
                 <Heading2>Investment Calculator</Heading2>
                 <Subtitle>Your Account:</Subtitle>
-                <Subtitle smallFont bigMargin>{props.account}</Subtitle>
-                <Subtitle bigMargin={true}>Available USDT: {props.balance ? props.balance.toLocaleString("en")  : 0}</Subtitle>
-                <Heading3>Investment: US${props.investmentInput ? props.investmentInput.toLocaleString("en") : 0}</Heading3>
-                <Heading3 bigMargin={true}>Expected Annual Income: US${props.incomeInput ? props.incomeInput.toLocaleString("en") : 0}</Heading3>
-                  <TextField
-                    id="investmentInput"
-                    label="Investment Input"
-                    defaultValue="0"
-                    helperText="Enter No. of Token to Investment"
-                    variant="outlined"
-                    onChange={(e) => {
-                      props.updateTokenInput(e.target.value);
-                    }}
-                  />
-                  {RenderButton()}
+                <Subtitle smallFont bigMargin>
+                  {props.account}
+                </Subtitle>
+                <Subtitle bigMargin={true}>
+                  Available USDT:{" "}
+                  {props.balance ? props.balance.toLocaleString("en") : 0}
+                </Subtitle>
+                <Heading3>
+                  Investment: US$
+                  {props.investmentInput
+                    ? props.investmentInput.toLocaleString("en")
+                    : 0}
+                </Heading3>
+                <Heading3 bigMargin={true}>
+                  Expected Annual Income: US$
+                  {props.incomeInput
+                    ? props.incomeInput.toLocaleString("en")
+                    : 0}
+                </Heading3>
+                <TextField
+                  id="investmentInput"
+                  label="Investment Input"
+                  defaultValue="0"
+                  helperText="Enter No. of Token to Investment"
+                  variant="outlined"
+                  onChange={(e) => {
+                    props.updateTokenInput(e.target.value);
+                  }}
+                />
+                {RenderButton()}
               </Paper>
             </Grid>
-            { props.admin && ( 
-              <Grid item xs={12}>
-                <br /><br />
-                <Heading2>Investment Transactions</Heading2>
-                <InvestmentTable1 id={props.id} />                 
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <br />
+              <br />
+              <Heading2>Investment Transactions</Heading2>
+              <InvestmentTable1 id={props.id} />
+            </Grid>
           </Grid>
         </Paper>
       </div>
@@ -135,8 +162,15 @@ export default function AssetDetail(props) {
               </Heading3>
             </Grid>
             <Grid item xs={6}>
-              <Heading3>Building Size: {props.builtSize ? props.builtSize.toLocaleString("en") : 0} sqft</Heading3>
-              <Heading3>Land Size: {props.landSize ? props.landSize.toLocaleString("en") : 0} sqft</Heading3>
+              <Heading3>
+                Building Size:{" "}
+                {props.builtSize ? props.builtSize.toLocaleString("en") : 0}{" "}
+                sqft
+              </Heading3>
+              <Heading3>
+                Land Size:{" "}
+                {props.landSize ? props.landSize.toLocaleString("en") : 0} sqft
+              </Heading3>
               <Heading3>Year Built: {props.yearBuilt}</Heading3>
             </Grid>
             <Grid item xs={12}>
@@ -156,15 +190,25 @@ export default function AssetDetail(props) {
               <Subtitle>Transaction Hash:</Subtitle>
             </Grid>
             <Grid item xs={6}>
-              <EthLink target='_blank' href={`https://rinkeby.etherscan.io//tx/${props.transactionHash}`} >{props.transactionHash}</EthLink>
+              <EthLink
+                target="_blank"
+                href={`https://rinkeby.etherscan.io//tx/${props.transactionHash}`}
+              >
+                {props.transactionHash}
+              </EthLink>
             </Grid>
           </Grid>
           <Grid container spacing={0}>
             <Grid item xs={4}>
-            <Subtitle>Investment Prospectus Hash:</Subtitle>
+              <Subtitle>Investment Prospectus Hash:</Subtitle>
             </Grid>
             <Grid item xs={6}>
-            <EthLink target='_blank' href={`/docs/${props.invProspectHash}.pdf`} >{props.invProspectHash}</EthLink>
+              <EthLink
+                target="_blank"
+                href={`/docs/${props.invProspectHash}.pdf`}
+              >
+                {props.invProspectHash}
+              </EthLink>
             </Grid>
           </Grid>
           <Grid container spacing={0}>
@@ -172,12 +216,16 @@ export default function AssetDetail(props) {
               <Subtitle>Valuation Report Hash:</Subtitle>
             </Grid>
             <Grid item xs={6}>
-              <EthLink target='_blank' href={`/docs/${props.valuationHash}.pdf`} >{props.valuationHash}</EthLink>
+              <EthLink
+                target="_blank"
+                href={`/docs/${props.valuationHash}.pdf`}
+              >
+                {props.valuationHash}
+              </EthLink>
             </Grid>
           </Grid>
         </Paper>
       </div>
-
     </div>
   );
 }

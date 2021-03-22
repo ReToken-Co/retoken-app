@@ -1,6 +1,6 @@
 export const howItWorksObjOne = {
   primary: false,
-  lightBg: true,
+  lightBg: false,
   lightTopLine: false,
   lightText: false,
   lightTextDesc: false,

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 import USDTContract from "../abis/USDT.json"; // my smart contract abi
 import RETokenProxy from "../abis/RETokenProxy.json"; // my smart contract abi
 import RETokenLogicOne from "../abis/LogicOne.json"; // my smart contract abi

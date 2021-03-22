@@ -5,9 +5,12 @@ import { UserContext } from "../context/UserContext";
 
 export default function Marketplace() {
   const { assets } = useContext(AssetContext);
-//  const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
-  useEffect(() => {}, [assets]);
+  useEffect(() => {
+    console.log(`marketplace = ${JSON.stringify(user)}`);
+
+  }, [user, assets]);
 
   return (
     <>

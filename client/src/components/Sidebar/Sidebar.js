@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Sidebar,
   SidebarMenu,
   SidebarItem,
   SidebarLinks,
-  SidebarChild,
-  SidebarRef,
   useStyles,
 } from "./Sidebar.style";
 

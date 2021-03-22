@@ -3,6 +3,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import { UserContext } from "../../context/UserContext";
 import { AssetContext } from "../../context/AssetContext";
+import { UserRegContext } from "../../context/UserRegContext";
 import { UserRegister } from "..";
 
 import { Button } from "../../globalStyles";
@@ -22,10 +23,10 @@ import {
 
 export default function Navbar(props) {
   const { user, getUser } = useContext(UserContext);
+  const { setFormOpen } = useContext(UserRegContext);
   const { assets, assetDispatch } = useContext(AssetContext);
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const [signUp, setSignUp] = useState(false);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -57,37 +58,37 @@ export default function Navbar(props) {
   }, [user]);
 
   const handleUserRegister = () => {
-    setSignUp(true)
+    setFormOpen(true);
     if (!button) setClick(false);
-  }
+  };
 
   const RenderRegisterButton = () => {
-    if (button && user && user.name) {
+    if (button && user && user.email) {
       return (
         <NavBtnLink to="/account">
-          <Button primary>
+          <Button primary>Welcome {user.name}</Button>
+        </NavBtnLink>
+      );
+    } else if (!button && user && user.email) {
+      return (
+        <NavBtnLink to="/account">
+          <Button onClick={closeMobileMenu} fontBig primary>
             Welcome {user.name}
           </Button>
         </NavBtnLink>
       );
-    } else if (button && (!user || !user.name)) {
+    } else if (button && (!user || !user.email)) {
       return (
-        <NavBtnLink to="/marketplace">
-          <Button primary  onClick={handleUserRegister}>Sign Up</Button>
-        </NavBtnLink>
-      );
-    } else if (!button && user && user.name) {
-      return (
-        <NavBtnLink to="/marketplace">
-          <Button primary disabled>
-            Sign Up
-          </Button>
-        </NavBtnLink>
+        <Button primary onClick={handleUserRegister}>
+          Sign Up
+        </Button>
       );
     } else {
-      <NavBtnLink to="/marketplace">
-        <Button primary>Sign Up</Button>
-      </NavBtnLink>;
+      return (
+        <Button onClick={handleUserRegister} fontBig primary>
+          Sign Up
+        </Button>
+      );
     }
   };
 
@@ -105,7 +106,7 @@ export default function Navbar(props) {
               REToken
             </NavLogo>
             <NavText admin={props.admin}>
-              {user && user.name
+              {user && user.email
                 ? ``
                 : `You are not registered or login to wallet`}
             </NavText>
@@ -147,22 +148,7 @@ export default function Navbar(props) {
                   </NavLinks>
                 </NavItem>
               )}
-              <NavItemBtn>
-                {button ? (
-                  <NavBtnLink to="/myPortfolio">
-                    <Button primary>My Portfolio</Button>
-                  </NavBtnLink>
-                ) : (
-                  <NavBtnLink to="/myportfolio">
-                    <Button onClick={closeMobileMenu} fontBig primary>
-                      My Portfolio
-                    </Button>
-                  </NavBtnLink>
-                )}
-              </NavItemBtn>
-              <NavItemBtn>
-                {RenderRegisterButton()}
-              </NavItemBtn>
+              <NavItemBtn>{RenderRegisterButton()}</NavItemBtn>
             </NavMenu>
           </NavbarContainer>
         </Nav>

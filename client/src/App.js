@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ContractContextProvider from "./context/ContractContext";
 import AssetContextProvider from "./context/AssetContext";
 import UserContextProvider from "./context/UserContext";
+import UserRegContextProvider from "./context/UserRegContext";
 import TransactionContextProvider from "./context/TransactionContext";
 
 import Home from "./pages/Home/Home";
@@ -25,23 +26,25 @@ function App() {
         <UserContextProvider>
           <AssetContextProvider>
             <TransactionContextProvider>
-              <Router>
-                <Switch>
-                  <Route path="/" exact component={Home} />
-                  <Route path="/addasset" component={AddAsset} />
-                  <Route path="/admin" component={Admin} />
-                  <Route path="/appadmin" component={AppAdmin} />
-                  <Route path="/marketplace" exact component={Marketplace} />
-                  <Route path="/asset" exact component={Asset} />
-                  <Route path="/asset/:id" component={Asset} />
-                  <Route path="/editasset" component={EditAsset} />
-                  <Route path="/myPortfolio" component={MyPortfolio} />
-                  <Route path="/investments" component={Investments} />
-                  <Route path="/account" component={Account} />
-                  <Route path="/settings" component={Settings} />
-                  <Route path="/howitworks" component={HowItWorks} />
-                </Switch>
-              </Router>
+              <UserRegContextProvider>
+                <Router>
+                  <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/addasset" component={AddAsset} />
+                    <Route path="/admin" component={Admin} />
+                    <Route path="/appadmin" component={AppAdmin} />
+                    <Route path="/marketplace" exact component={Marketplace} />
+                    <Route path="/asset" exact component={Asset} />
+                    <Route path="/asset/:id" component={Asset} />
+                    <Route path="/editasset" component={EditAsset} />
+                    <Route path="/myPortfolio" component={MyPortfolio} />
+                    <Route path="/investments" component={Investments} />
+                    <Route path="/account" component={Account} />
+                    <Route path="/settings" component={Settings} />
+                    <Route path="/howitworks" component={HowItWorks} />
+                  </Switch>
+                </Router>
+              </UserRegContextProvider>
             </TransactionContextProvider>
           </AssetContextProvider>
         </UserContextProvider>

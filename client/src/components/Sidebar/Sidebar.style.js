@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { makeStyles, createMuiTheme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 export const Sidebar = styled.div`
     background-color: #393d49;

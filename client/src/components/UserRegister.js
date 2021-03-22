@@ -19,11 +19,10 @@ export default function UserRegister(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    if (props.signUp)
-      setOpen(true)
+      setOpen(props.signUp)
 //    else if (!user || !user.name) setOpen(true);
 //    else setOpen(false);
-  }, []);
+  }, [props.signUp]);
 
   const handleSubmit = async (e) => {
     const _user = {
@@ -33,13 +32,13 @@ export default function UserRegister(props) {
       role: "user"
     }
     await addUser(_user)
-
+    history.push(props.submitPage);
   }
 
   const handleClose = (data) => {
     console.log(`dialog  ${JSON.stringify(data.stateNode)}`);
     setOpen(false);
-    history.push("/marketplace");
+    history.push(props.cancelPage);
   };
   return (
     <div>

@@ -15,8 +15,10 @@ export default function AppAdmin() {
     const [tokenSupply, setTokenSupply] = useState(0);
     const [tokenValRpt, setTokenValRpt] = useState(0);
     const [tokenLegCont, setTokenLegCont] = useState(0);
+    const [tokenFee, setTokenFee] = useState(0);
     const [tokenBalance, setTokenBalance] = useState(0);
     const [newToken, setNewToken] = useState(0);
+    const [usdtWithdrawn, setUSDTWithdrawn] = useState(0);
     const [buyToken, setBuyToken] = useState(0);
 
     useEffect(() => {
@@ -198,6 +200,19 @@ export default function AppAdmin() {
         setTokenLegCont(resultString);
     }
 
+    // display success fee of token ID (can be via Logic contracts)
+    const checkFee = async (e) => {
+        e.preventDefault();
+        let id = e.target.elements.id.value;
+
+        const result = await logicOneContract.methods.getFee(
+            id
+        ).call();
+        console.log(result);
+        let resultString = result.toString();
+        setTokenFee(`${resultString}%`);
+    }
+
     // display current token ID (can be via Proxy or Logic contracts)
     const displayBalance = async (e) => {
         e.preventDefault();
@@ -241,6 +256,21 @@ export default function AppAdmin() {
         setNewToken(`${result.events.RETokenID.returnValues[2]} of Token ID ${result.events.RETokenID.returnValues[1]} created.`);
     }
 
+    // withdraw USDT from Proxy Contract (can be via Logic contracts)
+    const withdrawUSDT = async (e) => {
+        e.preventDefault();
+        let recipient = e.target.elements.recipient.value;
+        let amount = e.target.elements.amount.value;
+        console.log(`Account ${account} is withdrawing ${amount} USDT to ${recipient}.`);
+
+        const result = await logicOneContract.methods.withdrawUSDT(
+            recipient,
+            amount
+        ).send({ from: account });
+        console.log(`withdrawUSDT result ${JSON.stringify(result)}`);
+        setUSDTWithdrawn(`${result.events.USDTWithdrawn.returnValues[3]} USDT withdrawn to ${result.events.USDTWithdrawn.returnValues[2]}.`);
+    }
+
     // buy existing ERC1155 token (can be via Logic contracts)
     const tradeToken = async (e) => {
         e.preventDefault();
@@ -273,7 +303,7 @@ export default function AppAdmin() {
                 <p><button onClick={pauseContract}>Pause Contract</button><span> </span>
                     <button onClick={unPauseContract}>Unpause Contract</button><span> </span>
                     <button onClick={displayPauseStatus}>Pause Status</button> : <b>{
-                    pause === 0 ? `Click on Pause Status button to see if the contract has been paused` : pause}</b></p>
+                        pause === 0 ? `Click on Pause Status button to see if the contract has been paused` : pause}</b></p>
                 <p><button onClick={displayLogicContr}>Logic Contract</button> : <b>{
                     logicContr === 0 ? `Click on Logic Contract button to see the current Logic Contract set` : logicContr}</b></p>
                 <p><button onClick={checkAdminAccess}>Admin Access</button> : <b>{
@@ -312,6 +342,11 @@ export default function AppAdmin() {
                         tokenLegCont === 0 ? `Fill up the field on the right` : tokenLegCont}</b><span> </span>
                     <input type="text" name="id" size="10" placeholder="Token ID" />
                 </form></p>
+                <p><form onSubmit={checkFee}>
+                    <b>Check Success Fee of Token : {
+                        tokenFee === 0 ? `Fill up the field on the right` : tokenFee}</b><span> </span>
+                    <input type="text" name="id" size="10" placeholder="Token ID" />
+                </form></p>
                 <p><form onSubmit={displayBalance}>
                     <b>Check ERC1155 Token Balance : {
                         tokenBalance === 0 ? `Fill up the 2 fields below` : tokenBalance}</b>
@@ -327,6 +362,13 @@ export default function AppAdmin() {
                         <input type="text" name="ownerTkn" size="10" placeholder="Owner Token" /><span> </span>
                         <input type="text" name="val" size="60" placeholder="Valuation Report" /><span> </span>
                         <input type="text" name="leg" size="60" placeholder="Legal Report" /><span> </span></p>
+                    <input type="submit" value="submit" />
+                </form></p>
+                <p><form onSubmit={withdrawUSDT}>
+                    <b>Withdraw USDT : {
+                        usdtWithdrawn === 0 ? `Fill up the 2 fields below` : usdtWithdrawn}</b>
+                    <p><input type="text" name="recipient" size="60" placeholder="Recipient Address" /><span> </span>
+                        <input type="text" name="amount" size="15" placeholder="Amount to withdraw" /></p>
                     <input type="submit" value="submit" />
                 </form></p>
                 <br />

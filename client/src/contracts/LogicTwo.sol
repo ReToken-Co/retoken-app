@@ -27,7 +27,7 @@ contract LogicTwo is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
 
     /**
      * @dev Series of functions to retrieve token details from `REToken` struct, including
-     * Total Supply, Owner, Valuation Report and Legal Contract.
+     * Total Supply, Owner, Valuation Report, Legal Contract and Service Fee.
      *
      * @param tokenId - Unique token id of token
      */
@@ -51,6 +51,11 @@ contract LogicTwo is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
         return token.legalContract;
     }
 
+    function getFee(uint256 tokenId) public view returns (uint256) {
+        REToken memory token = reToken[tokenId];
+        return token.fee;
+    }
+
     /**
      * @dev Creates `totalAmt` tokens of token type `newTokenId`, and assigns `adminAmt` to
      * `proxy_contract` and `ownerAmt` `assetOwner` by calling ERC1155 _mint function.
@@ -69,7 +74,7 @@ contract LogicTwo is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
      * @param valueRpt - File Hash of Valuation Report
      * @param legalContr - File Hash of Legal Contract
      */
-    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr) external onlyAdmin whenNotPaused {
+    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr, uint256 fee) external onlyAdmin whenNotPaused {
         require(_legalContracts[legalContr] == 0, "This asset has already been tokenized.");
 
         RETokenStorageOne.incrementTokenId();
@@ -80,14 +85,35 @@ contract LogicTwo is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
         emit RETokenID(block.timestamp, newTokenId, totalAmt, assetOwner, valueRpt, legalContr);
 
         // Creates and updates REToken Struct of unique token ID with token details
-        REToken storage token = reToken[newTokenId];
+        REToken storage token = reToken[_tokenID];
         token.totalSupply = totalAmt;
         token.owner = assetOwner;
         token.valuationReport = valueRpt;
         token.legalContract = legalContr;
+        token.fee = fee;
+
+        _legalContracts[legalContr] = _tokenID;
 
         _mint(proxy_contract, newTokenId, adminAmt, "");
         _mint(assetOwner, newTokenId, ownerAmt, "");
+    }
+    
+    /**
+     * @dev Withdraws USDT from Proxy Contract
+     *
+     * Can only be called by the current admin.
+     * 
+     * Emits a {USDTWithdrawn} event.
+     *
+     * @param recipient - Wallet address to withdraw USDT to
+     * @param amt - Amount of USDT to withdraw
+     */
+    function withdrawUSDT(address recipient, uint256 amt) external onlyAdmin {
+        require(usdtContract.balanceOf(proxy_contract) >= amt, "Number of USDT withdrawn exceed balance.");
+        
+        emit USDTWithdrawn(block.timestamp, msg.sender, recipient, amt);
+        
+        usdtContract.transferUSDT(proxy_contract, recipient, amt);
     }
 
     /**
@@ -125,12 +151,16 @@ contract LogicTwo is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
         
         address investor = msg.sender;
         address owner = token.owner;
+        uint256 fee = token.fee;
+        uint256 serviceFee = (usdtAmt * fee) / 100;
+        uint256 ownerProceeds = usdtAmt - serviceFee;
         
         require(usdtContract.balanceOf(investor) >= usdtAmt, "You have insufficient funds to purchase tokens.");
 
-        emit RETokenUSDT(block.timestamp, id, tokenAmt, investor, owner, usdtAmt);
+        emit RETokenUSDT(block.timestamp, id, tokenAmt, investor, owner, ownerProceeds);
 
-        usdtContract.transferUSDT(investor, owner, usdtAmt);
+        usdtContract.transferUSDT(investor, owner, ownerProceeds);
+        usdtContract.transferUSDT(investor, proxy_contract, serviceFee);
 
         proxyContract.setApprovalForAll(investor, true);
         safeTransferFrom(proxy_contract, investor, id, tokenAmt, "");

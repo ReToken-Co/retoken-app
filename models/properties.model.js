@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const propertySchema = new Schema({
     owner: { type: String, trim: true },
     askingPrice: { type: Number, required: true, default: 0 },
+    successFee: { type:Number, required: true, default: 0 },
     noOfToken: { type: Number, default: 0 },
     pricePerToken: { type: Number, default: 0 },
     ownerSubscription: { type: Number, default: 0 },

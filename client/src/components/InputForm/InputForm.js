@@ -25,6 +25,7 @@ export default function InputForm(props) {
     noOfToken: 0,
     pricePerToken: 0,
     ownerSubscription: 0,
+    successFee: 0,
     description: "",
     propertyType: "Hospitality",
     builtSize: 0,
@@ -49,7 +50,6 @@ export default function InputForm(props) {
     { value: "Shophouse", label: "Shophouse", },
   ]
 
-
   useEffect(() => {
     if (props) {
       setValue("owner", props.owner);
@@ -63,6 +63,7 @@ export default function InputForm(props) {
       setValue("noOfToken", props.noOfToken);
       setValue("pricePerToken", props.pricePerToken);
       setValue("ownerSubscription", props.ownerSubscription);
+      setValue("successFee", props.successFee);
       setValue("description", props.description);
       setValue("propertyType", props.propertyType);
       setValue("builtSize", props.builtSize);
@@ -151,6 +152,11 @@ export default function InputForm(props) {
                 <TextField id="ownerSubscription" label="Tokens Subscribe by Owner" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} />
               } />
             )}
+            {props.admin && (
+              <Controller name="successFee" control={control} as={
+                <TextField id="successFee" label="Success Fee" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }} />
+              } />
+            )}
           </Paper>
 
           <Paper className={classes.paper}>
@@ -175,7 +181,7 @@ export default function InputForm(props) {
               </Grid>
               <Grid item xs>
                 <Controller name="landSize" control={control} as={
-                  <TextField id="landSize" label="Land Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ endAdornment: <InputAdornment position="end">sq ft</InputAdornment> }}/>
+                  <TextField id="landSize" label="Land Size" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ endAdornment: <InputAdornment position="end">sq ft</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs>
@@ -185,7 +191,7 @@ export default function InputForm(props) {
               </Grid>
               <Grid item xs>
                 <Controller name="occupancy" control={control} as={
-                  <TextField id="occupancy" label="Occupancy (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin}  InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }}/>
+                  <TextField id="occupancy" label="Occupancy (%)" variant="outlined" InputLabelProps={{ shrink: true }} className={classes.margin} InputProps={{ endAdornment: <InputAdornment position="end">%</InputAdornment> }}/>
                 } />
               </Grid>
               <Grid item xs={12}></Grid>

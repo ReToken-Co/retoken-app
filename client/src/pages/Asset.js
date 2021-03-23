@@ -38,7 +38,6 @@ export default function Asset() {
   }, []);
 
   useEffect(() => {
-
     // Set asset state
     let selectedAsset = {};
     if (assets !== undefined && assets.length > 0) {
@@ -53,10 +52,8 @@ export default function Asset() {
         );
       setAsset(selectedAsset);
     } else
-      console.log(
-        `no assets ${assets} ${localStorage.getItem("AssetId")}`
-      );
-    }, [location, user]);
+      console.log(`no assets ${assets} ${localStorage.getItem("AssetId")}`);
+  }, [location, user]);
 
   useEffect(() => {
     // set USDT balance state
@@ -83,19 +80,19 @@ export default function Asset() {
     e.preventDefault();
 
     if (!user || !user.email) {
-      setFormOpen(true)
+      setFormOpen(true);
     } else {
       if (!logicTwoContract) {
         console.log(`Lost contract, run initLogicTwo`);
         await initLogicTwo();
         console.log(`logi2 ${JSON.stringify(logicTwoContract)}`);
       }
-  
+
       // console.log(
       //   `purchase ${tokenInput} ${investmentInput} ${asset._id} ${asset.tokenId}
       //     ${logicTwoContract}`
       // );
-  
+
       if (asset && logicTwoContract && user) {
         const _subscription = (
           (((asset.subscription / 100) * asset.noOfToken + Number(tokenInput)) /
@@ -105,21 +102,21 @@ export default function Asset() {
         console.log(
           `subscription  ${asset.subscription}  ${asset.noOfToken} ${tokenInput} ${_subscription}`
         );
-  
+
         // Buy Property Token
         const result = await logicTwoContract.methods
           .buyToken(asset.tokenId, tokenInput, investmentInput)
           .send({ from: user.address });
-  
+
         console.log(`BuyToken result ${result.transactionHash} 
         ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
-  
+
         localStorage.setItem(
           "USDTBalance",
           localStorage.getItem("USDTBalance") - investmentInput
         );
         setUsdtBalance(usdtBalance - investmentInput);
-  
+
         // Add transaction State & DB
         await transactionDispatch({
           type: "ADD_TRANSACTION",
@@ -132,9 +129,9 @@ export default function Asset() {
               result.events.RETokenUSDT.returnValues.timestamp * 1000,
           },
         });
-  
+
         setAsset({ ...asset, subscription: _subscription });
-  
+
         // Update properties State & DB
         await assetDispatch({
           type: "UPDATE_ASSET",
@@ -144,12 +141,20 @@ export default function Asset() {
           },
         });
         await assetDispatch({ type: "GET_ASSETS" });
-        console.log(`updated asset ${user.address} ${asset._id} ${_subscription}
-                ${result.transactionHash} `);
+        await transactionDispatch({
+          type: "GET_TX_BY_PROPERTY",
+          payload: asset._id,
+        });
+        console.log(`updated tx ${user.address} ${asset._id} ${_subscription}
+                        ${result.transactionHash} `);
       } else {
-        console.log(`missing data for smart contract: assetID= ${asset._id}, account=${user ? user.address : undefined}, 
-        tokenID=${asset ? asset.tokenId : undefined } # of token to purchase=${tokenInput} USDT=${investmentInput}`);
-      }  
+        console.log(`missing data for smart contract: assetID= ${
+          asset._id
+        }, account=${user ? user.address : undefined}, 
+        tokenID=${
+          asset ? asset.tokenId : undefined
+        } # of token to purchase=${tokenInput} USDT=${investmentInput}`);
+      }
     }
   };
 
@@ -174,11 +179,7 @@ export default function Asset() {
     <>
       <Navbar />
       <AssetDetail
-        admin={
-          location.state && location.state.admin
-            ? true
-            : false
-        }
+        admin={location.state && location.state.admin ? true : false}
         account={user ? user.address : ""}
         balance={
           usdtBalance > 0 ? localStorage.getItem("USDTBalance") : usdtBalance

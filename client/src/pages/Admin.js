@@ -12,7 +12,7 @@ export default function Admin() {
   const { transactionDispatch } = useContext(TransactionContext);
   const { logicOneContract, initLogicOne } = useContext(ContractContext);
   const { user } = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [assetType, setAssetType] = useState(0);
 
   useEffect(() => {
@@ -76,7 +76,8 @@ export default function Admin() {
           asset.noOfToken,
           asset.ownerSubscription,
           asset.valuationHash,
-          asset.invProspectHash
+          asset.invProspectHash,
+          asset.successFee
         )
         .send({ from: user.address });
       console.log(
@@ -160,6 +161,7 @@ export default function Admin() {
                 noOfToken={_asset.noOfToken}
                 pricePerToken={_asset.pricePerToken}
                 ownerSubscription={_asset.ownerSubscription}
+                successFee={_asset.successFee}
                 street={_asset.street}
                 city={_asset.city}
                 state={_asset.state}

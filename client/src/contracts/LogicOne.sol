@@ -29,7 +29,7 @@ contract LogicOne is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
 
     /**
      * @dev Series of functions to retrieve token details from `REToken` struct, including
-     * Total Supply, Owner, Valuation Report and Legal Contract.
+     * Total Supply, Owner, Valuation Report, Legal Contract and Service Fee.
      *
      * @param tokenId - Unique token id of token
      */
@@ -53,11 +53,16 @@ contract LogicOne is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
         return token.legalContract;
     }
 
+    function getFee(uint256 tokenId) public view returns (uint256) {
+        REToken memory token = reToken[tokenId];
+        return token.fee;
+    }
+
     /**
      * @dev Creates `totalAmt` tokens of token type `newTokenId`, and assigns `adminAmt` to
      * `proxy_contract` and `ownerAmt` `assetOwner` by calling ERC1155 _mint function.
      *
-     * Can only be called by addresses with ADMIN_ROLE access.
+     * Can only be called by the current admin.
      * 
      * Emits a {RETokenID} event.
      * Emits two {TransferSingle} events via ERC1155 library.
@@ -71,7 +76,7 @@ contract LogicOne is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
      * @param valueRpt - File Hash of Valuation Report
      * @param legalContr - File Hash of Legal Contract
      */
-    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr) external onlyAdmin whenNotPaused {
+    function mintToken(address assetOwner, uint256 totalAmt, uint256 ownerAmt, string memory valueRpt, string memory legalContr, uint256 fee) external onlyAdmin whenNotPaused {
         require(_legalContracts[legalContr] == 0, "This asset has already been tokenized.");
 
         RETokenStorageOne.incrementTokenId();
@@ -87,11 +92,30 @@ contract LogicOne is AccessControlUpgradeable, PausableUpgradeable, RETokenStora
         token.owner = assetOwner;
         token.valuationReport = valueRpt;
         token.legalContract = legalContr;
+        token.fee = fee;
 
         _legalContracts[legalContr] = _tokenID;
 
         _mint(proxy_contract, newTokenId, adminAmt, "");
         _mint(assetOwner, newTokenId, ownerAmt, "");
+    }
+    
+    /**
+     * @dev Withdraws USDT from Proxy Contract
+     *
+     * Can only be called by the current admin.
+     * 
+     * Emits a {USDTWithdrawn} event.
+     *
+     * @param recipient - Wallet address to withdraw USDT to
+     * @param amt - Amount of USDT to withdraw
+     */
+    function withdrawUSDT(address recipient, uint256 amt) external onlyAdmin {
+        require(usdtContract.balanceOf(proxy_contract) >= amt, "Number of USDT withdrawn exceed balance.");
+        
+        emit USDTWithdrawn(block.timestamp, msg.sender, recipient, amt);
+        
+        usdtContract.transferUSDT(proxy_contract, recipient, amt);
     }
 
 }

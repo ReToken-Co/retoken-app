@@ -53,7 +53,12 @@ const TransactionReducer = (state, action) => {
           params: { propertyId: action.payload },
         })
         .then((res) => {
-          console.log(`Get TxbyPpty result ${JSON.stringify(res.data)}`);
+          let i = 1
+          res.data.map((_data) => {
+            _data.id = i
+            i++
+          })
+        console.log(`Get TxbyPpty result ${JSON.stringify(res.data)}`);
           return res.data;
         })
         .catch((err) => {

@@ -16,6 +16,7 @@ router.route("/add").post((req, res) => {
   const newProperty = new Property({
     owner: req.body.owner,
     askingPrice: req.body.askingPrice,
+    successFee: req.body.successFee,
     noOfToken: req.body.noOfToken,
     pricePerToken: req.body.pricePerToken,
     ownerSubscription: req.body.ownerSubscription,

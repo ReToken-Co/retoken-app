@@ -46,6 +46,7 @@ export default function EditAsset() {
         noOfToken: data.noOfToken,
         pricePerToken: data.pricePerToken,
         ownerSubscription: data.ownerSubscription,
+        successFee: data.successFee,
         street: data.street,
         city: data.city,
         state: data.state,
@@ -84,6 +85,7 @@ export default function EditAsset() {
         noOfToken={asset.noOfToken}
         pricePerToken={asset.pricePerToken}
         ownerSubscription={asset.ownerSubscription}
+        successFee={asset.successFee}
         street={asset.street}
         city={asset.city}
         state={asset.state}

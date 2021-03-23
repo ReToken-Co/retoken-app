@@ -14,7 +14,7 @@ import './RETokenProxy.sol';
  * using ERC1155 and Counters structure. It also allows this contract to hold ERC1155 tokens.
  *
  * VERSION: 1 (Ver.1)
- * 1. Add USDT and Proxy Contract variables and external connections
+ * 1. Add USDT and Proxy Contract variables and contract instances
  * 2. Add Token ID variable
  * 3. Add Struct to store Token details
  * 4. Add functions necessary for ERC1155 tokens
@@ -26,9 +26,10 @@ contract RETokenStorage is ERC1155Upgradeable, ERC1155HolderUpgradeable {
      * 1. `MODERATOR` - Group of addresses possessing moderator authorization for AccessControl contract
      * 2. `ADMIN_ROLE` - Group of addresses possessing admin authorization
      * 3. `usdt_contract` - USDT Contract address
-     * 4. `usdtContract` - External connection to USDT Contract
+     * 4. `usdtContract` - Contract Instance of to USDT Contract
      * 5. `proxy_contract` - Proxy Contract address
-     * 6. `proxyContract` - External connection to Proxy Contract
+     * 6. `proxyContract` - Contract Instance of to Proxy Contract
+     * 7. `_legalContracts` - Mapping of Token ID to Legal Contract File Hash
      */
     bytes32 public constant MODERATOR = keccak256("MODERATOR");
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
@@ -36,9 +37,10 @@ contract RETokenStorage is ERC1155Upgradeable, ERC1155HolderUpgradeable {
     USDT usdtContract;
     address payable public proxy_contract;
     RETokenProxy proxyContract;
+    mapping (string => uint256) _legalContracts;
 
     /**
-     * @dev Declaring `_tokenID` variable as unique Token ID using Counters library
+     * @dev Declaration of `_tokenID` variable as unique Token ID using Counters library
      */
     using CountersUpgradeable for CountersUpgradeable.Counter;
     CountersUpgradeable.Counter internal _tokenIds;
@@ -53,6 +55,7 @@ contract RETokenStorage is ERC1155Upgradeable, ERC1155HolderUpgradeable {
         address owner;
         string valuationReport;
         string legalContract;
+        uint256 fee;
     }
     mapping (uint256 => REToken) reToken;
 
@@ -67,6 +70,16 @@ contract RETokenStorage is ERC1155Upgradeable, ERC1155HolderUpgradeable {
      * @param legalContract - File Hash of Legal Contract
      */
     event RETokenID(uint256 timestamp, uint256 indexed id, uint256 indexed totalSupply, address indexed owner, string valuationReport, string legalContract);
+
+     /**
+     * @dev Declaration of new Event to record created token details for REToken
+     *
+     * @param timestamp - Time Stamp of Event
+     * @param initiator - Wallet Address that invoked the withdrawal process
+     * @param recipient - Wallet address which received the USDT
+     * @param USDT - Total amount of USDT withdrawn
+     */
+    event USDTWithdrawn(uint256 timestamp, address initiator, address recipient, uint256 USDT);
 
     /**
      * @dev Functions for ERC1155 Token

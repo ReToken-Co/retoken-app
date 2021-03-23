@@ -33,6 +33,7 @@ export default function Marketplace() {
               noOfToken={_asset.noOfToken}
               pricePerToken={_asset.pricePerToken}
               ownerSubscription={_asset.ownerSubscription}
+              successFee={_asset.successFee}
               street={_asset.street}
               city={_asset.city}
               state={_asset.state}

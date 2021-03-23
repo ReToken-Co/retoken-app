@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import axios from "axios";
+import { TransactionContext } from "../../context/TransactionContext";
 
 const columns = [
   {
@@ -34,11 +35,17 @@ const columns = [
 export default function InvestmentTable1 (props) {
 
   const [transactions, setTransaction] = useState([]);
-
+//  const { transactions, transactionDispatch } = useContext(TransactionContext);
+/*
   useEffect(() => {
-    const getTransaction = async () => {
-      if (props.id) {
-        axios
+console.log(`gotten trx ${transactions}`)
+  }, [transactions]);
+*/
+  useEffect(() => {
+
+    if (props.id) {
+      const getTransaction = async () => {
+      axios
           .get(`/transactions/findTxByAsset`, {
             params: { propertyId: props.id },
           })
@@ -54,9 +61,9 @@ export default function InvestmentTable1 (props) {
             console.log(`Error retrieving data ${err}`);
           });
       }
-    };
     getTransaction();
-  }, [props.id]);
+  }
+  }, [props.id])
 
   return (
     <div style={{ height: 400, width: "100%" }}>

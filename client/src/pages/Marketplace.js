@@ -9,7 +9,6 @@ export default function Marketplace() {
 
   useEffect(() => {
     console.log(`marketplace = ${JSON.stringify(user)}`);
-
   }, [user, assets]);
 
   return (

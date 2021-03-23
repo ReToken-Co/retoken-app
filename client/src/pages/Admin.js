@@ -16,6 +16,8 @@ export default function Admin() {
   const [assetType, setAssetType] = useState(0);
 
   useEffect(() => {
+    console.log(`admin = ${JSON.stringify(user)}`);
+    setLoading(false)
   }, [assets]);
 
   useEffect(() => {

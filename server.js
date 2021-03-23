@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const propertiesUrl = require('./routes/properties')
 const usersUrl = require('./routes/users')
 const transactionsUrl = require('./routes/transactions')
+//const cloudinaryUrl = require('./routes/cloudinaryUrl')
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/properties', propertiesUrl)  // properties collection API
 app.use('/users', usersUrl)  // users collections API
 app.use('/transactions', transactionsUrl)  // transactions collections API
+//app.use('/cloudinary', cloudinaryUrl)  // cloudinary file up/download API
 
 // Serve static assets (client) if in production
 if(process.env.NODE_ENV === 'production') {

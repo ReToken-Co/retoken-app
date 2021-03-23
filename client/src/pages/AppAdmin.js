@@ -71,7 +71,7 @@ export default function AppAdmin() {
     const displayProxyUSDT = async (e) => {
         e.preventDefault();
         const result = await await usdtContract.methods.balanceOf(
-            "0xc0413c9409F8724f8744cef353108eEec100657E"
+            "0x48030328e1B0dacF9A6F7956ee640730A366c014"
         ).call();
         let balance = result / 1000000000000000000;
         let balanceString = balance.toString();

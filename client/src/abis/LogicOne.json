@@ -22688,8 +22688,8 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0xc0413c9409F8724f8744cef353108eEec100657E",
-      "transactionHash": "0xc883dae99a103ac7ec6848d1f1cc0775c837d14c022ad84c8f3f672b71f802b8"
+      "address": "0x48030328e1B0dacF9A6F7956ee640730A366c014",
+      "transactionHash": "0x5a376bd4ba43006a015240fbd8778ec29596cc88733e8526829ea7966c24d384"
     },
     "5777": {
       "events": {},
@@ -22699,7 +22699,7 @@
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-03-23T03:46:27.126Z",
+  "updatedAt": "2021-03-23T06:31:57.692Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "This contract provides the business logic for RETokenProxy with an authorization mechanism for admin tasks.  VERSION: 1 (Ver.1) 1. Add 4 functions to retrieve created token details. 2. Add mintToken() function for Admin to create new token.",

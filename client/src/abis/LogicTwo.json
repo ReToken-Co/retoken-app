@@ -12070,8 +12070,8 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0xc0413c9409F8724f8744cef353108eEec100657E",
-      "transactionHash": "0x6f093332528ca7f69073b8858ee015440a8b5e794b8400ea3e6c90a2ecd8fa91"
+      "address": "0x48030328e1B0dacF9A6F7956ee640730A366c014",
+      "transactionHash": "0x77cd7efcb2fe74314b920bd1b30800d2cde81a11724949d56f7c8c96df7fb73b"
     },
     "5777": {
       "events": {},
@@ -12081,7 +12081,7 @@
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-03-23T03:46:56.917Z",
+  "updatedAt": "2021-03-23T06:32:27.862Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "This contract provides the business logic for RETokenProxy with an authorization mechanism for admin tasks.  VERSION: 2 (Ver.2) 1. Add buyToken() function for Investor to purchase tokens from Owner.",

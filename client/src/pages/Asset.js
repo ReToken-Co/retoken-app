@@ -62,7 +62,8 @@ export default function Asset() {
         const result = await usdtContract.methods
           .balanceOf(user.address)
           .call();
-        let balance = result / 1000000000000000000;
+        let balance = Number((result / 1000000000000000000).toFixed(0)).toLocaleString("en");
+        console.log(`USDT ${balance}`)
         setUsdtBalance(balance);
         localStorage.setItem("USDTBalance", balance);
       } else {

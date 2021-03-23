@@ -7,6 +7,7 @@ export default function AppAdmin() {
     const { account, initAccount, usdtContract, initUSDT, proxyContract, initProxy, logicOneContract, initLogicOne, logicTwoContract, initLogicTwo } = useContext(ContractContext);
 
     const [balanceUSDT, setBalanceUSDT] = useState(0);
+    const [proxyUSDT, setProxyUSDT] = useState(0);
     const [pause, setPause] = useState(0);
     const [logicContr, setLogicContr] = useState(0);
     const [adminAccess, setAdminAccess] = useState(0);
@@ -36,7 +37,7 @@ export default function AppAdmin() {
     }, [proxyContract]);
 
     useEffect(() => {
-        // Get instance of ogicone contract
+        // Get instance of logicone contract
         if (logicOneContract === undefined || !logicOneContract)
             initLogicOne()
         console.log(`LogicOne contract init ${logicOneContract}`)
@@ -64,6 +65,17 @@ export default function AppAdmin() {
         let balance = result / 1000000000000000000;
         let balanceString = balance.toString();
         setBalanceUSDT(balanceString);
+    }
+
+    // display usdt balance of proxy contract (only via USDT contract)
+    const displayProxyUSDT = async (e) => {
+        e.preventDefault();
+        const result = await await usdtContract.methods.balanceOf(
+            "0xc0413c9409F8724f8744cef353108eEec100657E"
+        ).call();
+        let balance = result / 1000000000000000000;
+        let balanceString = balance.toString();
+        setProxyUSDT(balanceString);
     }
 
     // pause the contract (only via Proxy contract)
@@ -236,14 +248,16 @@ export default function AppAdmin() {
         let ownerTkn = e.target.elements.ownerTkn.value;
         let valRpt = e.target.elements.val.value;
         let legCont = e.target.elements.leg.value;
-        console.log(`Owner ${owner}, Total Number of Tokens ${totalTkn}, Tokens for Owner ${ownerTkn}, Valuation Report hash ${valRpt}, Legal Contract hash ${legCont}`);
+        let fee = e.target.elements.fee.value;
+        console.log(`Owner ${owner}, Total Number of Tokens ${totalTkn}, Tokens for Owner ${ownerTkn}, Valuation Report hash ${valRpt}, Legal Contract hash ${legCont}, Success Fee Rate ${fee}`);
 
         const result = await logicOneContract.methods.mintToken(
             owner,
             totalTkn,
             ownerTkn,
             valRpt,
-            legCont
+            legCont,
+            fee
         ).send({ from: account });
         console.log(`mintToken result ${JSON.stringify(result)} `)
         const _time = new Date(result.events.RETokenID.returnValues.timestamp * 1000)
@@ -295,8 +309,10 @@ export default function AppAdmin() {
             <Sidebar />
             <br />
             <div style={{ marginLeft: '500px' }}>
-                <p><button onClick={displayUSDTBalance}>USDT Balance</button> : <b>{
+                <p><button onClick={displayUSDTBalance}>Account USDT Balance</button> : <b>{
                     balanceUSDT === 0 ? `Click on USDT balance button to display USDT balance` : balanceUSDT}</b></p>
+                <p><button onClick={displayProxyUSDT}>Proxy Contract USDT Balance</button> : <b>{
+                    proxyUSDT === 0 ? `Click on Proxy Contract balance button to display USDT balance` : proxyUSDT}</b></p>
                 <br />
 
                 <p><font size="5"><b>Proxy Functions</b></font></p>
@@ -361,7 +377,8 @@ export default function AppAdmin() {
                         <input type="text" name="totalTkn" size="10" placeholder="Total Token" /><span> </span>
                         <input type="text" name="ownerTkn" size="10" placeholder="Owner Token" /><span> </span>
                         <input type="text" name="val" size="60" placeholder="Valuation Report" /><span> </span>
-                        <input type="text" name="leg" size="60" placeholder="Legal Report" /><span> </span></p>
+                        <input type="text" name="leg" size="60" placeholder="Legal Report" /><span> </span>
+                        <input type="text" name="fee" size="10" placeholder="Success Fee" /></p>
                     <input type="submit" value="submit" />
                 </form></p>
                 <p><form onSubmit={withdrawUSDT}>

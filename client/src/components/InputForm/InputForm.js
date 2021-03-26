@@ -9,6 +9,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { Button } from "../../globalStyles";
+import { FileUpload } from ".."
 import { InputContainer, useStyles } from "./InputForm.style";
 
 export default function InputForm(props) {
@@ -16,6 +17,7 @@ export default function InputForm(props) {
   const defaultValues = {
     owner: "",
     image: "images/",
+    imgSelected: "images/",
     street: "",
     city: "",
     state: "",
@@ -54,6 +56,7 @@ export default function InputForm(props) {
     if (props) {
       setValue("owner", props.owner);
       setValue("image", props.image ? props.image : "images/");
+      setValue("imgSelected", props.imgSelected ? props.imgSelected : "images/");
       setValue("street", props.street);
       setValue("city", props.city);
       setValue("state", props.state);
@@ -103,6 +106,14 @@ export default function InputForm(props) {
             <Controller name="owner" control={control} as={
               <TextField id="owner" label="Owner" variant="outlined" InputLabelProps={{ shrink: true }} disabled fullWidth className={classes.margin} />
             } />
+          </Paper>
+          <Paper className={classes.paper}>
+          <Controller name="imgSelected" control={control} as={
+            <FileUpload>
+            </FileUpload>
+            } />
+            </Paper>
+          <Paper className={classes.paper}>
             <Controller name="street" control={control} as={
               <TextField id="street" label="Street" variant="outlined" InputLabelProps={{ shrink: true }} fullWidth className={classes.margin} required />
             } />

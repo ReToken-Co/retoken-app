@@ -62,8 +62,10 @@ export default function Asset() {
         const result = await usdtContract.methods
           .balanceOf(user.address)
           .call();
-        let balance = Number((result / 1000000000000000000).toFixed(0)).toLocaleString("en");
-        console.log(`USDT ${balance}`)
+        let balance = Number(
+          (result / 1000000000000000000).toFixed(0)
+        ).toLocaleString("en");
+        console.log(`USDT ${balance}`);
         setUsdtBalance(balance);
         localStorage.setItem("USDTBalance", balance);
       } else {
@@ -107,47 +109,49 @@ export default function Asset() {
         // Buy Property Token
         const result = await logicTwoContract.methods
           .buyToken(asset.tokenId, tokenInput, investmentInput)
-          .send({ from: user.address });
+          .send({ from: user.address })
+          .then((result) => {
+            console.log(`BuyToken result ${result.transactionHash} 
+            ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
 
-        console.log(`BuyToken result ${result.transactionHash} 
-        ${JSON.stringify(result.events.RETokenUSDT.returnValues)}`);
+            // Add transaction State & DB
+            transactionDispatch({
+              type: "ADD_TRANSACTION",
+              payload: {
+                investor: user.address,
+                propertyId: asset._id,
+                noOfToken: tokenInput,
+                transactionHash: result.transactionHash,
+                transactionDate:
+                  result.events.RETokenUSDT.returnValues.timestamp * 1000,
+              },
+            });
 
-        localStorage.setItem(
-          "USDTBalance",
-          localStorage.getItem("USDTBalance") - investmentInput
-        );
+            // Update properties State & DB
+            assetDispatch({
+              type: "UPDATE_ASSET",
+              payload: {
+                id: asset._id,
+                subscription: _subscription,
+              },
+            });
+
+            localStorage.setItem(
+              "USDTBalance",
+              localStorage.getItem("USDTBalance") - investmentInput
+            );
+          });
+
         setUsdtBalance(usdtBalance - investmentInput);
-
-        // Add transaction State & DB
-        await transactionDispatch({
-          type: "ADD_TRANSACTION",
-          payload: {
-            investor: user.address,
-            propertyId: asset._id,
-            noOfToken: tokenInput,
-            transactionHash: result.transactionHash,
-            transactionDate:
-              result.events.RETokenUSDT.returnValues.timestamp * 1000,
-          },
-        });
-
         setAsset({ ...asset, subscription: _subscription });
 
-        // Update properties State & DB
-        await assetDispatch({
-          type: "UPDATE_ASSET",
-          payload: {
-            id: asset._id,
-            subscription: _subscription,
-          },
-        });
         await assetDispatch({ type: "GET_ASSETS" });
         await transactionDispatch({
           type: "GET_TX_BY_PROPERTY",
           payload: asset._id,
         });
-        console.log(`updated tx ${user.address} ${asset._id} ${_subscription}
-                        ${result.transactionHash} `);
+//        console.log(`updated tx ${user.address} ${asset._id} ${_subscription}
+//                        ${result.transactionHash} `);
       } else {
         console.log(`missing data for smart contract: assetID= ${
           asset._id

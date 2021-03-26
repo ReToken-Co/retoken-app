@@ -17,7 +17,7 @@ export default function Admin() {
 
   useEffect(() => {
     console.log(`admin = ${JSON.stringify(user)}`);
-    setLoading(false);
+    setLoading(false)
   }, [assets]);
 
   useEffect(() => {
@@ -69,61 +69,51 @@ export default function Admin() {
       console.log(`logi ${JSON.stringify(logicOneContract)}`);
     }
 
-    let result = {};
     if (asset && logicOneContract && user) {
+      const result = await logicOneContract.methods
+        .mintToken(
+          asset.owner,
+          asset.noOfToken,
+          asset.ownerSubscription,
+          asset.valuationHash,
+          asset.invProspectHash,
+          asset.successFee
+        )
+        .send({ from: user.address });
+      console.log(
+        `mintToken result ${result.transactionHash} ${result.events.RETokenID.returnValues.id}
+        ${result.events.RETokenID.returnValues.timestamp} `
+      );
 
-      try {
-        result = await logicOneContract.methods
-          .mintToken(
-            asset.owner,
-            asset.noOfToken,
-            asset.ownerSubscription,
-            asset.valuationHash,
-            asset.invProspectHash,
-            asset.successFee
-          )
-          .send({ from: user.address })
-          .then((result) => {
-            // Add transaction State & DB
-            transactionDispatch({
-              type: "ADD_TRANSACTION",
-              payload: {
-                investor: asset.owner,
-                propertyId: asset._id,
-                noOfToken: asset.ownerSubscription,
-                transactionHash: result.transactionHash,
-                transactionDate:
-                  result.events.RETokenID.returnValues.timestamp * 1000,
-              },
-            })
-            
-            setLoading(true); // stop page from rendering, if not get error
-            // Update properties State & DB
-            const _subscription =
-              asset.noOfToken > 0
-                ? ((asset.ownerSubscription / asset.noOfToken) * 100).toFixed(1)
-                : 0;
-            console.log(`sub ${_subscription} ${asset._id}`);
-            assetDispatch({
-              type: "UPDATE_ASSET",
-              payload: {
-                id: asset._id,
-                transactionHash: result.transactionHash,
-                status: 1,
-                subscription: _subscription,
-                tokenId: Number(result.events.RETokenID.returnValues.id),
-              },
-            });
-            console.log(
-              `mintToken result ${result.transactionHash} ${result.events.RETokenID.returnValues.id}
-            ${result.events.RETokenID.returnValues.timestamp} `
-            );
-          });
-      } catch (error) {
-        console.log(`Error ${error}`);
-      }
+      setLoading(true); // stop page from rendering, if not get error
+      // Add transaction State & DB
+      await transactionDispatch({
+        type: "ADD_TRANSACTION",
+        payload: {
+          investor: asset.owner,
+          propertyId: asset._id,
+          noOfToken: asset.ownerSubscription,
+          transactionHash: result.transactionHash,
+          transactionDate:
+             result.events.RETokenID.returnValues.timestamp * 1000,
+        },
+      });
+//      setLoading(true); // stop page from rendering, if not get error
 
-      //      result.on('events', event => console.log(`trx ${JSON.stringify(event)}`))
+      // Update properties State & DB
+      const _subscription = asset.noOfToken > 0 ? 
+      ((asset.ownerSubscription / asset.noOfToken * 100).toFixed(1)) : 0 
+      console.log(`sub ${_subscription} ${asset._id}`)
+      await assetDispatch({
+        type: "UPDATE_ASSET",
+        payload: {
+          id: asset._id,
+          transactionHash: result.transactionHash,
+          status: 1,
+          subscription: _subscription,
+          tokenId: Number(result.events.RETokenID.returnValues.id),
+        },
+      });
       await assetDispatch({ type: "GET_ASSETS" });
 
       // set back to false to refresh page
@@ -131,10 +121,10 @@ export default function Admin() {
     } else {
       console.log(`missing data`);
 
-      // console.log(`missing data for smart contract:\ne assetID=${id}, account=${user.address},
-      // owner=${asset.owner}, # of Token=${asset.noOfToken},
-      // owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash},
-      // IPhash=${asset.invProspectHash},
+      // console.log(`missing data for smart contract:\ne assetID=${id}, account=${user.address}, 
+      // owner=${asset.owner}, # of Token=${asset.noOfToken}, 
+      // owner sub=${asset.ownerSubscription}, valhash=${asset.valuationHash}, 
+      // IPhash=${asset.invProspectHash}, 
       // contract=${logicOneContract}`);
     }
   };

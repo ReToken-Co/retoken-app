@@ -1,5 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer")
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+const upload = multer({storage: storage})
 const Property = require("../models/properties.model");
 
 const app = express();
@@ -12,6 +22,10 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
+
+  // upload image to cloudinary first
+  // console.log(`imgfile ${JSON.stringify(req.file)}`)
+  // console.log(`data ${JSON.stringify(req.data)}`)
 
   const newProperty = new Property({
     owner: req.body.owner,
@@ -49,6 +63,7 @@ router.route("/add").post((req, res) => {
       res.json(property)
     })
     .catch((err) => res.status(400).json("Error: " + err));
+    
 });
 
 router.route("/:id").get((req, res) => {
